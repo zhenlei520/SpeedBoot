@@ -1,0 +1,33 @@
+<Project>
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;</TargetFrameworks>
+    <Nullable>enable</Nullable>
+    <LangVersion>8.0</LangVersion>
+    
+    <PackageId>$(AssemblyName)</PackageId>
+    <PackageIcon>packageIcon.png</PackageIcon>
+    <Authors>zhenlei520</Authors>
+    <Copyright>© zhenlei520 Corporation. All rights reserved.</Copyright>
+    <PackageProjectUrl>https://www.nuget.org/packages/$(PackageId)</PackageProjectUrl>
+    <PackageIconUrl>packageIcon.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/zhenlei520/Wolf.Systems</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
+    <RepoRelativeProjectDir>$([MSBuild]::MakeRelative($(RepositoryRoot), $(MSBuildProjectDirectory)))</RepoRelativeProjectDir>
+    <IsProductComponent>false</IsProductComponent>
+    <IsTestProject Condition="$(MSBuildProjectName.EndsWith('Tests')) OR $(MSBuildProjectName.EndsWith('.Test'))">true</IsTestProject>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(RepositoryRoot)packageIcon.png">
+      <Pack>True</Pack>
+      <PackagePath/>
+    </None>
+    <None Include="$(RepositoryRoot)LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath/>
+    </None>
+  </ItemGroup>
+</Project>
