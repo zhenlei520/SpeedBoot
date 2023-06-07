@@ -1,7 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net6.0;</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <Folder Include="Extensions\" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference OutputItemType="Analyzer" ReferenceOutputAssembly="false" Include="..\GeneratorSource\GeneratorSource.csproj" />
+  </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\GeneratorSource\Exceptions\Internal\ExceptionCode.cs">
+      <Link>Exceptions\Internal\ExceptionCode.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>

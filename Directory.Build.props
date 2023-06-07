@@ -1,9 +1,8 @@
 <Project>
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;</TargetFrameworks>
     <Nullable>enable</Nullable>
-    <LangVersion>8.0</LangVersion>
-    
+    <LangVersion>10.0</LangVersion>
+
     <PackageId>$(AssemblyName)</PackageId>
     <PackageIcon>packageIcon.png</PackageIcon>
     <Authors>zhenlei520</Authors>

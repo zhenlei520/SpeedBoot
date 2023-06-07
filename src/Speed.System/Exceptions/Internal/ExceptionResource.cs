@@ -1,10 +1,6 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-// ReSharper disable once CheckNamespace
-
-// ReSharper disable once CheckNamespace
-
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -14,8 +10,6 @@ namespace System
     internal static class ExceptionResource
     {
         public static II18n<SpeedExceptionBase>? I18N { get; set; }
-
-        static readonly Dictionary<long, string> Data = new Dictionary<long, string>();
 
         /// <summary>
         /// Gets the string resource with the given name.
@@ -35,8 +29,7 @@ namespace System
 
         private static string GetMessage(long name, params object[]? arguments)
         {
-            return arguments!=null ? string.Format(CultureInfo.CurrentCulture, Data[name], arguments) : string.Format(CultureInfo.CurrentCulture, Data[name]);
-
+            return arguments!=null ? string.Format(CultureInfo.CurrentCulture, SpeedExceptionResource.Data[name], arguments) : string.Format(CultureInfo.CurrentCulture, SpeedExceptionResource.Data[name]);
         }
     }
 }

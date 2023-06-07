@@ -4,6 +4,9 @@
 // ReSharper disable once CheckNamespace
 
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Speed.System")]
 
 // ReSharper disable once CheckNamespace
 namespace System
