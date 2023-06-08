@@ -1,10 +1,7 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Runtime.Serialization;
 
 #if NETCOREAPP3_0_OR_GREATER
@@ -174,13 +171,8 @@ namespace Speed.System.Exceptions
         {
             if (argument != null)
             {
-#if NETCOREAPP3_0_OR_GREATER || NETSTANDARD2_1
                 ThrowIf(argument.Contains(parameter, stringComparison), ExceptionCode.NOT_CONTAIN, paramName, argument);
-#else
-                ThrowIf(argument.IndexOf(parameter, stringComparison) >= 0, ExceptionCode.NOT_CONTAIN, paramName, argument);
-#endif
             }
-
         }
 
         public static void ThrowIf(

@@ -3,11 +3,10 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System
-{
-    // ReSharper disable once InconsistentNaming
-    public interface II18n<out TResourceSource> : II18n
-    {
+namespace System;
 
-    }
+// ReSharper disable once InconsistentNaming
+public interface II18n<out TResourceSource> : II18n
+{
+
 }

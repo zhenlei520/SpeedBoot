@@ -3,10 +3,9 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System
+namespace System;
+
+public class App
 {
-    public class App
-    {
-        public static IServiceProvider? RootServiceProvider { get; set; }
-    }
+    public static IServiceProvider? RootServiceProvider { get; set; }
 }

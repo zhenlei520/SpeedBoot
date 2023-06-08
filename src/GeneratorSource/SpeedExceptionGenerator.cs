@@ -6,56 +6,57 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using GeneratorSource.Utils;
 using Microsoft.CodeAnalysis;
 
 [assembly: InternalsVisibleTo("Speed.System.Tests")]
 
-namespace GeneratorSource
+namespace GeneratorSource;
+
+[Generator]
+internal class SpeedExceptionGenerator : ISourceGenerator
 {
-    [Generator]
-    internal class SpeedExceptionGenerator : ISourceGenerator
+    public void Initialize(GeneratorInitializationContext context)
     {
-        public void Initialize(GeneratorInitializationContext context)
+        // Debugger.Launch();
+    }
+
+    public void Execute(GeneratorExecutionContext context)
+    {
+        var stringBuilder = new StringBuilder();
+        stringBuilder.AppendLine("public static readonly Dictionary<long, string> Data = new Dictionary<long, string>()");
+        stringBuilder.AppendLine("{");
+        foreach (var item in GetExceptionMessage())
         {
-            // Debugger.Launch();
+            stringBuilder.AppendLine("{" + item.Key + ",\"" + item.Value + "\"},");
         }
+        stringBuilder.AppendLine("};");
 
-        public void Execute(GeneratorExecutionContext context)
+        var sourceInfo = new SourceInfo("System", "SpeedExceptionResource", false)
         {
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("using System.Collections.Generic;");
-            stringBuilder.AppendLine("using System.Runtime.CompilerServices;");
-            stringBuilder.AppendLine("[assembly: InternalsVisibleTo(\"Speed.System\")]");
-            stringBuilder.AppendLine("namespace System");
-            stringBuilder.AppendLine("{");
-            stringBuilder.AppendLine("public class SpeedExceptionResource");
-            stringBuilder.AppendLine("{");
-            stringBuilder.AppendLine("public static readonly Dictionary<long, string> Data = new Dictionary<long, string>()");
-            stringBuilder.AppendLine("{");
-
-            foreach (var item in GetExceptionMessage())
+            UseNamespaces = new List<string>
             {
-                stringBuilder.AppendLine("{" + item.Key + ",\"" + item.Value + "\"},");
-            }
-
-            stringBuilder.AppendLine("};");
-            stringBuilder.AppendLine("}");
-            stringBuilder.AppendLine("}");
-            var source = stringBuilder.ToString();
-            context.AddSource("SpeedExceptionResource", source);
-        }
-
-        public static Dictionary<long, string> GetExceptionMessage()
-        {
-            var classType = typeof(ExceptionCode);
-            var fields = classType.GetFields(BindingFlags.Static | BindingFlags.Public);
-            var data = new Dictionary<long, string>();
-            foreach (var field in fields)
+                "System.Runtime.CompilerServices"
+            },
+            SupportNamespaces = new List<string>
             {
-                var key = long.Parse(field.GetRawConstantValue().ToString());
-                data.Add(key, field.GetDescription());
-            }
-            return data;
+                "Speed.System"
+            },
+            Content = stringBuilder.ToString()
+        };
+        context.AddSource("SpeedExceptionResource", sourceInfo.ToString());
+    }
+
+    public static Dictionary<long, string> GetExceptionMessage()
+    {
+        var classType = typeof(ExceptionCode);
+        var fields = classType.GetFields(BindingFlags.Static | BindingFlags.Public);
+        var data = new Dictionary<long, string>();
+        foreach (var field in fields)
+        {
+            var key = long.Parse(field.GetRawConstantValue().ToString());
+            data.Add(key, field.GetDescription());
         }
+        return data;
     }
 }

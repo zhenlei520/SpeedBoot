@@ -3,31 +3,30 @@
 
 // ReSharper disable once CheckNamespace
 
-using System;
 using System.Runtime.Serialization;
 
-namespace Speed.System.Exceptions
+// ReSharper disable once CheckNamespace
+namespace System;
+
+[Serializable]
+public class SpeedException : SpeedExceptionBase
 {
-    [Serializable]
-    public class SpeedException : SpeedExceptionBase
+    public SpeedException(string message)
+        : base(message)
     {
-        public SpeedException(string message)
-            : base(message)
-        {
-        }
+    }
 
-        protected SpeedException(long code, params object[] parameters) : base(code, parameters)
-        {
-        }
+    protected SpeedException(long code, params object[] parameters) : base(code, parameters)
+    {
+    }
 
-        public SpeedException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
+    public SpeedException(string message, Exception innerException)
+        : base(message, innerException)
+    {
+    }
 
-        protected SpeedException(SerializationInfo serializationInfo, StreamingContext context)
-            : base(serializationInfo, context)
-        {
-        }
+    protected SpeedException(SerializationInfo serializationInfo, StreamingContext context)
+        : base(serializationInfo, context)
+    {
     }
 }

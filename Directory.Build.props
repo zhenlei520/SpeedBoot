@@ -1,8 +1,7 @@
 <Project>
   <PropertyGroup>
     <Nullable>enable</Nullable>
-    <LangVersion>10.0</LangVersion>
-
+    <LangVersion>10</LangVersion>
     <PackageId>$(AssemblyName)</PackageId>
     <PackageIcon>packageIcon.png</PackageIcon>
     <Authors>zhenlei520</Authors>
