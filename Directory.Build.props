@@ -17,6 +17,8 @@
     <IsTestProject Condition="$(MSBuildProjectName.EndsWith('Tests')) OR $(MSBuildProjectName.EndsWith('.Test'))">true</IsTestProject>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+
+    <MicrosoftPackageVersion>6.0.0</MicrosoftPackageVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="$(RepositoryRoot)packageIcon.png">

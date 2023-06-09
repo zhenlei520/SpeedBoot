@@ -22,6 +22,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{216801A8-0
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.System.Tests", "test\Speed.System.Tests\Speed.System.Tests.csproj", "{FDDD0431-FEF6-4F7A-BEC3-1730156C4412}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Extensions.DependencyInjection", "src\Speed.Extensions.DependencyInjection\Speed.Extensions.DependencyInjection.csproj", "{F514C1AD-91D6-4107-A9C5-51315D843C1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Extensions.DependencyInjection.Abstractions", "src\Speed.Extensions.DependencyInjection.Abstractions\Speed.Extensions.DependencyInjection.Abstractions.csproj", "{1B7B5A66-CF40-48CC-ADBE-5737DD0518A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,14 @@ Global
 		{FDDD0431-FEF6-4F7A-BEC3-1730156C4412}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDDD0431-FEF6-4F7A-BEC3-1730156C4412}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDDD0431-FEF6-4F7A-BEC3-1730156C4412}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F514C1AD-91D6-4107-A9C5-51315D843C1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F514C1AD-91D6-4107-A9C5-51315D843C1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F514C1AD-91D6-4107-A9C5-51315D843C1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F514C1AD-91D6-4107-A9C5-51315D843C1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B7B5A66-CF40-48CC-ADBE-5737DD0518A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B7B5A66-CF40-48CC-ADBE-5737DD0518A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B7B5A66-CF40-48CC-ADBE-5737DD0518A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B7B5A66-CF40-48CC-ADBE-5737DD0518A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +60,7 @@ Global
 		{97D7F8FE-DEC8-4336-9E3C-25EA90B0251B} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 		{CAD2A17D-391E-4D5C-AE9F-A4F0815536D2} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 		{FDDD0431-FEF6-4F7A-BEC3-1730156C4412} = {216801A8-02DC-4AF4-9448-E13902585583}
+		{F514C1AD-91D6-4107-A9C5-51315D843C1A} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
+		{1B7B5A66-CF40-48CC-ADBE-5737DD0518A4} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 	EndGlobalSection
 EndGlobal
