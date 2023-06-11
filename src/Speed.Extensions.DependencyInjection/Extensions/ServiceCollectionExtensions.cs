@@ -20,30 +20,20 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<DependencyInjectionService>();
 
-        var allType = assemblies.GetTypes();
-
-
-        // services.TryAddSingleton<IServiceRegister, DefaultServiceRegister>();
-        // services.TryAddSingleton<ITypeProvider, DefaultTypeProvider>();
-        // var typeProvider = services.GetInstance<ITypeProvider>();
-        // var serviceDescriptors = typeProvider.GetServiceDescriptors(typeProvider.GetAllTypes(assemblies));
-        //
-        // var registrar = services.GetInstance<IServiceRegister>();
-        // foreach (var descriptor in serviceDescriptors)
-        //     registrar.Add(services, descriptor.ServiceType, descriptor.ImplementationType, descriptor.Lifetime);
-
-        // if (!serviceDescriptors.Any(d => d.AutoFire))
-        //     return services;
-        //
-        // var serviceProvider = services.BuildServiceProvider();
-        // foreach (var descriptor in serviceDescriptors.Where(d => d.AutoFire))
-        //     serviceProvider.GetService(descriptor.ServiceType);
+        var autoInjectProvider = new DefaultAutoInjectProvider(assemblies);
+        var serviceDescriptors = autoInjectProvider.GetServiceDescriptors();
+        foreach (var serviceDescriptor in serviceDescriptors)
+        {
+            services.Add(new ServiceDescriptor(
+                serviceDescriptor.ServiceType,
+                serviceDescriptor.ImplementationType,
+                serviceDescriptor.Lifetime));
+        }
 
         return services;
     }
 
     private sealed class DependencyInjectionService
     {
-
     }
 }

@@ -1,5 +1,7 @@
 <Project>
   <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
     <Nullable>enable</Nullable>
     <LangVersion>10</LangVersion>
     <PackageId>$(AssemblyName)</PackageId>
@@ -18,7 +20,12 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 
+
     <MicrosoftPackageVersion>6.0.0</MicrosoftPackageVersion>
+    <MSTestPackageVersion>2.2.3</MSTestPackageVersion>
+    <MicrosoftTeskSdkPackageVersion>16.9.4</MicrosoftTeskSdkPackageVersion>
+    <CoverletPackageVersion>3.0.2</CoverletPackageVersion>
+    <MoqPackageVersion>4.16.1</MoqPackageVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="$(RepositoryRoot)packageIcon.png">

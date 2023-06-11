@@ -1,9 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0;net6.0;</TargetFrameworks>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +8,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\GeneratorSource\Exceptions\Internal\ExceptionCode.cs">
+    <Compile Include="..\GeneratorSource\Internal\Exceptions\ExceptionCode.cs">
       <Link>Exceptions\Internal\ExceptionCode.cs</Link>
     </Compile>
   </ItemGroup>

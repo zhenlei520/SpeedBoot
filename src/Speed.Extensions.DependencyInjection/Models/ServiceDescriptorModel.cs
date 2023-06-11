@@ -3,9 +3,9 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace Speed.Extensions.DependencyInjection;
+namespace Microsoft.Extensions.DependencyInjection;
 
-internal class ServiceDescriptorInfo
+public class ServiceDescriptorModel
 {
     public Type ServiceType { get; }
 
@@ -13,7 +13,7 @@ internal class ServiceDescriptorInfo
 
     public ServiceLifetime Lifetime { get; }
 
-    public ServiceDescriptorInfo(Type serviceType, Type implementationType, ServiceLifetime lifetime)
+    public ServiceDescriptorModel(Type serviceType, Type implementationType, ServiceLifetime lifetime)
     {
         ServiceType = serviceType;
         ImplementationType = implementationType;

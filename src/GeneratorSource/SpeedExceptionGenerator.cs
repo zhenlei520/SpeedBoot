@@ -6,7 +6,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
-using GeneratorSource.Utils;
+using GeneratorSource.Internal.Model;
 using Microsoft.CodeAnalysis;
 
 [assembly: InternalsVisibleTo("Speed.System.Tests")]

@@ -15,4 +15,14 @@ public static class ServiceCollectionDescriptorExtensions
     /// <returns></returns>
     public static bool Any<TService>(this IServiceCollection services)
         => services.Any(d => d.ServiceType == typeof(TService));
+
+    /// <summary>
+    /// Returns whether the specified ServiceType and ImplementationType exist in the service collection
+    /// </summary>
+    /// <param name="services"></param>
+    /// <typeparam name="TService"></typeparam>
+    /// <typeparam name="TImplementation"></typeparam>
+    /// <returns></returns>
+    public static bool Any<TService, TImplementation>(this IServiceCollection services)
+        => services.Any(d => d.ServiceType == typeof(TService) && d.ImplementationType == typeof(TImplementation));
 }

@@ -1,9 +1,6 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.Serialization;
-
 #if NETCOREAPP3_0_OR_GREATER
 using System.Runtime.CompilerServices;
 #endif

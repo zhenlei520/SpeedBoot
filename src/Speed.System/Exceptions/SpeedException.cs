@@ -3,8 +3,6 @@
 
 // ReSharper disable once CheckNamespace
 
-using System.Runtime.Serialization;
-
 // ReSharper disable once CheckNamespace
 namespace System;
 
