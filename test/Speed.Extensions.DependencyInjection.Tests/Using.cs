@@ -4,3 +4,6 @@
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Reflection;
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
+global using Speed.Extensions.DependencyInjection.Tests.Models;
+global using Speed.Extensions.DependencyInjection.Tests.Repositories;
+global using Speed.Extensions.DependencyInjection.Tests.Services;
