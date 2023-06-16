@@ -44,4 +44,13 @@ public class DefaultAutoInjectProviderTest
             des.ServiceType == typeof(CustomService) && des.ImplementationType == typeof(CustomService) &&
             des.Lifetime == ServiceLifetime.Scoped));
     }
+
+    [TestMethod]
+    public void TestAutoInject()
+    {
+        var services = new ServiceCollection();
+        services.AddAutoInject(AppDomain.CurrentDomain.GetAssemblies());
+
+        Assert.AreEqual(4, services.Count);
+    }
 }
