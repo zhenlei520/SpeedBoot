@@ -3,24 +3,30 @@
 
 // ReSharper disable once CheckNamespace
 
+using System.Linq.Expressions;
+
 namespace System;
 
-public static class EnumerableExtensions
+public static class EnumerableUtils
 {
     public static IEnumerable<TSource> WhereIfNotNull<TSource>(
-        this IEnumerable<TSource> source,
+        IEnumerable<TSource> source,
         Func<TSource, bool>? predicate)
-        => EnumerableUtils.WhereIf(source, true, predicate);
+        => WhereIf(source, true, predicate);
 
     public static IEnumerable<TSource> WhereIf<TSource>(
-        this IEnumerable<TSource> source,
+        IEnumerable<TSource> source,
         bool isCompose,
         Func<TSource, bool>? predicate)
-        => EnumerableUtils.WhereIf(source, isCompose, predicate);
+    {
+        return isCompose && predicate != null ? source.Where(predicate) : source;
+    }
 
     public static IEnumerable<TSource> WhereIf<TSource>(
-        this IEnumerable<TSource> source,
+        IEnumerable<TSource> source,
         bool isCompose,
         Expression<Func<TSource, bool>?> predicate)
-        => EnumerableUtils.WhereIf(source, isCompose, predicate);
+    {
+        return WhereIf(source, isCompose, predicate.Compile());
+    }
 }

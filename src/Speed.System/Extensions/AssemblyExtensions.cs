@@ -9,10 +9,8 @@ namespace System;
 public static class AssemblyExtensions
 {
     public static List<Type> GetTypes(this IEnumerable<Assembly> assemblies)
-        => assemblies.GetTypes(null);
+        => AssemblyUtils.GetTypes(assemblies);
 
     public static List<Type> GetTypes(this IEnumerable<Assembly> assemblies, Func<Type, bool>? condition)
-    {
-        return assemblies.SelectMany(assembly => assembly.GetTypes()).WhereIfNotNull(condition).Distinct().ToList();
-    }
+        => AssemblyUtils.GetTypes(assemblies, condition);
 }
