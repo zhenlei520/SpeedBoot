@@ -1,9 +1,11 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-namespace Speed.Extensions.DependencyInjection.Tests.Models;
+// ReSharper disable once CheckNamespace
 
-public class User
+namespace Speed;
+
+public interface IServiceComponent
 {
-
+    void ConfigureServices(IServiceCollection services);
 }

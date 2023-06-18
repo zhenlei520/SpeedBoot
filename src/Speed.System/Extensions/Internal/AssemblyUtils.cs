@@ -5,7 +5,7 @@
 
 namespace System;
 
-internal static class AssemblyUtils
+internal static partial class AssemblyUtils
 {
     public static List<Type> GetTypes(IEnumerable<Assembly> assemblies)
         => GetTypes(assemblies, null);
