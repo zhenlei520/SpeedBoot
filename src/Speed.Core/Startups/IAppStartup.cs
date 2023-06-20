@@ -5,7 +5,9 @@
 
 namespace Speed;
 
-public abstract class ServiceComponentBase : IServiceComponent
+public interface IAppStartup
 {
-    public abstract void ConfigureServices(IServiceCollection services);
+    string Name { get; }
+
+    void Initialized();
 }

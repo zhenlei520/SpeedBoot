@@ -3,9 +3,9 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace Speed;
+namespace System;
 
-public abstract class ServiceComponentBase : IServiceComponent
+// ReSharper disable once InconsistentNaming
+public interface II18n<out TResourceSource> : II18n where TResourceSource : IResourceSource
 {
-    public abstract void ConfigureServices(IServiceCollection services);
 }

@@ -2,11 +2,12 @@
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
 // ReSharper disable once CheckNamespace
+
 namespace System;
 
 internal static class ExceptionResource
 {
-    public static II18n<SpeedExceptionBase>? I18N { get; set; }
+    public static II18n<ExceptionResourceSource>? I18N { get; set; }
 
     /// <summary>
     /// Gets the string resource with the given name.
@@ -26,6 +27,8 @@ internal static class ExceptionResource
 
     private static string GetMessage(long name, params object[]? arguments)
     {
-        return arguments!=null ? string.Format(CultureInfo.CurrentCulture, SpeedExceptionResource.Data[name], arguments) : string.Format(CultureInfo.CurrentCulture, SpeedExceptionResource.Data[name]);
+        return arguments != null
+            ? string.Format(CultureInfo.CurrentCulture, SpeedExceptionResource.Data[name], arguments)
+            : string.Format(CultureInfo.CurrentCulture, SpeedExceptionResource.Data[name]);
     }
 }

@@ -3,9 +3,8 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace Speed;
+namespace System;
 
-public abstract class ServiceComponentBase : IServiceComponent
+internal class ExceptionResourceSource : IResourceSource
 {
-    public abstract void ConfigureServices(IServiceCollection services);
 }

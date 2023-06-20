@@ -8,7 +8,10 @@
 // ReSharper disable once CheckNamespace
 namespace System;
 
-internal static class ExceptionCode
+/// <summary>
+/// Exception Information Multilingual Resources
+/// </summary>
+internal static class ExceptionConstant
 {
     [Description("'{0}' cannot contain {1}.")]
     public const long NOT_CONTAIN = 1;

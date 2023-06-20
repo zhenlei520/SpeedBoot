@@ -49,7 +49,7 @@ internal class SpeedExceptionGenerator : ISourceGenerator
 
     public static Dictionary<long, string> GetExceptionMessage()
     {
-        var classType = typeof(ExceptionCode);
+        var classType = typeof(ExceptionConstant);
         var fields = classType.GetFields(BindingFlags.Static | BindingFlags.Public);
         var data = new Dictionary<long, string>();
         foreach (var field in fields)

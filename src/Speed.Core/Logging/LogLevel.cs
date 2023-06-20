@@ -5,7 +5,13 @@
 
 namespace Speed;
 
-public abstract class ServiceComponentBase : IServiceComponent
+public enum LogLevel
 {
-    public abstract void ConfigureServices(IServiceCollection services);
+    Trace,
+    Debug,
+    Information,
+    Warning,
+    Error,
+    Critical,
+    None,
 }

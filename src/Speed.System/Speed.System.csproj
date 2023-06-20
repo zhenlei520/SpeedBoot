@@ -8,8 +8,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\GeneratorSource\Internal\Exceptions\ExceptionCode.cs">
-      <Link>Exceptions\Internal\ExceptionCode.cs</Link>
+    <Compile Include="..\GeneratorSource\Internal\Exceptions\ExceptionConstant.cs">
+      <Link>Exceptions\Internal\ExceptionConstant.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>

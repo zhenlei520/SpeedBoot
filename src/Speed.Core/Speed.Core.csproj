@@ -6,15 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Speed.Extensions.DependencyInjection.Abstractions\Speed.Extensions.DependencyInjection.Abstractions.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\Speed.System\Extensions\Internal\AssemblyUtils.cs">
-      <Link>Extensions\Internal\AssemblyUtils.cs</Link>
-    </Compile>
-    <Compile Include="..\Speed.System\Extensions\Internal\EnumerableUtils.cs">
-      <Link>Extensions\Internal\EnumerableUtils.cs</Link>
-    </Compile>
+    <ProjectReference Include="..\Speed.System\Speed.System.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,9 +3,11 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace Speed;
+namespace System;
 
-public abstract class ServiceComponentBase : IServiceComponent
+/// <summary>
+/// Component Multilingual Resources
+/// </summary>
+internal static class ComponentConstant
 {
-    public abstract void ConfigureServices(IServiceCollection services);
 }

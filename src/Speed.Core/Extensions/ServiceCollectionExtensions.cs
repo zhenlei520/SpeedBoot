@@ -7,7 +7,22 @@ namespace Speed;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddServiceComponent(this IServiceCollection services)
+    private static readonly List<object> AppStartupContextList = new();
+
+    public static IServiceCollection AddSpeed(this IServiceCollection services)
+    {
+        services.AddServiceComponent();
+        foreach (var appStartup in AppStartupContextList)
+        {
+            if (appStartup is IAppStartup serviceStartup)
+            {
+                serviceStartup.Initialized();
+            }
+        }
+        return services;
+    }
+
+    private static IServiceCollection AddServiceComponent(this IServiceCollection services)
     {
         var assemblyNames = Assembly.GetExecutingAssembly().GetReferencedAssemblies();
         var assemblies = assemblyNames.Select(Assembly.Load).ToArray();
@@ -20,38 +35,11 @@ public static class ServiceCollectionExtensions
             return services;
 
         services.AddSingleton<ServiceComponentProvider>();
-        var serviceComponentTypes = AssemblyUtils.GetServiceComponentTypes(assemblies);
-        foreach (var serviceComponentType in serviceComponentTypes)
-        {
-            var serviceComponent = Activator.CreateInstance(serviceComponentType);
-            if (serviceComponent == null)
-                continue;
-
-            if (serviceComponent is ServiceComponentBase serviceComponentBase)
-            {
-                if (serviceComponentBase.DependComponentTypes.Count == 0)
-                {
-
-                }
-            }
-            else
-            {
-
-            }
-        }
-
-        return services;
-    }
-
-    public static IServiceCollection AddServiceComponent<TServiceComponent>(this IServiceCollection services)
-        where TServiceComponent : IServiceComponent, new()
-    {
-
+        AppStartupContextList.Add(new ServiceCollectionStartup(services, assemblies, null));
         return services;
     }
 
     private class ServiceComponentProvider
     {
-
     }
 }

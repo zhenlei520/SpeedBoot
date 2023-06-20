@@ -5,7 +5,6 @@
 
 namespace Speed;
 
-public abstract class ServiceComponentBase : IServiceComponent
+public class ComponentResourceSource : IResourceSource
 {
-    public abstract void ConfigureServices(IServiceCollection services);
 }

@@ -8,4 +8,8 @@
     <ProjectReference Include="..\Speed.Core\Speed.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Startups\" />
+  </ItemGroup>
+
 </Project>

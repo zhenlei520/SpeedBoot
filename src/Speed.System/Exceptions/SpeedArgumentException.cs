@@ -37,18 +37,22 @@ namespace Speed.System.Exceptions
             string? paramName = null)
         {
             ThrowIf(arguments is null || !arguments.Any(),
-                ExceptionCode.NOT_NULL_AND_EMPTY_COLLECTION,
+                ExceptionConstant.NOT_NULL_AND_EMPTY_COLLECTION,
                 paramName);
         }
 
-        public static void ThrowIfNull(object? argument,
+        public static void ThrowIfNull(
+#if NETCOREAPP3_0_OR_GREATER
+            [NotNull]
+#endif
+            object? argument,
 #if NETCOREAPP3_0_OR_GREATER
 [CallerArgumentExpression("argument")]
 #endif
             string? paramName = null)
         {
             ThrowIf(argument is null,
-                ExceptionCode.NOT_NULL,
+                ExceptionConstant.NOT_NULL,
                 paramName);
         }
 
@@ -63,7 +67,7 @@ namespace Speed.System.Exceptions
             string? paramName = null)
         {
             ThrowIf(string.IsNullOrEmpty(argument?.ToString()),
-                ExceptionCode.NOT_NULL_AND_EMPTY,
+                ExceptionConstant.NOT_NULL_AND_EMPTY,
                 paramName);
         }
 
@@ -78,7 +82,7 @@ namespace Speed.System.Exceptions
             string? paramName = null)
         {
             ThrowIf(string.IsNullOrWhiteSpace(argument?.ToString()),
-                ExceptionCode.NOT_NULL_AND_WHITESPACE,
+                ExceptionConstant.NOT_NULL_AND_WHITESPACE,
                 paramName);
         }
 
@@ -90,7 +94,7 @@ namespace Speed.System.Exceptions
             string? paramName = null) where T : IComparable
         {
             ThrowIf(argument.CompareTo(maxValue) > 0,
-                ExceptionCode.LESS_THAN_OR_EQUAL,
+                ExceptionConstant.LESS_THAN_OR_EQUAL,
                 paramName,
                 maxValue);
         }
@@ -103,7 +107,7 @@ namespace Speed.System.Exceptions
             string? paramName = null) where T : IComparable
         {
             ThrowIf(argument.CompareTo(maxValue) >= 0,
-                ExceptionCode.LESS_THAN,
+                ExceptionConstant.LESS_THAN,
                 paramName,
                 maxValue);
         }
@@ -116,7 +120,7 @@ namespace Speed.System.Exceptions
             string? paramName = null) where T : IComparable
         {
             ThrowIf(argument.CompareTo(minValue) < 0,
-                ExceptionCode.GREATER_THAN_OR_EQUAL,
+                ExceptionConstant.GREATER_THAN_OR_EQUAL,
                 paramName,
                 minValue);
         }
@@ -129,7 +133,7 @@ namespace Speed.System.Exceptions
             string? paramName = null) where T : IComparable
         {
             ThrowIf(argument.CompareTo(minValue) <= 0,
-                ExceptionCode.GREATER_THAN,
+                ExceptionConstant.GREATER_THAN,
                 paramName,
                 minValue);
         }
@@ -143,7 +147,7 @@ namespace Speed.System.Exceptions
             string? paramName = null) where T : IComparable
         {
             ThrowIf(argument.CompareTo(minValue) < 0 || argument.CompareTo(maxValue) > 0,
-                ExceptionCode.OUT_OF_RANGE,
+                ExceptionConstant.OUT_OF_RANGE,
                 paramName,
                 minValue,
                 maxValue);
@@ -168,7 +172,7 @@ namespace Speed.System.Exceptions
         {
             if (argument != null)
             {
-                ThrowIf(argument.Contains(parameter, stringComparison), ExceptionCode.NOT_CONTAIN, paramName, argument);
+                ThrowIf(argument.Contains(parameter, stringComparison), ExceptionConstant.NOT_CONTAIN, paramName, argument);
             }
         }
 

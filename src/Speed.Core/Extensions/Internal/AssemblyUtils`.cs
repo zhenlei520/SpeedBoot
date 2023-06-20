@@ -9,6 +9,6 @@ internal static partial class AssemblyUtils
 {
     public static List<Type> GetServiceComponentTypes(params Assembly[] assemblies)
     {
-        return AssemblyUtils.GetTypes(assemblies, type => type is { IsClass: true, IsAbstract: false } && type.IsSubclassOf(typeof(IServiceComponent)));
+        return assemblies.GetTypes(type => type is { IsClass: true, IsAbstract: false } && type.IsSubclassOf(typeof(IServiceComponent)));
     }
 }

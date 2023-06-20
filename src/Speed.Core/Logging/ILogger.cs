@@ -3,10 +3,9 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System;
+namespace Speed;
 
-// ReSharper disable once InconsistentNaming
-public interface II18n<out TResourceSource> : II18n
+public interface ILogger
 {
-
+    void Log<TState>(TState state, LogLevel logLevel, Exception? exception);
 }
