@@ -7,35 +7,49 @@ namespace Speed;
 
 public static class ServiceCollectionExtensions
 {
-    private static readonly List<object> AppStartupContextList = new();
-
-    public static IServiceCollection AddSpeed(this IServiceCollection services)
+    public static IServiceCollection AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure)
     {
-        services.AddServiceComponent();
-        foreach (var appStartup in AppStartupContextList)
+        var speedOptions = new SpeedOptions();
+        configure?.Invoke(speedOptions);
+        AddDefaultServiceComponents();
+        InitializedStartup();
+
+        IServiceCollection AddDefaultServiceComponents()
         {
-            if (appStartup is IAppStartup serviceStartup)
+            if (!speedOptions.EnabledServiceComponent)
+                return services;
+
+            Expression<Func<string, bool>> condition = name => true;
+            condition.And(!speedOptions.AssemblyName.IsNullOrWhiteSpace(), name => Regex.Match(name, speedOptions.AssemblyName).Success);
+
+            return services.AddServiceComponents(AssemblyUtils.GetAllAssembly(condition));
+        }
+
+        void InitializedStartup()
+        {
+            foreach (var appStartup in InternalApp.AppStartupContextList.OrderBy(context => context.Order))
             {
-                serviceStartup.Initialized();
+                appStartup.Initialized();
             }
         }
+
         return services;
     }
 
-    private static IServiceCollection AddServiceComponent(this IServiceCollection services)
-    {
-        var assemblyNames = Assembly.GetExecutingAssembly().GetReferencedAssemblies();
-        var assemblies = assemblyNames.Select(Assembly.Load).ToArray();
-        return services.AddServiceComponent(assemblies);
-    }
-
-    public static IServiceCollection AddServiceComponent(this IServiceCollection services, params Assembly[] assemblies)
+    /// <summary>
+    /// Add service components
+    /// </summary>
+    /// <param name="services">collection of services</param>
+    /// <param name="assemblies">assembly collection</param>
+    /// <returns></returns>
+    public static IServiceCollection AddServiceComponents(this IServiceCollection services, params Assembly[] assemblies)
     {
         if (services.Any(service => service.ImplementationType == typeof(ServiceComponentProvider)))
             return services;
 
         services.AddSingleton<ServiceComponentProvider>();
-        AppStartupContextList.Add(new ServiceCollectionStartup(services, assemblies, null));
+
+        InternalApp.AppStartupContextList.Add(new ServiceCollectionStartup(services, assemblies, null));
         return services;
     }
 

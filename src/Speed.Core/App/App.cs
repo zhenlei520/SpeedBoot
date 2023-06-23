@@ -5,11 +5,9 @@
 
 namespace Speed;
 
-public interface IAppStartup
+public class App
 {
-    int Order { get; }
+    public static IServiceCollection Services => InternalApp.Services;
 
-    string Name { get; }
-
-    void Initialized();
+    public static IServiceProvider? RootServiceProvider => InternalApp.RootServiceProvider;
 }

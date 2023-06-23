@@ -10,6 +10,8 @@ public abstract class AppStartupBase : IAppStartup
     private readonly ILogger? _logger;
     private readonly LogLevel? _logLevel;
 
+    public virtual int Order => 999;
+
     public abstract string Name { get; }
 
     protected AppStartupBase(ILogger? logger, LogLevel? logLevel = null)

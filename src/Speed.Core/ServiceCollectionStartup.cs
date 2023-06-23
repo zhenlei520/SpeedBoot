@@ -18,8 +18,8 @@ public class ServiceCollectionStartup : AppStartupBase
         LogLevel? logLevel = null) : base(logger, logLevel)
     {
         _services = services;
-        _serviceComponentTypes = assemblies.GetTypes(type =>
-            type is { IsClass: true, IsGenericType: false, IsAbstract: false } && typeof(IServiceComponent).IsAssignableFrom(type));
+        _serviceComponentTypes = assemblies
+            .GetTypes(type => type is { IsClass: true, IsGenericType: false, IsAbstract: false } && typeof(IServiceComponent).IsAssignableFrom(type));
     }
 
     /// <summary>
@@ -27,19 +27,20 @@ public class ServiceCollectionStartup : AppStartupBase
     /// </summary>
     protected override void Load()
     {
-        // var typesByDepend = new List<Type>();
-        // _serviceComponentTypes.ForEach(type =>
-        // {
-        //
-        // });
-        //
-        // var componentInstance = Activator.CreateInstance(type) as IServiceComponent;
-        // SpeedArgumentException.ThrowIfNull(componentInstance);
-        //
-        // if (componentInstance is ServiceComponentBase serviceComponentBase)
-        // {
-        //     serviceComponentBase.DependComponentTypes
-        // }
-        // componentInstance.ConfigureServices(_services);
+        var componentTypes = ComponentSort();
+        foreach (var componentInstance in componentTypes.Select(componentType => Activator.CreateInstance(componentType) as IServiceComponent))
+        {
+            SpeedArgumentException.ThrowIfNull(componentInstance);
+            componentInstance!.ConfigureServices(_services);
+        }
+    }
+
+    /// <summary>
+    /// Ordering service dependencies
+    /// </summary>
+    /// <returns></returns>
+    private List<Type> ComponentSort()
+    {
+        return _serviceComponentTypes;
     }
 }

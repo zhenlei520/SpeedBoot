@@ -11,4 +11,34 @@ internal static partial class AssemblyUtils
     {
         return assemblies.GetTypes(type => type is { IsClass: true, IsAbstract: false } && type.IsSubclassOf(typeof(IServiceComponent)));
     }
+
+    public static Assembly[] GetAllAssembly()
+        => GetAllAssembly(name => true);
+
+    public static Assembly[] GetAllAssembly(Expression<Func<string, bool>> condition)
+    {
+        var entryAssemblies = new List<Assembly>();
+        var entryAssembly = Assembly.GetEntryAssembly();
+        if (entryAssembly != null)
+        {
+            var assemblyNames = entryAssembly.GetReferencedAssemblies().ToList();
+            entryAssemblies = assemblyNames.Select(Assembly.Load).ToList();
+        }
+
+        var externalAssemblies = new List<Assembly>();
+        var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+        var files = Directory.GetFiles(baseDirectory, "*.dll", SearchOption.AllDirectories)
+            .Select(Path.GetFileName)
+            .Where(name => name != null && condition.Compile().Invoke(name))
+            .ToList();
+
+        foreach (var assembly in files.Select(file => Assembly.LoadFrom(file!)).Where(assembly => !entryAssemblies.Contains(assembly) && !externalAssemblies.Contains(assembly)))
+        {
+            externalAssemblies.Add(assembly);
+        }
+
+        var assemblies= new List<Assembly>(entryAssemblies);
+        assemblies.AddRange(externalAssemblies);
+        return assemblies.ToArray();
+    }
 }
