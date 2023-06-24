@@ -3,7 +3,6 @@
 
 // ReSharper disable once CheckNamespace
 
-// ReSharper disable once CheckNamespace
 namespace System;
 
 [Serializable]

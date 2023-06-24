@@ -5,6 +5,9 @@
 
 namespace Speed;
 
+/// <summary>
+/// Component Multilingual Resources
+/// </summary>
 public class ComponentResourceSource : IResourceSource
 {
 }

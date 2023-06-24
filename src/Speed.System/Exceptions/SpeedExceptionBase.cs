@@ -2,18 +2,22 @@
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
 // ReSharper disable once CheckNamespace
+
 namespace System;
 
 [Serializable]
 public abstract class SpeedExceptionBase : Exception
 {
     /// <summary>
+    /// exception code
+    /// The default exception message is a hard-coded prompt message, but the exception that supports localized messages can be achieved through Code
     /// 异常码
     /// 默认异常消息是硬编码的提示信息，但通过Code可以做到支持本地化消息的异常
     /// </summary>
     public long? Code { get; private set; }
 
     /// <summary>
+    /// Custom exception parameters
     /// 自定义异常参数
     /// </summary>
     public object[]? Parameters { get; private set; }
