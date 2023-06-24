@@ -3,3 +3,5 @@
 
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Reflection;
+global using Speed.AspNetCore;
+global using Microsoft.AspNetCore.Hosting;

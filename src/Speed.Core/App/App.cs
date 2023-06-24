@@ -17,10 +17,12 @@ public class App
     /// </summary>
     public static IServiceProvider? RootServiceProvider => InternalApp.RootServiceProvider;
 
-    private static IEnumerable<Assembly>? _assemblies = null;
-
     /// <summary>
     /// Valid Assemblies Collection
     /// </summary>
-    public static IEnumerable<Assembly>? Assemblies => _assemblies;
+    public static IEnumerable<Assembly>? Assemblies => InternalApp.Assemblies;
+
+    public static IConfiguration? Configuration => InternalApp.Configuration;
+
+    public static string Environment => InternalApp.Environment;
 }

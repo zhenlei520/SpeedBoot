@@ -15,10 +15,8 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddAutoInjectCore(this IServiceCollection services, IEnumerable<Assembly> assemblies)
     {
-        if (services.Any<DependencyInjectionService>())
+        if (!ServiceCollectionUtils.TryAdd<DependencyInjectionService>(services))
             return services;
-
-        services.AddSingleton<DependencyInjectionService>();
 
         var autoInjectProvider = new DefaultAutoInjectProvider(assemblies);
         var serviceDescriptors = autoInjectProvider.GetServiceDescriptors();

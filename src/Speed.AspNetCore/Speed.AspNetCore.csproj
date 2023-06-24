@@ -5,11 +5,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Speed.Core\Speed.Core.csproj" />
+    <ProjectReference Include="..\Speed.Core\Speed.Core.csproj"/>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Startups\" />
-  </ItemGroup>
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'netcoreapp2.2' or '$(TargetFramework)' == 'netcoreapp3.0' or '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0'">
+      <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0"/>
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp2.2'">
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.0"/>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
 
 </Project>

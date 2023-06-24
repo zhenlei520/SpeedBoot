@@ -13,7 +13,7 @@ public class DefaultAutoInjectProvider
 
     public DefaultAutoInjectProvider(IEnumerable<Assembly> assemblies)
     {
-        _allTypes = AssemblyUtils.GetTypes(assemblies);
+        _allTypes = assemblies.GetTypes();
     }
 
     public List<ServiceDescriptorModel> GetServiceDescriptors()

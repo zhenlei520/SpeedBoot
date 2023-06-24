@@ -29,7 +29,7 @@ internal static class ServiceComponentStartupHelp
             else
             {
                 bool isExist = true;
-                foreach (var dependType in dependTypes)
+                foreach (var dependType in dependTypes!)
                 {
                     if (!types.Contains(dependType))
                     {

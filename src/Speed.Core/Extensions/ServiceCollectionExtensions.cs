@@ -9,22 +9,41 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure = null)
     {
+        if (!ServiceCollectionUtils.TryAdd<SpeedProvider>(services))
+            return services;
+
         var speedOptions = new SpeedOptions();
         configure?.Invoke(speedOptions);
+
+        var assemblies = GetValidAssemblies();
+
+        InitializedConfigure();
         AddDefaultServiceComponents();
         InitializedStartup();
 
-        IServiceCollection AddDefaultServiceComponents()
+        void InitializedConfigure()
         {
-            if (!speedOptions.EnabledServiceComponent)
-                return services;
+            InternalApp.ConfigureServices(services);
+            InternalApp.ConfigureAssemblies(assemblies);
+            InternalApp.ConfigureConfiguration(speedOptions.Configuration);
+            InternalApp.ConfigureEnvironment(speedOptions.Environment);
+        }
 
+        Assembly[] GetValidAssemblies()
+        {
             Expression<Func<string, bool>> condition = name => true;
             condition = condition.And(
                 !speedOptions.AssemblyName.IsNullOrWhiteSpace(),
                 name => Regex.Match(name, speedOptions.AssemblyName).Success);
+            return AssemblyUtils.GetAllAssembly(condition);
+        }
 
-            return services.AddServiceComponents(AssemblyUtils.GetAllAssembly(condition));
+        void AddDefaultServiceComponents()
+        {
+            if (!speedOptions.EnabledServiceComponent)
+                return;
+
+            services.AddServiceComponents(assemblies);
         }
 
         void InitializedStartup()
@@ -46,10 +65,8 @@ public static class ServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection AddServiceComponents(this IServiceCollection services, params Assembly[] assemblies)
     {
-        if (services.Any(service => service.ImplementationType == typeof(ServiceComponentProvider)))
+        if (!ServiceCollectionUtils.TryAdd<ServiceComponentProvider>(services))
             return services;
-
-        services.AddSingleton<ServiceComponentProvider>();
 
         InternalApp.AppStartupContextList.Add(new ServiceCollectionStartup(services, assemblies, null));
         return services;
@@ -57,5 +74,10 @@ public static class ServiceCollectionExtensions
 
     private class ServiceComponentProvider
     {
+    }
+
+    private class SpeedProvider
+    {
+
     }
 }
