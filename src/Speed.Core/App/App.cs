@@ -7,7 +7,20 @@ namespace Speed;
 
 public class App
 {
-    public static IServiceCollection Services => InternalApp.Services;
+    /// <summary>
+    /// collection of services
+    /// </summary>
+    public static IServiceCollection? Services => InternalApp.Services;
 
+    /// <summary>
+    /// root service provider
+    /// </summary>
     public static IServiceProvider? RootServiceProvider => InternalApp.RootServiceProvider;
+
+    private static IEnumerable<Assembly>? _assemblies = null;
+
+    /// <summary>
+    /// Valid Assemblies Collection
+    /// </summary>
+    public static IEnumerable<Assembly>? Assemblies => _assemblies;
 }

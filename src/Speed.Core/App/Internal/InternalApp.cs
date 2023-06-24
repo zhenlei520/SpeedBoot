@@ -7,9 +7,9 @@ namespace Speed;
 
 internal static class InternalApp
 {
-    public static IServiceCollection Services;
+    public static IServiceCollection? Services;
 
-    public static IServiceProvider RootServiceProvider;
+    public static IServiceProvider? RootServiceProvider;
 
     public static readonly List<IAppStartup> AppStartupContextList = new();
 

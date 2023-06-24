@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Speed;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class DependencyAttribute : Attribute

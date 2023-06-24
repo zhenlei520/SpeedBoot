@@ -7,7 +7,7 @@ namespace Speed;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure)
+    public static IServiceCollection AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure = null)
     {
         var speedOptions = new SpeedOptions();
         configure?.Invoke(speedOptions);
@@ -20,7 +20,9 @@ public static class ServiceCollectionExtensions
                 return services;
 
             Expression<Func<string, bool>> condition = name => true;
-            condition.And(!speedOptions.AssemblyName.IsNullOrWhiteSpace(), name => Regex.Match(name, speedOptions.AssemblyName).Success);
+            condition = condition.And(
+                !speedOptions.AssemblyName.IsNullOrWhiteSpace(),
+                name => Regex.Match(name, speedOptions.AssemblyName).Success);
 
             return services.AddServiceComponents(AssemblyUtils.GetAllAssembly(condition));
         }

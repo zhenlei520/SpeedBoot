@@ -4,3 +4,5 @@
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Reflection;
 global using System.Runtime.CompilerServices;
+global using Speed.Extensions.DependencyInjection;
+global using Speed;

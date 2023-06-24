@@ -28,8 +28,7 @@ internal static partial class AssemblyUtils
         var externalAssemblies = new List<Assembly>();
         var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         var files = Directory.GetFiles(baseDirectory, "*.dll", SearchOption.AllDirectories)
-            .Select(Path.GetFileName)
-            .Where(name => name != null && condition.Compile().Invoke(name))
+            .Where(file => file != null && condition.Compile().Invoke(Path.GetFileName(file)))
             .ToList();
 
         foreach (var assembly in files.Select(file => Assembly.LoadFrom(file!)).Where(assembly => !entryAssemblies.Contains(assembly) && !externalAssemblies.Contains(assembly)))
