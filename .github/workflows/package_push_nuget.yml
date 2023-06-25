@@ -36,7 +36,7 @@ jobs:
       run: dotnet build -c Release --no-restore /p:ContinuousIntegrationBuild=true
 
     - name: pack
-      run: dotnet pack -c Release --include-symbols -p:PackageVersion=$GITHUB_REF_NAME
+      run: dotnet pack -c Release --output ./nupkg --include-symbols -p:PackageVersion=$GITHUB_REF_NAME
 
     - name: package push
-      run: dotnet nuget push "**/*.symbols.nupkg" -k  ${{secrets.NUGET_TOKEN}}  -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "./nupkg/*.symbols.nupkg" -k  ${{secrets.NUGET_TOKEN}}  -s https://api.nuget.org/v3/index.json

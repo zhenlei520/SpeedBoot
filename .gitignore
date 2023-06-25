@@ -221,3 +221,4 @@ coverage.opencover.xml
 
 # Run Tests
 BenchmarkDotNet.Artifacts/
+/nupkg/
