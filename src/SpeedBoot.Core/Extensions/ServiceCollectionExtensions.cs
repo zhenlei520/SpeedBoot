@@ -32,9 +32,10 @@ public static class ServiceCollectionExtensions
         Assembly[] GetValidAssemblies()
         {
             Expression<Func<string, bool>> condition = name => true;
+            var assemblyNames = speedOptions.GetEffectAssemblyNames();
             condition = condition.And(
-                !speedOptions.AssemblyName.IsNullOrWhiteSpace(),
-                name => Regex.Match(name, speedOptions.AssemblyName).Success);
+                assemblyNames.Count > 0,
+                name => assemblyNames.Any(n => Regex.Match(name, n).Success));
             return AssemblyUtils.GetAllAssembly(condition);
         }
 

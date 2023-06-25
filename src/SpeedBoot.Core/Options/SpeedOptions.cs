@@ -19,6 +19,14 @@ public class SpeedOptions
     public Assembly[]? Assemblies { get; set; }
 
     /// <summary>
+    /// Framework Assembly Rules
+    /// </summary>
+    internal List<string> FrameworkAssemblyNames { get; set; } = new()
+    {
+        "SpeedBoot.*"
+    };
+
+    /// <summary>
     /// Assembly name prefix
     /// default: *
     /// Support for regular expressions
@@ -42,4 +50,17 @@ public class SpeedOptions
     /// current environment information
     /// </summary>
     public string? Environment { get; set; }
+
+    /// <summary>
+    /// Get the valid set of assembly rules
+    /// </summary>
+    /// <returns></returns>
+    internal List<string> GetEffectAssemblyNames()
+    {
+        var assemblyNames = new List<string>(FrameworkAssemblyNames)
+        {
+            AssemblyName
+        };
+        return assemblyNames;
+    }
 }
