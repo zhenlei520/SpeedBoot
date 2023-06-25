@@ -2,9 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;net5.0;net6.0;net7.0;</TargetFrameworks>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <IsPackable>true</IsPackable>
     <Description>Provide AspNetCore solution for SpeedBoot</Description>
   </PropertyGroup>
 

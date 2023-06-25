@@ -1,7 +1,6 @@
 <Project>
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
-    <IsPackable>false</IsPackable>
     <Nullable>enable</Nullable>
     <LangVersion>10</LangVersion>
     <PackageId>$(AssemblyName)</PackageId>
@@ -18,6 +17,7 @@
     <IsProductComponent>false</IsProductComponent>
     <IsTestProject Condition="$(MSBuildProjectName.EndsWith('Tests')) OR $(MSBuildProjectName.EndsWith('.Test'))">true</IsTestProject>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 
 
