@@ -25,7 +25,7 @@ public class SpeedOptions
     /// When no assembly collection is specified, automatic matching based on the assembly name satisfies the use of
     /// <!--AssemblyName < Assemblies-->
     /// </summary>
-    public string AssemblyName { get; set; } = "*";
+    public string AssemblyName { get; set; } = ".*";
 
     #endregion
 

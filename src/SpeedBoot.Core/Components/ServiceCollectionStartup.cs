@@ -19,8 +19,7 @@ public class ServiceCollectionStartup : AppStartupBase
         LogLevel? logLevel = null) : base(logger, logLevel)
     {
         _services = services;
-        _allServiceComponentTypes = assemblies
-            .GetTypes(type => type is { IsClass: true, IsGenericType: false, IsAbstract: false } && typeof(IServiceComponent).IsAssignableFrom(type));
+        _allServiceComponentTypes = assemblies.GetTypes(type => type is { IsClass: true, IsGenericType: false, IsAbstract: false } && typeof(IServiceComponent).IsAssignableFrom(type));
     }
 
     protected override void Load()

@@ -34,6 +34,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.Depend
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Core", "src\SpeedBoot.Core\SpeedBoot.Core.csproj", "{401CC389-7E37-4233-AE25-ACAA1EA112EF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Core.Tests", "test\SpeedBoot.Core.Tests\SpeedBoot.Core.Tests.csproj", "{CBCAA7AE-FDB9-44CA-BAE0-713E7BA308B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{401CC389-7E37-4233-AE25-ACAA1EA112EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{401CC389-7E37-4233-AE25-ACAA1EA112EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{401CC389-7E37-4233-AE25-ACAA1EA112EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBCAA7AE-FDB9-44CA-BAE0-713E7BA308B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBCAA7AE-FDB9-44CA-BAE0-713E7BA308B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBCAA7AE-FDB9-44CA-BAE0-713E7BA308B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBCAA7AE-FDB9-44CA-BAE0-713E7BA308B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,5 +92,6 @@ Global
 		{DC8D9200-15EB-474F-9519-AEF415C225B0} = {103B4A55-CC90-4F4A-ABDE-B1220FD9E1A9}
 		{C89872F7-EFF7-4C89-AD18-6A87E46232BC} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{401CC389-7E37-4233-AE25-ACAA1EA112EF} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
+		{CBCAA7AE-FDB9-44CA-BAE0-713E7BA308B7} = {216801A8-02DC-4AF4-9448-E13902585583}
 	EndGlobalSection
 EndGlobal
