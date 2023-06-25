@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Speed.System", "src\Speed.System\Speed.System.csproj", "{97D7F8FE-DEC8-4336-9E3C-25EA90B0251B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.System", "src\SpeedBoot.System\SpeedBoot.System.csproj", "{97D7F8FE-DEC8-4336-9E3C-25EA90B0251B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{9EBF767D-3E8F-42F4-AF87-554DC0B20FF1}"
 	ProjectSection(SolutionItems) = preProject
@@ -16,23 +16,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{20AF2DF3-F2E9-436E-BA4B-CE94C510E510}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Speed.SourceGenerator", "src\Speed.SourceGenerator\Speed.SourceGenerator.csproj", "{CAD2A17D-391E-4D5C-AE9F-A4F0815536D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.SourceGenerator", "src\SpeedBoot.SourceGenerator\SpeedBoot.SourceGenerator.csproj", "{CAD2A17D-391E-4D5C-AE9F-A4F0815536D2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{216801A8-02DC-4AF4-9448-E13902585583}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.System.Tests", "test\Speed.System.Tests\Speed.System.Tests.csproj", "{FDDD0431-FEF6-4F7A-BEC3-1730156C4412}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.System.Tests", "test\SpeedBoot.System.Tests\SpeedBoot.System.Tests.csproj", "{FDDD0431-FEF6-4F7A-BEC3-1730156C4412}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Extensions.DependencyInjection", "src\Speed.Extensions.DependencyInjection\Speed.Extensions.DependencyInjection.csproj", "{EC62A452-2974-4784-AD0D-144056F59E1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.DependencyInjection", "src\SpeedBoot.Extensions.DependencyInjection\SpeedBoot.Extensions.DependencyInjection.csproj", "{EC62A452-2974-4784-AD0D-144056F59E1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Extensions.DependencyInjection.Abstractions", "src\Speed.Extensions.DependencyInjection.Abstractions\Speed.Extensions.DependencyInjection.Abstractions.csproj", "{DC8D9200-15EB-474F-9519-AEF415C225B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.DependencyInjection.Abstractions", "src\SpeedBoot.Extensions.DependencyInjection.Abstractions\SpeedBoot.Extensions.DependencyInjection.Abstractions.csproj", "{DC8D9200-15EB-474F-9519-AEF415C225B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.AspNetCore", "src\Speed.AspNetCore\Speed.AspNetCore.csproj", "{7F12A07A-84EA-43ED-8FF2-7A0C3FCDFC48}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.AspNetCore", "src\SpeedBoot.AspNetCore\SpeedBoot.AspNetCore.csproj", "{7F12A07A-84EA-43ED-8FF2-7A0C3FCDFC48}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DependencyInjection", "DependencyInjection", "{103B4A55-CC90-4F4A-ABDE-B1220FD9E1A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Extensions.DependencyInjection.Tests", "test\Speed.Extensions.DependencyInjection.Tests\Speed.Extensions.DependencyInjection.Tests.csproj", "{C89872F7-EFF7-4C89-AD18-6A87E46232BC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.DependencyInjection.Tests", "test\SpeedBoot.Extensions.DependencyInjection.Tests\SpeedBoot.Extensions.DependencyInjection.Tests.csproj", "{C89872F7-EFF7-4C89-AD18-6A87E46232BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Core", "src\Speed.Core\Speed.Core.csproj", "{401CC389-7E37-4233-AE25-ACAA1EA112EF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Core", "src\SpeedBoot.Core\SpeedBoot.Core.csproj", "{401CC389-7E37-4233-AE25-ACAA1EA112EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

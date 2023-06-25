@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;net5.0;net6.0;net7.0;</TargetFrameworks>
+    <Description>that provides basic methods for SpeedBoot</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference OutputItemType="Analyzer" ReferenceOutputAssembly="false" Include="..\SpeedBoot.SourceGenerator\SpeedBoot.SourceGenerator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\SpeedBoot.SourceGenerator\Internal\Exceptions\ExceptionConstant.cs">
+      <Link>Exceptions\Internal\ExceptionConstant.cs</Link>
+    </Compile>
+  </ItemGroup>
+</Project>
