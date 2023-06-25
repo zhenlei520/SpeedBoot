@@ -3,11 +3,9 @@
 
 // using System.Diagnostics;
 
-
-
 [assembly: InternalsVisibleTo("Speed.System.Tests")]
 
-namespace GeneratorSource;
+namespace Speed.SourceGenerator;
 
 [Generator]
 internal class SpeedExceptionGenerator : ISourceGenerator

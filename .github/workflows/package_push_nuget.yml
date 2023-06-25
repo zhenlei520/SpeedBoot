@@ -39,4 +39,4 @@ jobs:
       run: dotnet pack -c Release --output ./nupkg --include-symbols -p:PackageVersion=$GITHUB_REF_NAME
 
     - name: package push
-      run: dotnet nuget push "./nupkg/*.symbols.nupkg" -k  ${{secrets.NUGET_TOKEN}}  -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "./nupkg/*.symbols.nupkg" --skip-duplicate -k  ${{secrets.NUGET_TOKEN}}  -s https://api.nuget.org/v3/index.json

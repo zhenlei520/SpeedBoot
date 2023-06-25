@@ -1,4 +1,5 @@
 using GeneratorSource;
+using Speed.SourceGenerator;
 
 namespace Speed.System.Tests;
 
