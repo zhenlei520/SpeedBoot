@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\GeneratorSource\GeneratorSource.csproj" />
+    <ProjectReference Include="..\..\src\Speed.SourceGenerator\Speed.SourceGenerator.csproj" />
     <ProjectReference Include="..\..\src\Speed.System\Speed.System.csproj" />
   </ItemGroup>
 

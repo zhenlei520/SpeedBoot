@@ -5,6 +5,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <IsPackable>true</IsPackable>
+    <Description>Provide AspNetCore solution for SpeedBoot</Description>
   </PropertyGroup>
 
   <ItemGroup>

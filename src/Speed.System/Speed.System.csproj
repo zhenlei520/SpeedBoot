@@ -4,14 +4,15 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <IsPackable>true</IsPackable>
+    <Description>that provides basic methods for SpeedBoot</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference OutputItemType="Analyzer" ReferenceOutputAssembly="false" Include="..\GeneratorSource\GeneratorSource.csproj" />
+    <ProjectReference OutputItemType="Analyzer" ReferenceOutputAssembly="false" Include="..\Speed.SourceGenerator\Speed.SourceGenerator.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\GeneratorSource\Internal\Exceptions\ExceptionConstant.cs">
+    <Compile Include="..\Speed.SourceGenerator\Internal\Exceptions\ExceptionConstant.cs">
       <Link>Exceptions\Internal\ExceptionConstant.cs</Link>
     </Compile>
   </ItemGroup>

@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{20AF2DF3-F2E9-436E-BA4B-CE94C510E510}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeneratorSource", "src\GeneratorSource\GeneratorSource.csproj", "{CAD2A17D-391E-4D5C-AE9F-A4F0815536D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Speed.SourceGenerator", "src\Speed.SourceGenerator\Speed.SourceGenerator.csproj", "{CAD2A17D-391E-4D5C-AE9F-A4F0815536D2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{216801A8-02DC-4AF4-9448-E13902585583}"
 EndProject
