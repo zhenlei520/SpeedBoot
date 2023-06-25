@@ -10,7 +10,7 @@
     <Copyright>© zhenlei520 Corporation. All rights reserved.</Copyright>
     <PackageProjectUrl>https://www.nuget.org/packages/$(PackageId)</PackageProjectUrl>
     <PackageIconUrl>packageIcon.png</PackageIconUrl>
-    <RepositoryUrl>https://github.com/zhenlei520/Wolf.Systems</RepositoryUrl>
+    <RepositoryUrl>https://github.com/zhenlei520/SpeedBoot</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>

@@ -13,7 +13,9 @@ public class SpeedHostingStartup : IHostingStartup
         {
             services.AddSpeed(options =>
             {
-                options.AssemblyName = webHostBuilderContext.Configuration["Speed:AssemblyName"];
+                var assemblyName = webHostBuilderContext.Configuration["Speed:AssemblyName"];
+                if (assemblyName != null) options.AssemblyName = assemblyName;
+
                 options.Configuration = webHostBuilderContext.Configuration;
                 options.Environment = webHostBuilderContext.HostingEnvironment.EnvironmentName;
             });
