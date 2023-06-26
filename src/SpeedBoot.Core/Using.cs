@@ -12,4 +12,3 @@ global using Microsoft.Extensions.DependencyInjection;
 global using SpeedBoot;
 global using SpeedBoot.System.Exceptions;
 global using System.Text.RegularExpressions;
-global using Microsoft.Extensions.Configuration;

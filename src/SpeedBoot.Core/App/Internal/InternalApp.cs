@@ -18,8 +18,6 @@ internal static class InternalApp
     /// </summary>
     public static IEnumerable<Assembly>? Assemblies;
 
-    public static IConfiguration? Configuration;
-
     /// <summary>
     /// environment
     /// </summary>
@@ -35,14 +33,6 @@ internal static class InternalApp
         Assemblies ??= assemblies;
     }
 
-    internal static void ConfigureConfiguration(IConfiguration? configuration)
-    {
-        if (configuration == null)
-            return;
-
-        Configuration ??= configuration;
-    }
-
     internal static void ConfigureEnvironment(string? environment)
     {
         if (environment == null)
@@ -51,8 +41,8 @@ internal static class InternalApp
         Environment ??= environment;
     }
 
-    internal static void ConfigureRootServiceProvider(IServiceProvider serviceProvider)
+    internal static void ConfigureRootServiceProvider(IServiceProvider rootServiceProvider)
     {
-        RootServiceProvider ??= serviceProvider;
+        RootServiceProvider ??= rootServiceProvider;
     }
 }

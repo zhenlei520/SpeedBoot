@@ -37,15 +37,6 @@ public class SpeedOptions
 
     #endregion
 
-    #region Configuration
-
-    /// <summary>
-    /// global configuration
-    /// </summary>
-    public IConfiguration? Configuration { get; set; }
-
-    #endregion
-
     /// <summary>
     /// current environment information
     /// </summary>

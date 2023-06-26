@@ -5,7 +5,7 @@
 
 namespace SpeedBoot;
 
-public class App
+public static class AppCore
 {
     /// <summary>
     /// collection of services
@@ -22,7 +22,13 @@ public class App
     /// </summary>
     public static IEnumerable<Assembly>? Assemblies => InternalApp.Assemblies;
 
-    public static IConfiguration? Configuration => InternalApp.Configuration;
-
+    /// <summary>
+    /// current environment information
+    /// </summary>
     public static string Environment => InternalApp.Environment;
+
+    public static void SetRootServiceProvider(IServiceProvider rootServiceProvider)
+    {
+        InternalApp.ConfigureRootServiceProvider(rootServiceProvider);
+    }
 }

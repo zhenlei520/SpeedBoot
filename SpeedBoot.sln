@@ -41,6 +41,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Security", "Security", "{92
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Security.Cryptography", "src\Security\SpeedBoot.Security.Cryptography\SpeedBoot.Security.Cryptography.csproj", "{EB69FC7C-1F09-49BD-9439-3D03CC6A3A56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.Configuration", "src\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj", "{54C68F9C-9590-4165-8D30-BE0F01E768B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{01C1D6F5-9684-479C-857A-BE47E68EE021}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,14 @@ Global
 		{EB69FC7C-1F09-49BD-9439-3D03CC6A3A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB69FC7C-1F09-49BD-9439-3D03CC6A3A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB69FC7C-1F09-49BD-9439-3D03CC6A3A56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54C68F9C-9590-4165-8D30-BE0F01E768B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54C68F9C-9590-4165-8D30-BE0F01E768B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54C68F9C-9590-4165-8D30-BE0F01E768B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54C68F9C-9590-4165-8D30-BE0F01E768B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01C1D6F5-9684-479C-857A-BE47E68EE021}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01C1D6F5-9684-479C-857A-BE47E68EE021}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01C1D6F5-9684-479C-857A-BE47E68EE021}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01C1D6F5-9684-479C-857A-BE47E68EE021}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,5 +116,6 @@ Global
 		{CBCAA7AE-FDB9-44CA-BAE0-713E7BA308B7} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{92D5D433-ED0F-4618-AE59-09400959D683} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 		{EB69FC7C-1F09-49BD-9439-3D03CC6A3A56} = {92D5D433-ED0F-4618-AE59-09400959D683}
+		{54C68F9C-9590-4165-8D30-BE0F01E768B0} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 	EndGlobalSection
 EndGlobal

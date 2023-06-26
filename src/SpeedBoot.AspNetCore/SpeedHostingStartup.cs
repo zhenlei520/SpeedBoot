@@ -11,12 +11,15 @@ public class SpeedHostingStartup : IHostingStartup
     {
         builder.ConfigureServices((webHostBuilderContext, services) =>
         {
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHostedService<GenericHostedService>();
+
+            services.AddConfiguration(webHostBuilderContext.Configuration);
             services.AddSpeed(options =>
             {
                 var assemblyName = webHostBuilderContext.Configuration["SpeedBoot:AssemblyName"];
                 if (assemblyName != null) options.AssemblyName = assemblyName;
 
-                options.Configuration = webHostBuilderContext.Configuration;
                 options.Environment = webHostBuilderContext.HostingEnvironment.EnvironmentName;
             });
         });

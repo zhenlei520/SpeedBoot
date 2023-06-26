@@ -17,15 +17,14 @@ public static class ServiceCollectionExtensions
 
         var assemblies = GetValidAssemblies();
 
-        InitializedConfigure();
+        Initialized();
         AddDefaultServiceComponents();
         InitializedStartup();
 
-        void InitializedConfigure()
+        void Initialized()
         {
             InternalApp.ConfigureServices(services);
             InternalApp.ConfigureAssemblies(assemblies);
-            InternalApp.ConfigureConfiguration(speedOptions.Configuration);
             InternalApp.ConfigureEnvironment(speedOptions.Environment);
         }
 
@@ -73,11 +72,13 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    private class ServiceComponentProvider
+    // ReSharper disable once ClassNeverInstantiated.Local
+    private sealed class ServiceComponentProvider
     {
     }
 
-    private class SpeedProvider
+    // ReSharper disable once ClassNeverInstantiated.Local
+    private sealed class SpeedProvider
     {
 
     }
