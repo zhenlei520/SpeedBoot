@@ -105,7 +105,7 @@ public static class App
     private static IServiceProvider GetRootServiceProvider()
     {
         SpeedArgumentException.ThrowIfNull(RootServiceProvider);
-        return RootServiceProvider;
+        return RootServiceProvider!;
     }
 
     #endregion
