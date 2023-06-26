@@ -8,3 +8,5 @@ global using System.ComponentModel;
 global using System.Runtime.CompilerServices;
 global using System.Linq.Expressions;
 global using System.Reflection;
+global using SpeedBoot.System;
+global using System.Text;

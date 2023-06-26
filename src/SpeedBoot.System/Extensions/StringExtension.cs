@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System.Linq;
+namespace System.Text;
 
 public static class StringExtension
 {
@@ -169,4 +169,85 @@ public static class StringExtension
     #endregion Get the word count of symbol characters（获取符号字符字数）
 
     #endregion get word count（获取字数）
+
+    #region Get a string of specified length（获取指定长度的字符串）
+
+    /// <summary>
+    /// Get a string of specified length（truncated if the length is exceeded, and completed if the length is insufficient）
+    /// 获取指定长度的字符串（超出长度截断，不足补全）
+    /// </summary>
+    /// <param name="value">string to match（待匹配的字符串）</param>
+    /// <param name="length">specified length（指定长度）</param>
+    /// <param name="fillPattern">fill Pattern（填充模式）</param>
+    /// <param name="fillCharacter">fill character</param>
+    /// <param name="errorFunc"></param>
+    /// <returns></returns>
+    /// <exception cref="NotSupportedException"></exception>
+    public static string GetSpecifiedLengthString(
+        this string value,
+        int length,
+        FillPattern fillPattern = FillPattern.Left,
+        char fillCharacter = ' ',
+        Func<Exception>? errorFunc = null)
+    {
+        var keyLength = value.Length;
+        if (keyLength == length) return value;
+
+        if (keyLength > length) return value.Substring(0, length);
+
+        switch (fillPattern)
+        {
+            case FillPattern.Left:
+                return value.PadLeft(length, fillCharacter);
+            case FillPattern.Right:
+                return value.PadRight(length, fillCharacter);
+            case FillPattern.NoFill:
+            default:
+                if (errorFunc == null)
+                {
+                    throw new NotSupportedException(
+                        $"... The length of the string is less than [{length}], the padding mode does not support");
+                }
+                throw errorFunc();
+        }
+    }
+
+    #endregion Get a string of specified length（获取指定长度的字符串）
+
+    #region String to byte array（字符串转字节数组）
+
+    /// <summary>
+    /// String to byte array（default encoding format UTF-8）
+    /// 字符串转字节数组（默认编码格式 UTF-8）
+    /// </summary>
+    /// <param name="value">the string to be converted（待转换的字符串）</param>
+    /// <returns></returns>
+    public static byte[] ToGetBytes(this string value)
+        => Encoding.UTF8.GetBytes(value);
+
+    /// <summary>
+    /// String to byte array
+    /// 字符串转字节数组
+    /// </summary>
+    /// <param name="value">the string to be converted（待转换的字符串）</param>
+    /// <param name="encoding">Encoding format</param>
+    /// <returns></returns>
+    public static byte[] ToGetBytes(this string value, Encoding encoding)
+        => encoding.GetBytes(value);
+
+    #endregion
+
+    #region Convert Base64-encoded string to byte array（将 Base64 编码的字符串转换为字节数组）
+
+    /// <summary>
+    /// Convert Base64-encoded string to byte array
+    /// 将 Base64 编码的字符串转换为字节数组
+    /// </summary>
+    /// <param name="value">the string to be converted（待转换的字符串）</param>
+    /// <returns></returns>
+    public static byte[] FromBase64String(this string value)
+        => Convert.FromBase64String(value);
+
+    #endregion
+
 }

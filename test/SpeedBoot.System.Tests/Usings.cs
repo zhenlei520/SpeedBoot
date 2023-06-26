@@ -3,3 +3,4 @@ global using SpeedBoot.System.Exceptions;
 global using SpeedBoot.System.Tests.Models;
 global using SpeedBoot.System.Tests.Repositories;
 global using SpeedBoot.SourceGenerator;
+global using System.Text;
