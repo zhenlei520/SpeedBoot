@@ -28,6 +28,14 @@ public static class LinqExtensions
         return query.Where(filter);
     }
 
+    /// <summary>
+    /// Sort by specified field
+    /// 按照指定字段进行排序
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="fields">Sorting field collection (key: sorting field, value: false ascending, true descending)（排序字段集合（key：排序字段、value：false升序、true降序））</param>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <returns></returns>
     public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, Dictionary<string, bool> fields)
         where TEntity : class
     {
@@ -41,11 +49,20 @@ public static class LinqExtensions
         return query;
     }
 
-    public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, string field, bool desc) where TEntity : class
+    /// <summary>
+    /// Sort by specified field
+    /// 按照指定字段进行排序
+    /// </summary>
+    /// <param name="query"></param>
+    /// <param name="field">sort field（排序字段）</param>
+    /// <param name="isDesc">Whether descending true: descending, false: ascending（是否降序 true：降序、false：升序）</param>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <returns></returns>
+    public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, string field, bool isDesc) where TEntity : class
     {
         var propertyInfo = GetPropertyInfo(typeof(TEntity), field);
         var orderExpression = GetOrderExpression(typeof(TEntity), propertyInfo);
-        if (desc)
+        if (isDesc)
         {
             var method = typeof(Queryable).GetMethods().FirstOrDefault(m => m.Name == "OrderByDescending" && m.GetParameters().Length == 2);
             var genericMethod = method!.MakeGenericMethod(typeof(TEntity), propertyInfo.PropertyType);
