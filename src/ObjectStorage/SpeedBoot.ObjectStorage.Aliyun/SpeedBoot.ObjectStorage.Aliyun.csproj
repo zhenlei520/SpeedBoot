@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Extensions\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj" />
+      <ProjectReference Include="..\..\SpeedBoot.Core\SpeedBoot.Core.csproj" />
+      <ProjectReference Include="..\SpeedBoot.ObjectStorage.Abstractions\SpeedBoot.ObjectStorage.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="aliyun-net-sdk-sts" Version="3.1.1" />
+      <PackageReference Include="Aliyun.OSS.SDK.NetCore" Version="2.13.0" />
+    </ItemGroup>
+
+</Project>

@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System.Text;
+namespace System;
 
 public static class StringExtension
 {
