@@ -27,7 +27,12 @@ public static class AppCore
     /// </summary>
     public static string Environment => InternalApp.Environment;
 
-    public static void SetRootServiceProvider(IServiceProvider rootServiceProvider)
+    /// <summary>
+    /// Configure Root ServiceProvider
+    /// 配置根 ServiceProvider
+    /// </summary>
+    /// <param name="rootServiceProvider"></param>
+    public static void ConfigureRootServiceProvider(IServiceProvider rootServiceProvider)
     {
         InternalApp.ConfigureRootServiceProvider(rootServiceProvider);
     }
