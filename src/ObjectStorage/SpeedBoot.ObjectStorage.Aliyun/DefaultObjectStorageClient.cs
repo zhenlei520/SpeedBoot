@@ -9,11 +9,11 @@ public class DefaultObjectStorageClient : IObjectStorageClient
     private IOss Oss => _oss ??= _aliyunClientProvider.GetClient();
 
     private readonly IAliyunClientProvider _aliyunClientProvider;
-    private readonly ILogger<DefaultObjectStorageClient>? _logger;
+    private readonly ILogger? _logger;
 
     public DefaultObjectStorageClient(
         IAliyunClientProvider aliyunClientProvider,
-        ILogger<DefaultObjectStorageClient>? logger)
+        ILogger? logger)
     {
         _aliyunClientProvider = aliyunClientProvider;
         _logger = logger;

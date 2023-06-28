@@ -10,4 +10,3 @@ global using Aliyun.Acs.Core.Profile;
 global using Aliyun.Acs.Core.Auth.Sts;
 global using AliyunFormatType = Aliyun.Acs.Core.Http.FormatType;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
-global using Microsoft.Extensions.Logging;
