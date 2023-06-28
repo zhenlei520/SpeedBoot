@@ -3,6 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
+
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
@@ -18,7 +19,7 @@ public static class ServiceCollectionExtensions
 
         void Initialized()
         {
-            SpeedBoot.Configuration.InternalApp.Configuration = configuration;
+            AppCore.ConfigureConfiguration(configuration);
         }
     }
 

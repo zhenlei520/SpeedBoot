@@ -10,7 +10,7 @@ public static class AppConfiguration
     /// <summary>
     /// current environment information
     /// </summary>
-    public static IConfiguration? Configuration => InternalApp.Configuration;
+    public static IConfiguration? Configuration => AppCore.Configuration as IConfiguration;
 
     #region Get the configuration object according to the SectionName, the default SectionName is consistent with the class name（根据SectionName获取配置对象，默认SectionName与类名保持一致）
 

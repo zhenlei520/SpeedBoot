@@ -20,4 +20,9 @@ public static class AliyunStorageConstant
     /// 阿里云配置公共节点
     /// </summary>
     public const string ALIYUN_SECTION_NAME = "Aliyun";
+
+    /// <summary>
+    /// 阿里云临时凭证缓存key
+    /// </summary>
+    public const string TEMPORARY_CREDENTIALS_CACHE_KEY = "Aliyun.Storage.TemporaryCredentials";
 }

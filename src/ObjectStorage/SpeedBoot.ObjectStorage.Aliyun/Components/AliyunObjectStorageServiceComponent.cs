@@ -12,9 +12,13 @@ public class AliyunObjectStorageServiceComponent : ServiceComponentBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<IObjectStorageClient>(serviceProvider => new DefaultObjectStorageClient(ConfigurationHelper.GetAliyunObjectStorageOptions())
+        services.TryAddSingleton<IAliyunAcsClientFactory, DefaultAliyunAcsClientFactory>();
+        services.TryAddSingleton<IAliyunClientProvider>(serviceProvider =>
         {
-
+            var aliyunClientProvider = new DefaultAliyunClientProvider(ConfigurationHelper.GetAliyunObjectStorageOptions(),
+                serviceProvider.GetRequiredService<IAliyunAcsClientFactory>());
+            return aliyunClientProvider;
         });
+        services.AddSingleton<IObjectStorageClient, DefaultObjectStorageClient>();
     }
 }

@@ -7,5 +7,9 @@ namespace SpeedBoot;
 
 public interface ILogger
 {
-    void Log<TState>(TState state, LogLevel logLevel, Exception? exception);
+    void Log(LogLevel logLevel, string tranceId, string messageTemplate, params object?[]? propertyValues);
+
+    void Log(LogLevel logLevel, string messageTemplate, params object?[]? propertyValues);
+
+    void Log(LogLevel logLevel, Exception? exception, string messageTemplate, params object?[]? propertyValues);
 }

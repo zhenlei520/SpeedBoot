@@ -22,7 +22,7 @@ public class AliyunStsOptions : AliyunOptions
     /// </summary>
     public string? RegionId { get; set; }
 
-    private long? _durationSeconds = 3600;
+    private long _durationSeconds = 3600;
 
     /// <summary>
     /// Set the validity period of the temporary access credential, the minimum is 900, and the maximum is 43200.
@@ -33,7 +33,7 @@ public class AliyunStsOptions : AliyunOptions
     /// 默认：3600
     /// 单位：秒
     /// </summary>
-    public long? DurationSeconds
+    public long DurationSeconds
     {
         get => _durationSeconds;
         set
@@ -54,7 +54,7 @@ public class AliyunStsOptions : AliyunOptions
 
     public string RoleSessionName { get; set; }
 
-    private long? _earlyExpires = 10;
+    private long _earlyExpires = 10;
 
     /// <summary>
     /// Voucher expires early
@@ -65,7 +65,7 @@ public class AliyunStsOptions : AliyunOptions
     /// 默认：10
     /// 单位：秒
     /// </summary>
-    public long? EarlyExpires
+    public long EarlyExpires
     {
         get => _earlyExpires;
         set

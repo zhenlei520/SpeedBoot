@@ -28,12 +28,31 @@ public static class AppCore
     public static string Environment => InternalApp.Environment;
 
     /// <summary>
+    /// 配置对象
+    ///
+    /// Configuration
+    /// </summary>
+    public static object? Configuration => InternalApp.Configuration;
+
+    /// <summary>
     /// Configure Root ServiceProvider
+    ///
     /// 配置根 ServiceProvider
     /// </summary>
     /// <param name="rootServiceProvider"></param>
     public static void ConfigureRootServiceProvider(IServiceProvider rootServiceProvider)
     {
         InternalApp.ConfigureRootServiceProvider(rootServiceProvider);
+    }
+
+    /// <summary>
+    /// Configure Configuration
+    ///
+    /// 配置配置对象
+    /// </summary>
+    /// <param name="configuration"></param>
+    public static void ConfigureConfiguration(object configuration)
+    {
+        InternalApp.ConfigureConfiguration(configuration);
     }
 }

@@ -15,13 +15,24 @@ internal static class InternalApp
 
     /// <summary>
     /// Valid Assemblies Collection
+    ///
+    /// 可用的程序集集合
     /// </summary>
     public static IEnumerable<Assembly>? Assemblies;
 
     /// <summary>
     /// environment
+    ///
+    /// 当前环境
     /// </summary>
     public static string Environment;
+
+    /// <summary>
+    /// 配置对象
+    ///
+    /// Configuration
+    /// </summary>
+    public static object? Configuration;
 
     internal static void ConfigureServices(IServiceCollection services)
     {
@@ -39,6 +50,11 @@ internal static class InternalApp
             return;
 
         Environment ??= environment;
+    }
+
+    internal static void ConfigureConfiguration(object configuration)
+    {
+        Configuration ??= configuration;
     }
 
     internal static void ConfigureRootServiceProvider(IServiceProvider rootServiceProvider)

@@ -10,6 +10,7 @@ namespace SpeedBoot.ObjectStorage.Aliyun.Options;
 /// </summary>
 public class AliyunObjectStorageOptions
 {
+
     #region Aliyun account information 账户信息
 
     /// <summary>
@@ -92,4 +93,18 @@ public class AliyunObjectStorageOptions
     /// 默认值：true
     /// </summary>
     public bool Quiet { get; set; } = true;
+
+    /// <summary>
+    /// 存储空间名
+    ///
+    /// bucket name
+    /// </summary>
+    public string BucketName { get; set; }
+
+    /// <summary>
+    /// cache configuration
+    ///
+    /// 缓存配置
+    /// </summary>
+    public MemoryCacheOptions? MemoryCacheOptions { get; set; }
 }

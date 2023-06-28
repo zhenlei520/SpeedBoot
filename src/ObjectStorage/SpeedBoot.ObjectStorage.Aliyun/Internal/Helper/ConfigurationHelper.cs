@@ -7,6 +7,7 @@ namespace SpeedBoot.ObjectStorage.Aliyun;
 
 internal static class ConfigurationHelper
 {
+    private static AliyunObjectStorageOptions? _aliyunObjectStorageOptions;
     /// <summary>
     /// Get the configuration information of Aliyun storage used
     ///
@@ -15,15 +16,16 @@ internal static class ConfigurationHelper
     /// <returns></returns>
     public static AliyunObjectStorageOptions GetAliyunObjectStorageOptions()
     {
+        if (_aliyunObjectStorageOptions != null)
+            return _aliyunObjectStorageOptions;
+
         var aliyunObjectStorageSectionName = GetAliyunObjectStorageSectionName();
-        var aliyunSectionName = GetAliyunSectionName();
 
         var aliyunObjectStorageOptions = AppConfiguration.GetOptions<Internal.Options.AliyunObjectStorageOptions>(aliyunObjectStorageSectionName);
 
-        AliyunObjectStorageOptions actualAliyunObjectStorageOptions;
         if (aliyunObjectStorageOptions.Sts != null)
         {
-            actualAliyunObjectStorageOptions = new AliyunObjectStorageOptions()
+            _aliyunObjectStorageOptions = new AliyunObjectStorageOptions()
             {
                 Sts = aliyunObjectStorageOptions.Sts,
             };
@@ -31,7 +33,7 @@ internal static class ConfigurationHelper
         else if (!aliyunObjectStorageOptions.AccessKeyId.IsNullOrWhiteSpace() &&
                  !aliyunObjectStorageOptions.AccessKeySecret.IsNullOrWhiteSpace())
         {
-            actualAliyunObjectStorageOptions = new AliyunObjectStorageOptions()
+            _aliyunObjectStorageOptions = new AliyunObjectStorageOptions()
             {
                Master = new AliyunOptions()
                {
@@ -42,10 +44,11 @@ internal static class ConfigurationHelper
         }
         else
         {
+            var aliyunSectionName = GetAliyunSectionName();
             var aliyunOptions = AppConfiguration.GetOptions<Internal.Options.AliyunOptions>(aliyunSectionName);
             if (aliyunOptions.Sts != null)
             {
-                actualAliyunObjectStorageOptions = new AliyunObjectStorageOptions()
+                _aliyunObjectStorageOptions = new AliyunObjectStorageOptions()
                 {
                     Sts = aliyunOptions.Sts,
                 };
@@ -53,7 +56,7 @@ internal static class ConfigurationHelper
             else if (!aliyunOptions.AccessKeyId.IsNullOrWhiteSpace() &&
                      !aliyunOptions.AccessKeySecret.IsNullOrWhiteSpace())
             {
-                actualAliyunObjectStorageOptions = new AliyunObjectStorageOptions()
+                _aliyunObjectStorageOptions = new AliyunObjectStorageOptions()
                 {
                     Master = new AliyunOptions
                     {
@@ -68,14 +71,14 @@ internal static class ConfigurationHelper
             }
         }
 
-        actualAliyunObjectStorageOptions.Endpoint = aliyunObjectStorageOptions.Endpoint;
-        actualAliyunObjectStorageOptions.CallbackUrl = aliyunObjectStorageOptions.CallbackUrl;
-        actualAliyunObjectStorageOptions.CallbackBody = aliyunObjectStorageOptions.CallbackBody;
-        actualAliyunObjectStorageOptions.EnableResumableUpload = aliyunObjectStorageOptions.EnableResumableUpload;
-        actualAliyunObjectStorageOptions.BigObjectContentLength = aliyunObjectStorageOptions.BigObjectContentLength;
-        actualAliyunObjectStorageOptions.PartSize = aliyunObjectStorageOptions.PartSize;
-        actualAliyunObjectStorageOptions.Quiet = aliyunObjectStorageOptions.Quiet;
-        return actualAliyunObjectStorageOptions;
+        _aliyunObjectStorageOptions.Endpoint = aliyunObjectStorageOptions.Endpoint;
+        _aliyunObjectStorageOptions.CallbackUrl = aliyunObjectStorageOptions.CallbackUrl;
+        _aliyunObjectStorageOptions.CallbackBody = aliyunObjectStorageOptions.CallbackBody;
+        _aliyunObjectStorageOptions.EnableResumableUpload = aliyunObjectStorageOptions.EnableResumableUpload;
+        _aliyunObjectStorageOptions.BigObjectContentLength = aliyunObjectStorageOptions.BigObjectContentLength;
+        _aliyunObjectStorageOptions.PartSize = aliyunObjectStorageOptions.PartSize;
+        _aliyunObjectStorageOptions.Quiet = aliyunObjectStorageOptions.Quiet;
+        return _aliyunObjectStorageOptions;
     }
 
     /// <summary>
