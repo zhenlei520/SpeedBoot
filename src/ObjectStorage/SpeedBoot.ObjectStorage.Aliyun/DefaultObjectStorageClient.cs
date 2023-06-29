@@ -1,6 +1,8 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
+using Aliyun.OSS.Util;
+
 namespace SpeedBoot.ObjectStorage.Aliyun;
 
 public class DefaultObjectStorageClient : IObjectStorageClient
@@ -23,13 +25,26 @@ public class DefaultObjectStorageClient : IObjectStorageClient
 
     public string GetToken() => throw new NotSupportedException("GetToken is not supported, please use GetSecurityToken");
 
-    public void GetObject(string bucketName, string objectName, Action<Stream> callback)
+    public Stream GetObject(string bucketName, string objectName)
+        => GetObject(bucketName, objectName, out _);
+
+    public Stream GetObject(
+        string bucketName,
+        string objectName,
+        out long contentLength)
     {
         var result = Oss.GetObject(bucketName, objectName);
-        callback.Invoke(result.Content);
+
+        _logger?.LogDebug("----- Get {ObjectName} from {BucketName} - ({Result})",
+            objectName,
+            bucketName,
+            result);
+
+        contentLength = result.ContentLength;
+        return result.Content;
     }
 
-    public void GetObject(string bucketName, string objectName, long offset, long length, Action<Stream> callback)
+    public Stream GetObject(string bucketName, string objectName, long offset, long length)
     {
         if (length < 0 && length != -1)
             throw new ArgumentOutOfRangeException(nameof(length), $"{length} should be greater than 0 or -1");
@@ -37,7 +52,13 @@ public class DefaultObjectStorageClient : IObjectStorageClient
         var request = new GetObjectRequest(bucketName, objectName);
         request.SetRange(offset, length > 0 ? offset + length : length);
         var result = Oss.GetObject(request);
-        callback.Invoke(result.Content);
+
+        _logger?.LogDebug("----- Get {ObjectName} from {BucketName} - ({Result})",
+            objectName,
+            bucketName,
+            result);
+
+        return result.Content;
     }
 
     public void Put(string bucketName, string objectName, Stream data)
@@ -82,22 +103,23 @@ public class DefaultObjectStorageClient : IObjectStorageClient
             result);
     }
 
-    public Task GetObjectAsync(string bucketName, string objectName, Action<Stream> callback, CancellationToken cancellationToken = default)
-    {
-        GetObject(bucketName, objectName, callback);
-        return Task.CompletedTask;
-    }
+    public Task<Stream> GetObjectAsync(string bucketName, string objectName, CancellationToken cancellationToken = default)
+        => Task.FromResult(GetObject(bucketName, objectName));
 
-    public Task GetObjectAsync(
+    public Task<Stream> GetObjectAsync(
         string bucketName,
+        string objectName,
+        out long contentLength,
+        CancellationToken cancellationToken = default)
+        => Task.FromResult(GetObject(bucketName, objectName, out contentLength));
+
+    public Task<Stream> GetObjectAsync(string bucketName,
         string objectName,
         long offset,
         long length,
-        Action<Stream> callback,
         CancellationToken cancellationToken = default)
     {
-        GetObject(bucketName, objectName, offset, length, callback);
-        return Task.CompletedTask;
+        return Task.FromResult(GetObject(bucketName, objectName, offset, length));
     }
 
     public Task PutAsync(string bucketName, string objectName, Stream data, CancellationToken cancellationToken = default)

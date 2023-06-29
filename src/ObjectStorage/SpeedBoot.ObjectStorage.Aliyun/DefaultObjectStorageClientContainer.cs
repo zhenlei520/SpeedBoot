@@ -18,17 +18,13 @@ public class DefaultObjectStorageClientContainer : IObjectStorageClientContainer
         _aliyunClientProvider = aliyunClientProvider;
     }
 
-    public void GetObject(
-        string objectName,
-        Action<Stream> callback)
-        => _objectStorageClient.GetObject(BucketName, objectName, callback);
+    public Stream GetObject(string objectName)
+        => _objectStorageClient.GetObject(BucketName, objectName);
 
-    public void GetObject(
-        string objectName,
+    public Stream GetObject(string objectName,
         long offset,
-        long length,
-        Action<Stream> callback)
-        => _objectStorageClient.GetObject(BucketName, objectName, offset, length, callback);
+        long length)
+        => _objectStorageClient.GetObject(BucketName, objectName, offset, length);
 
     public void Put(string objectName, Stream data)
         => _objectStorageClient.Put(BucketName, objectName, data);
@@ -42,19 +38,14 @@ public class DefaultObjectStorageClientContainer : IObjectStorageClientContainer
     public void DeleteRange(IEnumerable<string> objectNames)
         => _objectStorageClient.DeleteRange(BucketName, objectNames);
 
-    public Task GetObjectAsync(
-        string objectName,
-        Action<Stream> callback,
-        CancellationToken cancellationToken = default)
-        => _objectStorageClient.GetObjectAsync(BucketName, objectName, callback, cancellationToken);
+    public Task<Stream> GetObjectAsync(string objectName, CancellationToken cancellationToken = default)
+        => _objectStorageClient.GetObjectAsync(BucketName, objectName, cancellationToken);
 
-    public Task GetObjectAsync(
-        string objectName,
+    public Task<Stream> GetObjectAsync(string objectName,
         long offset,
         long length,
-        Action<Stream> callback,
         CancellationToken cancellationToken = default)
-        => _objectStorageClient.GetObjectAsync(BucketName, objectName, offset, length, callback, cancellationToken);
+        => _objectStorageClient.GetObjectAsync(BucketName, objectName, offset, length, cancellationToken);
 
     public Task PutAsync(string objectName, Stream data, CancellationToken cancellationToken = default)
         => _objectStorageClient.PutAsync(BucketName, objectName, data, cancellationToken);

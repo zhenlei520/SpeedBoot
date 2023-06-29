@@ -12,7 +12,6 @@ namespace SpeedBoot.ObjectStorage;
 /// </summary>
 public interface IObjectStorageClient
 {
-
     #region sync
 
     /// <summary>
@@ -31,17 +30,20 @@ public interface IObjectStorageClient
     /// <returns></returns>
     string GetToken();
 
-    void GetObject(
+    Stream GetObject(
+        string bucketName,
+        string objectName);
+
+    Stream GetObject(
         string bucketName,
         string objectName,
-        Action<Stream> callback);
+        out long contentLength);
 
-    void GetObject(
+    Stream GetObject(
         string bucketName,
         string objectName,
         long offset,
-        long length,
-        Action<Stream> callback);
+        long length);
 
     /// <summary>
     /// upload files
@@ -93,18 +95,22 @@ public interface IObjectStorageClient
 
     #region async
 
-    Task GetObjectAsync(
+    Task<Stream> GetObjectAsync(
         string bucketName,
         string objectName,
-        Action<Stream> callback,
         CancellationToken cancellationToken = default);
 
-    Task GetObjectAsync(
+    Task<Stream> GetObjectAsync(
+        string bucketName,
+        string objectName,
+        out long contentLength,
+        CancellationToken cancellationToken = default);
+
+    Task<Stream> GetObjectAsync(
         string bucketName,
         string objectName,
         long offset,
         long length,
-        Action<Stream> callback,
         CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SpeedBoot.System\SpeedBoot.System.csproj"/>
+    <ProjectReference Include="..\..\SpeedBoot.System\SpeedBoot.System.csproj" />
   </ItemGroup>
 
 </Project>

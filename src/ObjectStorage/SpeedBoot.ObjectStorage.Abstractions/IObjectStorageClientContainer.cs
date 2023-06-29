@@ -14,15 +14,12 @@ public interface IObjectStorageClientContainer
 {
     #region sync
 
-    void GetObject(
-        string objectName,
-        Action<Stream> callback);
+    Stream GetObject(string objectName);
 
-    void GetObject(
+    Stream GetObject(
         string objectName,
         long offset,
-        long length,
-        Action<Stream> callback);
+        long length);
 
     /// <summary>
     /// upload files
@@ -63,16 +60,14 @@ public interface IObjectStorageClientContainer
 
     #region async
 
-    Task GetObjectAsync(
+    Task<Stream> GetObjectAsync(
         string objectName,
-        Action<Stream> callback,
         CancellationToken cancellationToken = default);
 
-    Task GetObjectAsync(
+    Task<Stream> GetObjectAsync(
         string objectName,
         long offset,
         long length,
-        Action<Stream> callback,
         CancellationToken cancellationToken = default);
 
     /// <summary>

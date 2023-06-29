@@ -9,7 +9,7 @@ namespace SpeedBoot.ObjectStorage.Aliyun.Internal.Options;
 ///
 /// AliyunObjectStorage -> Aliyun: Sts -> Aliyun
 /// </summary>
-internal class AliyunObjectStorageOptions : Aliyun.Options.AliyunOptions
+internal class AliyunObjectStorageOptions : Aliyun.AliyunOptions
 {
     /// <summary>
     /// ObjectStorage API domain information
@@ -44,13 +44,13 @@ internal class AliyunObjectStorageOptions : Aliyun.Options.AliyunOptions
     /// <summary>
     /// large file length
     /// unit: Byte
-    /// default: 5GB
+    /// default: 10M
     ///
     /// 大文件长度
     /// 单位：字节
-    /// 默认：5GB
+    /// 默认：10M
     /// </summary>
-    public long BigObjectContentLength { get; set; } = 5 * (long)Math.Pow(1024, 3);
+    public long BigObjectContentLength { get; set; } = GlobalObjectStorageConfig.BigFileLength;
 
     /// <summary>
     /// Gets or sets the size of the part (Required when resuming uploads is enabled)
@@ -77,4 +77,11 @@ internal class AliyunObjectStorageOptions : Aliyun.Options.AliyunOptions
     /// 当使用子用户时使用
     /// </summary>
     public AliyunStsOptions? Sts { get; set; }
+
+    /// <summary>
+    /// 存储空间名
+    ///
+    /// bucket name
+    /// </summary>
+    public string BucketName { get; set; }
 }

@@ -33,7 +33,7 @@ public static class StreamExtensions
 
     /// <summary>
     /// Convert stream to byte array
-    /// 流转换为byte数组
+    /// 流转换为 byte 数组
     /// </summary>
     /// <param name="stream"></param>
     /// <returns></returns>
@@ -53,4 +53,73 @@ public static class StreamExtensions
     }
 
     #endregion
+
+    #region 文件流保存到本地
+
+    /// <summary>
+    /// save large files
+    ///
+    /// 保存大文件
+    /// </summary>
+    /// <param name="stream">file Stream（文件流）</param>
+    /// <param name="filePath">full file path（完整文件地址）</param>
+    /// <param name="chunkSize">default: 4096 bytes（4k）</param>
+    public static void SaveToBigFile(this Stream stream, string filePath, int chunkSize = 4096)
+    {
+        using var fs = File.Open(filePath, FileMode.Create);
+        var buffer = new byte[chunkSize];
+        int count;
+        while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
+            fs.Write(buffer, 0, count);
+        fs.Flush();
+    }
+
+    /// <summary>
+    /// save large files
+    ///
+    /// 保存大文件
+    /// </summary>
+    /// <param name="stream">file Stream（文件流）</param>
+    /// <param name="filePath">full file path（完整文件地址）</param>
+    /// <param name="chunkSize">default: 4096 bytes（4k）</param>
+    public static async Task SaveToBigFileAsync(this Stream stream, string filePath, int chunkSize = 4096)
+    {
+        using var fs = File.Open(filePath, FileMode.Create);
+        var buffer = new byte[chunkSize];
+        int count;
+        while ((count = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+            await fs.WriteAsync(buffer, 0, count);
+        fs.Flush();
+    }
+
+    /// <summary>
+    /// Save the file (no more than 2G)
+    ///
+    /// 保存文件（不得超过2G）
+    /// </summary>
+    /// <param name="stream">file Stream（文件流）</param>
+    /// <param name="filePath">full file path（完整文件地址）</param>
+    public static void SaveToFile(this Stream stream, string filePath)
+    {
+        var data = new byte[stream.Length];
+        _ = stream.Read(data, 0, (int)stream.Length);
+        File.WriteAllBytes(filePath, data);
+    }
+
+    /// <summary>
+    /// Save the file (no more than 2G)
+    ///
+    /// 保存文件（不得超过2G）
+    /// </summary>
+    /// <param name="stream">file Stream（文件流）</param>
+    /// <param name="filePath">full file path（完整文件地址）</param>
+    public static async Task SaveToFileAsync(this Stream stream, string filePath)
+    {
+        var data = new byte[stream.Length];
+        _ = await stream.ReadAsync(data, 0, (int)stream.Length);
+        File.WriteAllBytes(filePath, data);
+    }
+
+    #endregion
+
 }

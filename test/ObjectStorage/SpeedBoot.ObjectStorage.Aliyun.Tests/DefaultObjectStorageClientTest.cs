@@ -1,0 +1,85 @@
+﻿// Copyright (c) zhenlei520 All rights reserved.
+// Licensed under the MIT License. See LICENSE.txt in the project root for license information.
+
+namespace SpeedBoot.ObjectStorage.Aliyun.Tests;
+
+[TestClass]
+public class DefaultObjectStorageClientTest
+{
+    private const string OBJECT_NAME = "logo.jpg";
+
+    [DataRow(true)]
+    [DataTestMethod]
+    public void TestGetCredentials(bool isMaster)
+    {
+        var objectStorageClient = GetObjectStorageClient(isMaster, out AliyunObjectStorageOptions aliyunObjectStorageOptions);
+        var credentials = objectStorageClient.GetCredentials();
+        Assert.IsNotNull(aliyunObjectStorageOptions.Master);
+        if (isMaster)
+        {
+            Assert.AreEqual(aliyunObjectStorageOptions.Master.AccessKeyId, credentials.AccessKeyId);
+            Assert.AreEqual(aliyunObjectStorageOptions.Master.AccessKeySecret, credentials.AccessKeySecret);
+            Assert.AreEqual(null, credentials.SecurityToken);
+        }
+        else
+        {
+            Assert.IsNotNull(credentials.AccessKeyId);
+            Assert.IsNotNull(credentials.AccessKeySecret);
+            Assert.IsNotNull(credentials.SecurityToken);
+        }
+    }
+
+    private DefaultObjectStorageClient GetObjectStorageClient(
+        bool isMaster,
+        out AliyunObjectStorageOptions aliyunObjectStorageOptions)
+    {
+        aliyunObjectStorageOptions = isMaster ? GetAliyunObjectStorageOptionsByMaster() : GetAliyunObjectStorageOptionsByTemporary();
+        var aliyunClientProvider = new DefaultAliyunClientProvider(aliyunObjectStorageOptions);
+        return new DefaultObjectStorageClient(aliyunClientProvider, null);
+    }
+
+    [DataRow(true)]
+    [DataTestMethod]
+    public void TestDownloadFile(bool isMaster)
+    {
+        var objectStorageClient = GetObjectStorageClient(isMaster, out AliyunObjectStorageOptions aliyunObjectStorageOptions);
+        var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logo.jpg");
+        objectStorageClient.DownloadFile(aliyunObjectStorageOptions.BucketName, OBJECT_NAME, filePath);
+        Assert.IsTrue(File.Exists(filePath));
+    }
+
+    #region 获取配置
+
+    /// <summary>
+    /// 获取配置（主账户）
+    /// </summary>
+    /// <returns></returns>
+    private AliyunObjectStorageOptions GetAliyunObjectStorageOptionsByMaster()
+    {
+        var file = "aliyun.master.json";
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(file)
+            .Build();
+        AppCore.ConfigureConfiguration(configuration);
+        return ConfigurationHelper.GetAliyunObjectStorageOptions();
+    }
+
+    /// <summary>
+    /// 获取配置（临时凭证）
+    /// </summary>
+    /// <returns></returns>
+    private AliyunObjectStorageOptions GetAliyunObjectStorageOptionsByTemporary()
+    {
+        var file = "aliyun.temporary.json";
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(file)
+            .Build();
+        AppCore.ConfigureConfiguration(configuration);
+        return ConfigurationHelper.GetAliyunObjectStorageOptions();
+    }
+
+    #endregion
+
+}
