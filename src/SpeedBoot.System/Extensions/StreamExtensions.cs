@@ -110,9 +110,8 @@ public static class StreamExtensions
     {
         CheckFileExist(filePath, enableOverwrite);
 
-        var data = new byte[stream.Length];
-        _ = stream.Read(data, 0, (int)stream.Length);
-        File.WriteAllBytes(filePath, data);
+        using var fileStream = new FileStream(filePath, FileMode.Create);
+        stream.CopyTo(fileStream);
     }
 
     /// <summary>
@@ -126,9 +125,9 @@ public static class StreamExtensions
     public static async Task SaveToFileAsync(this Stream stream, string filePath, bool enableOverwrite = false)
     {
         CheckFileExist(filePath, enableOverwrite);
-        var data = new byte[stream.Length];
-        _ = await stream.ReadAsync(data, 0, (int)stream.Length);
-        File.WriteAllBytes(filePath, data);
+
+        using var fileStream = new FileStream(filePath, FileMode.Create);
+        await stream.CopyToAsync(fileStream);
     }
 
     #endregion
