@@ -64,8 +64,11 @@ public static class StreamExtensions
     /// <param name="stream">file Stream（文件流）</param>
     /// <param name="filePath">full file path（完整文件地址）</param>
     /// <param name="chunkSize">default: 4096 bytes（4k）</param>
-    public static void SaveToBigFile(this Stream stream, string filePath, int chunkSize = 4096)
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
+    public static void SaveToBigFile(this Stream stream, string filePath, int chunkSize = 4096, bool enableOverwrite = false)
     {
+        CheckFileExist(filePath, enableOverwrite);
+
         using var fs = File.Open(filePath, FileMode.Create);
         var buffer = new byte[chunkSize];
         int count;
@@ -82,8 +85,11 @@ public static class StreamExtensions
     /// <param name="stream">file Stream（文件流）</param>
     /// <param name="filePath">full file path（完整文件地址）</param>
     /// <param name="chunkSize">default: 4096 bytes（4k）</param>
-    public static async Task SaveToBigFileAsync(this Stream stream, string filePath, int chunkSize = 4096)
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
+    public static async Task SaveToBigFileAsync(this Stream stream, string filePath, int chunkSize = 4096, bool enableOverwrite = false)
     {
+        CheckFileExist(filePath, enableOverwrite);
+
         using var fs = File.Open(filePath, FileMode.Create);
         var buffer = new byte[chunkSize];
         int count;
@@ -99,8 +105,11 @@ public static class StreamExtensions
     /// </summary>
     /// <param name="stream">file Stream（文件流）</param>
     /// <param name="filePath">full file path（完整文件地址）</param>
-    public static void SaveToFile(this Stream stream, string filePath)
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
+    public static void SaveToFile(this Stream stream, string filePath, bool enableOverwrite = false)
     {
+        CheckFileExist(filePath, enableOverwrite);
+
         var data = new byte[stream.Length];
         _ = stream.Read(data, 0, (int)stream.Length);
         File.WriteAllBytes(filePath, data);
@@ -113,8 +122,10 @@ public static class StreamExtensions
     /// </summary>
     /// <param name="stream">file Stream（文件流）</param>
     /// <param name="filePath">full file path（完整文件地址）</param>
-    public static async Task SaveToFileAsync(this Stream stream, string filePath)
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
+    public static async Task SaveToFileAsync(this Stream stream, string filePath, bool enableOverwrite = false)
     {
+        CheckFileExist(filePath, enableOverwrite);
         var data = new byte[stream.Length];
         _ = await stream.ReadAsync(data, 0, (int)stream.Length);
         File.WriteAllBytes(filePath, data);
@@ -122,4 +133,17 @@ public static class StreamExtensions
 
     #endregion
 
+    /// <summary>
+    /// Check whether the file exists, and if it exists and allow overwriting is not enabled, an exception is thrown
+    ///
+    /// 检查文件是否存在，如果存在且未开启允许覆盖，则抛出异常
+    /// </summary>
+    /// <param name="filePath">full file path（完整文件地址）</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
+    /// <exception cref="SpeedFriendlyException"></exception>
+    private static void CheckFileExist(string filePath, bool enableOverwrite = false)
+    {
+        if (File.Exists(filePath) && !enableOverwrite)
+            throw new SpeedFriendlyException("The file already exists");
+    }
 }

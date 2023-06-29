@@ -8,6 +8,12 @@ public class DefaultObjectStorageClientTest
 {
     private const string OBJECT_NAME = "logo.jpg";
 
+    /// <summary>
+    /// Get Credentials
+    ///
+    /// 获取凭证
+    /// </summary>
+    /// <param name="isMaster"></param>
     [DataRow(true)]
     [DataTestMethod]
     public void TestGetCredentials(bool isMaster)
@@ -29,15 +35,12 @@ public class DefaultObjectStorageClientTest
         }
     }
 
-    private DefaultObjectStorageClient GetObjectStorageClient(
-        bool isMaster,
-        out AliyunObjectStorageOptions aliyunObjectStorageOptions)
-    {
-        aliyunObjectStorageOptions = isMaster ? GetAliyunObjectStorageOptionsByMaster() : GetAliyunObjectStorageOptionsByTemporary();
-        var aliyunClientProvider = new DefaultAliyunClientProvider(aliyunObjectStorageOptions);
-        return new DefaultObjectStorageClient(aliyunClientProvider, null);
-    }
-
+    /// <summary>
+    /// Download the file locally
+    ///
+    /// 下载文件到本地
+    /// </summary>
+    /// <param name="isMaster"></param>
     [DataRow(true)]
     [DataTestMethod]
     public void TestDownloadFile(bool isMaster)
@@ -48,9 +51,24 @@ public class DefaultObjectStorageClientTest
         Assert.IsTrue(File.Exists(filePath));
     }
 
-    #region 获取配置
+    #region Get Object Storage Client（获取对象存储客户端）
+
+    private DefaultObjectStorageClient GetObjectStorageClient(
+        bool isMaster,
+        out AliyunObjectStorageOptions aliyunObjectStorageOptions)
+    {
+        aliyunObjectStorageOptions = isMaster ? GetAliyunObjectStorageOptionsByMaster() : GetAliyunObjectStorageOptionsByTemporary();
+        var aliyunClientProvider = new DefaultAliyunClientProvider(aliyunObjectStorageOptions);
+        return new DefaultObjectStorageClient(aliyunClientProvider, null);
+    }
+
+    #endregion
+
+    #region Get configuration（获取配置）
 
     /// <summary>
+    /// Get configuration (main account)
+    ///
     /// 获取配置（主账户）
     /// </summary>
     /// <returns></returns>
@@ -66,6 +84,8 @@ public class DefaultObjectStorageClientTest
     }
 
     /// <summary>
+    /// Get configuration (temporary credentials)
+    ///
     /// 获取配置（临时凭证）
     /// </summary>
     /// <returns></returns>

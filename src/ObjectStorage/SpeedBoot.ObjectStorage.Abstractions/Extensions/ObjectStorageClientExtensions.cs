@@ -16,7 +16,13 @@ public static class ObjectStorageClientExtensions
     /// <param name="bucketName">bucket name（空间名称）</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="filePath">full file path（完整文件地址）</param>
-    public static void DownloadFile(this IObjectStorageClient objectStorageClient, string bucketName, string objectName, string filePath)
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
+    public static void DownloadFile(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        string objectName,
+        string filePath,
+        bool enableOverwrite = false)
     {
         var stream = objectStorageClient.GetObject(bucketName, objectName, out var contentLength);
         if (contentLength > GlobalObjectStorageConfig.BigFileLength)
