@@ -22,4 +22,11 @@ public class GlobalObjectStorageConfig
     /// 默认：10M
     /// </summary>
     public static long BigFileLength = 10 * (long)Math.Pow(1024, 2);
+
+    /// <summary>
+    /// default: 4096 bytes（4k）
+    ///
+    /// 块大小：默认 4k
+    /// </summary>
+    public static int ChunkSize = 1024 * 4;
 }

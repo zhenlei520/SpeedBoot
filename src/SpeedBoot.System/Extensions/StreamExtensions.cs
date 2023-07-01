@@ -62,14 +62,16 @@ public static class StreamExtensions
     /// 保存大文件
     /// </summary>
     /// <param name="stream">file Stream（文件流）</param>
-    /// <param name="filePath">full file path（完整文件地址）</param>
+    /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="chunkSize">default: 4096 bytes（4k）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
-    public static void SaveToBigFile(this Stream stream, string filePath, int chunkSize = 4096, bool enableOverwrite = false)
+    public static void SaveToBigFile(this Stream stream, string fileFullPath, int chunkSize = 4096, bool enableOverwrite = false)
     {
-        CheckFileExist(filePath, enableOverwrite);
+        CheckChunkSize(chunkSize);
 
-        using var fs = File.Open(filePath, FileMode.Create);
+        CheckFileExist(fileFullPath, enableOverwrite);
+
+        using var fs = File.Open(fileFullPath, FileMode.Create);
         var buffer = new byte[chunkSize];
         int count;
         while ((count = stream.Read(buffer, 0, buffer.Length)) > 0)
@@ -78,24 +80,47 @@ public static class StreamExtensions
     }
 
     /// <summary>
+    /// Check Chunk Size
+    ///
+    /// 检查块大小
+    /// </summary>
+    /// <param name="chunkSize">default: 4096 bytes（4k）</param>
+    private static void CheckChunkSize(int chunkSize = 4096)
+    {
+#if NETCOREAPP3_0_OR_GREATER
+        SpeedArgumentException.ThrowIfLessThanOrEqual(chunkSize, 0);
+#else
+        SpeedArgumentException.ThrowIfLessThanOrEqual(chunkSize, 0, nameof(chunkSize));
+#endif
+    }
+
+    /// <summary>
     /// save large files
     ///
     /// 保存大文件
     /// </summary>
     /// <param name="stream">file Stream（文件流）</param>
-    /// <param name="filePath">full file path（完整文件地址）</param>
+    /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="chunkSize">default: 4096 bytes（4k）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
-    public static async Task SaveToBigFileAsync(this Stream stream, string filePath, int chunkSize = 4096, bool enableOverwrite = false)
+    /// <param name="cancellationToken"></param>
+    public static async Task SaveToBigFileAsync(
+        this Stream stream,
+        string fileFullPath,
+        int chunkSize = 4096,
+        bool enableOverwrite = false,
+        CancellationToken cancellationToken = default)
     {
-        CheckFileExist(filePath, enableOverwrite);
+        CheckChunkSize(chunkSize);
 
-        using var fs = File.Open(filePath, FileMode.Create);
+        CheckFileExist(fileFullPath, enableOverwrite);
+
+        using var fs = File.Open(fileFullPath, FileMode.Create);
         var buffer = new byte[chunkSize];
         int count;
-        while ((count = await stream.ReadAsync(buffer, 0, buffer.Length)) > 0)
-            await fs.WriteAsync(buffer, 0, count);
-        fs.Flush();
+        while ((count = await stream.ReadAsync(buffer, 0, buffer.Length, cancellationToken)) > 0)
+            await fs.WriteAsync(buffer, 0, count, cancellationToken);
+        await fs.FlushAsync(cancellationToken);
     }
 
     /// <summary>
@@ -104,13 +129,13 @@ public static class StreamExtensions
     /// 保存文件（不得超过2G）
     /// </summary>
     /// <param name="stream">file Stream（文件流）</param>
-    /// <param name="filePath">full file path（完整文件地址）</param>
+    /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
-    public static void SaveToFile(this Stream stream, string filePath, bool enableOverwrite = false)
+    public static void SaveToSmallFile(this Stream stream, string fileFullPath, bool enableOverwrite = false)
     {
-        CheckFileExist(filePath, enableOverwrite);
+        CheckFileExist(fileFullPath, enableOverwrite);
 
-        using var fileStream = new FileStream(filePath, FileMode.Create);
+        using var fileStream = new FileStream(fileFullPath, FileMode.Create);
         stream.CopyTo(fileStream);
     }
 
@@ -120,14 +145,25 @@ public static class StreamExtensions
     /// 保存文件（不得超过2G）
     /// </summary>
     /// <param name="stream">file Stream（文件流）</param>
-    /// <param name="filePath">full file path（完整文件地址）</param>
+    /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
-    public static async Task SaveToFileAsync(this Stream stream, string filePath, bool enableOverwrite = false)
+    /// <param name="cancellationToken"></param>
+    public static async Task SaveToSmallFileAsync(
+        this Stream stream,
+        string fileFullPath,
+        bool enableOverwrite = false,
+        CancellationToken cancellationToken = default)
     {
-        CheckFileExist(filePath, enableOverwrite);
+        CheckFileExist(fileFullPath, enableOverwrite);
 
-        using var fileStream = new FileStream(filePath, FileMode.Create);
+        using var fileStream = new FileStream(fileFullPath, FileMode.Create);
+
+#if NETCOREAPP3_0_OR_GREATER
+      await stream.CopyToAsync(fileStream, cancellationToken);
+#else
         await stream.CopyToAsync(fileStream);
+#endif
+
     }
 
     #endregion
@@ -137,12 +173,12 @@ public static class StreamExtensions
     ///
     /// 检查文件是否存在，如果存在且未开启允许覆盖，则抛出异常
     /// </summary>
-    /// <param name="filePath">full file path（完整文件地址）</param>
+    /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
     /// <exception cref="SpeedFriendlyException"></exception>
-    private static void CheckFileExist(string filePath, bool enableOverwrite = false)
+    private static void CheckFileExist(string fileFullPath, bool enableOverwrite = false)
     {
-        if (File.Exists(filePath) && !enableOverwrite)
+        if (File.Exists(fileFullPath) && !enableOverwrite)
             throw new SpeedFriendlyException("The file already exists");
     }
 }

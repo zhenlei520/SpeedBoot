@@ -8,6 +8,8 @@ public class DefaultObjectStorageClientTest
 {
     private const string OBJECT_NAME = "logo.jpg";
 
+    #region Get Credentials（Get Credentials）
+
     /// <summary>
     /// Get Credentials
     ///
@@ -16,6 +18,9 @@ public class DefaultObjectStorageClientTest
     /// <param name="isMaster"></param>
     [DataRow(true)]
     [DataTestMethod]
+
+    #endregion
+
     public void TestGetCredentials(bool isMaster)
     {
         var objectStorageClient = GetObjectStorageClient(isMaster, out AliyunObjectStorageOptions aliyunObjectStorageOptions);
@@ -35,6 +40,8 @@ public class DefaultObjectStorageClientTest
         }
     }
 
+    #region Download the file locally（下载文件到本地）
+
     /// <summary>
     /// Download the file locally
     ///
@@ -50,6 +57,8 @@ public class DefaultObjectStorageClientTest
         objectStorageClient.DownloadFile(aliyunObjectStorageOptions.BucketName, OBJECT_NAME, filePath);
         Assert.IsTrue(File.Exists(filePath));
     }
+
+    #endregion
 
     #region Get Object Storage Client（获取对象存储客户端）
 
@@ -101,5 +110,4 @@ public class DefaultObjectStorageClientTest
     }
 
     #endregion
-
 }
