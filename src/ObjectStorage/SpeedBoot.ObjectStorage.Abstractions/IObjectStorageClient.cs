@@ -110,7 +110,7 @@ public interface IObjectStorageClient
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task DeleteRangeAsync(BatchDeleteObjectStorageRequest request, CancellationToken cancellationToken = default);
+    Task BatchDeleteAsync(BatchDeleteObjectStorageRequest request, CancellationToken cancellationToken = default);
 
     #endregion
 
