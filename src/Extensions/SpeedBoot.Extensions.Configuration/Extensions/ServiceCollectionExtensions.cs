@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
 
         void Initialized()
         {
-            AppCore.ConfigureConfiguration(configuration);
+            AppCore.TryConfigureConfiguration(configuration);
         }
     }
 

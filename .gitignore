@@ -222,3 +222,5 @@ coverage.opencover.xml
 # Run Tests
 BenchmarkDotNet.Artifacts/
 /nupkg/
+/test/ObjectStorage/SpeedBoot.ObjectStorage.Aliyun.Tests/aliyun.master.json
+/test/ObjectStorage/SpeedBoot.ObjectStorage.Aliyun.Tests/aliyun.temporary.json

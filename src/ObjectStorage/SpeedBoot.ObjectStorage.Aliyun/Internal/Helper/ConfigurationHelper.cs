@@ -1,13 +1,14 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
+[assembly: InternalsVisibleTo("SpeedBoot.ObjectStorage.Aliyun.Tests")]
+
 // ReSharper disable once CheckNamespace
 
 namespace SpeedBoot.ObjectStorage.Aliyun;
 
 internal static class ConfigurationHelper
 {
-    private static AliyunObjectStorageOptions? _aliyunObjectStorageOptions;
     /// <summary>
     /// Get the configuration information of Aliyun storage used
     ///
@@ -16,16 +17,14 @@ internal static class ConfigurationHelper
     /// <returns></returns>
     public static AliyunObjectStorageOptions GetAliyunObjectStorageOptions()
     {
-        if (_aliyunObjectStorageOptions != null)
-            return _aliyunObjectStorageOptions;
-
+        AliyunObjectStorageOptions? aliyunObjectStorageOptionsActual;
         var aliyunObjectStorageSectionName = GetAliyunObjectStorageSectionName();
 
         var aliyunObjectStorageOptions = AppConfiguration.GetOptions<Internal.Options.AliyunObjectStorageOptions>(aliyunObjectStorageSectionName);
 
         if (aliyunObjectStorageOptions.Sts != null)
         {
-            _aliyunObjectStorageOptions = new AliyunObjectStorageOptions()
+            aliyunObjectStorageOptionsActual = new AliyunObjectStorageOptions()
             {
                 Sts = aliyunObjectStorageOptions.Sts,
             };
@@ -33,13 +32,13 @@ internal static class ConfigurationHelper
         else if (!aliyunObjectStorageOptions.AccessKeyId.IsNullOrWhiteSpace() &&
                  !aliyunObjectStorageOptions.AccessKeySecret.IsNullOrWhiteSpace())
         {
-            _aliyunObjectStorageOptions = new AliyunObjectStorageOptions()
+            aliyunObjectStorageOptionsActual = new AliyunObjectStorageOptions()
             {
-               Master = new AliyunOptions()
-               {
-                   AccessKeyId = aliyunObjectStorageOptions.AccessKeyId,
-                   AccessKeySecret = aliyunObjectStorageOptions.AccessKeySecret
-               }
+                Master = new AliyunOptions
+                {
+                    AccessKeyId = aliyunObjectStorageOptions.AccessKeyId,
+                    AccessKeySecret = aliyunObjectStorageOptions.AccessKeySecret
+                }
             };
         }
         else
@@ -48,7 +47,7 @@ internal static class ConfigurationHelper
             var aliyunOptions = AppConfiguration.GetOptions<Internal.Options.AliyunOptions>(aliyunSectionName);
             if (aliyunOptions.Sts != null)
             {
-                _aliyunObjectStorageOptions = new AliyunObjectStorageOptions()
+                aliyunObjectStorageOptionsActual = new AliyunObjectStorageOptions()
                 {
                     Sts = aliyunOptions.Sts,
                 };
@@ -56,7 +55,7 @@ internal static class ConfigurationHelper
             else if (!aliyunOptions.AccessKeyId.IsNullOrWhiteSpace() &&
                      !aliyunOptions.AccessKeySecret.IsNullOrWhiteSpace())
             {
-                _aliyunObjectStorageOptions = new AliyunObjectStorageOptions()
+                aliyunObjectStorageOptionsActual = new AliyunObjectStorageOptions()
                 {
                     Master = new AliyunOptions
                     {
@@ -71,14 +70,15 @@ internal static class ConfigurationHelper
             }
         }
 
-        _aliyunObjectStorageOptions.Endpoint = aliyunObjectStorageOptions.Endpoint;
-        _aliyunObjectStorageOptions.CallbackUrl = aliyunObjectStorageOptions.CallbackUrl;
-        _aliyunObjectStorageOptions.CallbackBody = aliyunObjectStorageOptions.CallbackBody;
-        _aliyunObjectStorageOptions.EnableResumableUpload = aliyunObjectStorageOptions.EnableResumableUpload;
-        _aliyunObjectStorageOptions.BigObjectContentLength = aliyunObjectStorageOptions.BigObjectContentLength;
-        _aliyunObjectStorageOptions.PartSize = aliyunObjectStorageOptions.PartSize;
-        _aliyunObjectStorageOptions.Quiet = aliyunObjectStorageOptions.Quiet;
-        return _aliyunObjectStorageOptions;
+        aliyunObjectStorageOptionsActual.Endpoint = aliyunObjectStorageOptions.Endpoint;
+        aliyunObjectStorageOptionsActual.CallbackUrl = aliyunObjectStorageOptions.CallbackUrl;
+        aliyunObjectStorageOptionsActual.CallbackBody = aliyunObjectStorageOptions.CallbackBody;
+        aliyunObjectStorageOptionsActual.EnableResumableUpload = aliyunObjectStorageOptions.EnableResumableUpload;
+        aliyunObjectStorageOptionsActual.BigObjectContentLength = aliyunObjectStorageOptions.BigObjectContentLength;
+        aliyunObjectStorageOptionsActual.PartSize = aliyunObjectStorageOptions.PartSize;
+        aliyunObjectStorageOptionsActual.Quiet = aliyunObjectStorageOptions.Quiet;
+        aliyunObjectStorageOptionsActual.BucketName = aliyunObjectStorageOptions.BucketName;
+        return aliyunObjectStorageOptionsActual;
     }
 
     /// <summary>
@@ -105,10 +105,10 @@ internal static class ConfigurationHelper
     /// <returns></returns>
     private static string GetAliyunSectionName()
     {
-        var objectStorageSectionName = Environment.GetEnvironmentVariable(AliyunStorageConstant.ALIYUN_OBJECT_STORAGE_SECTION_NAME);
+        var objectStorageSectionName = Environment.GetEnvironmentVariable(AliyunStorageConstant.ALIYUN_SECTION_NAME);
         if (objectStorageSectionName.IsNullOrWhiteSpace())
         {
-            objectStorageSectionName = AliyunStorageConstant.ALIYUN_OBJECT_STORAGE_SECTION_NAME;
+            objectStorageSectionName = AliyunStorageConstant.ALIYUN_SECTION_NAME;
         }
         return objectStorageSectionName;
     }

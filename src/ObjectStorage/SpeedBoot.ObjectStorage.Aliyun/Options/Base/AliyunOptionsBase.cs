@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace SpeedBoot.ObjectStorage.Aliyun.Options;
+namespace SpeedBoot.ObjectStorage.Aliyun;
 
 /// <summary>
 /// aliyun Options

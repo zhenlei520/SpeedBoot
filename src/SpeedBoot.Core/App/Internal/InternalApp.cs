@@ -52,13 +52,23 @@ internal static class InternalApp
         Environment ??= environment;
     }
 
-    internal static void ConfigureConfiguration(object configuration)
+    internal static void TryConfigureConfiguration(object configuration)
     {
         Configuration ??= configuration;
     }
 
-    internal static void ConfigureRootServiceProvider(IServiceProvider rootServiceProvider)
+    internal static void ConfigureConfiguration(object configuration)
+    {
+        Configuration = configuration;
+    }
+
+    internal static void TryConfigureRootServiceProvider(IServiceProvider rootServiceProvider)
     {
         RootServiceProvider ??= rootServiceProvider;
+    }
+
+    internal static void ConfigureRootServiceProvider(IServiceProvider rootServiceProvider)
+    {
+        RootServiceProvider = rootServiceProvider;
     }
 }

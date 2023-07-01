@@ -14,15 +14,7 @@ public interface IObjectStorageClientContainer
 {
     #region sync
 
-    void GetObject(
-        string objectName,
-        Action<Stream> callback);
-
-    void GetObject(
-        string objectName,
-        long offset,
-        long length,
-        Action<Stream> callback);
+    ObjectInfoResponse GetObject(string objectName);
 
     /// <summary>
     /// upload files
@@ -34,6 +26,19 @@ public interface IObjectStorageClientContainer
     void Put(
         string objectName,
         Stream data);
+
+    /// <summary>
+    /// upload files
+    /// 上传文件
+    /// </summary>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="data">数据流</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
+    /// <returns></returns>
+    void Put(
+        string objectName,
+        Stream data,
+        bool? enableOverwrite);
 
     /// <summary>
     /// determine whether the file exists
@@ -63,16 +68,8 @@ public interface IObjectStorageClientContainer
 
     #region async
 
-    Task GetObjectAsync(
+    Task<ObjectInfoResponse> GetObjectAsync(
         string objectName,
-        Action<Stream> callback,
-        CancellationToken cancellationToken = default);
-
-    Task GetObjectAsync(
-        string objectName,
-        long offset,
-        long length,
-        Action<Stream> callback,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -89,15 +86,28 @@ public interface IObjectStorageClientContainer
         CancellationToken cancellationToken = default);
 
     /// <summary>
+    /// upload files
+    /// 上传文件
+    /// </summary>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="data">数据流</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task PutAsync(
+        string objectName,
+        Stream data,
+        bool? enableOverwrite,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
     /// determine whether the file exists
     /// 判断文件是否存在
     /// </summary>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<bool> ExistsAsync(
-        string objectName,
-        CancellationToken cancellationToken = default);
+    Task<bool> ExistsAsync(string objectName, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// delete Files
@@ -122,4 +132,5 @@ public interface IObjectStorageClientContainer
         CancellationToken cancellationToken = default);
 
     #endregion
+
 }

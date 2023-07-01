@@ -7,7 +7,7 @@ namespace SpeedBoot.ObjectStorage.Aliyun.Internal.Options;
 /// aliyun ObjectStorage Options
 /// 对象存储配置
 /// </summary>
-public class AliyunOptions : Aliyun.Options.AliyunOptions
+public class AliyunOptions : Aliyun.AliyunOptions
 {
     /// <summary>
     /// Aliyun Temporary Access Credentials
