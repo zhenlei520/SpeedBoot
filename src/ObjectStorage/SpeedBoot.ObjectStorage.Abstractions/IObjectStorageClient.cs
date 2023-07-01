@@ -30,142 +30,87 @@ public interface IObjectStorageClient
     /// <returns></returns>
     string GetToken();
 
-    Stream GetObject(
-        string bucketName,
-        string objectName);
+    ObjectInfoResponse GetObject(GetObjectInfoRequest request);
 
-    Stream GetObject(
-        string bucketName,
-        string objectName,
-        out long contentLength);
-
-    Stream GetObject(
-        string bucketName,
-        string objectName,
-        long offset,
-        long length);
+    ObjectInfoResponse GetObject(GetObjectInfoChunkRequest request);
 
     /// <summary>
     /// upload files
     /// 上传文件
     /// </summary>
-    /// <param name="bucketName">bucket name（空间名称）</param>
-    /// <param name="objectName">file name（文件名）</param>
-    /// <param name="data">数据流</param>
+    /// <param name="request"></param>
     /// <returns></returns>
-    void Put(
-        string bucketName,
-        string objectName,
-        Stream data);
+    void Put(PutObjectStorageRequest request);
 
     /// <summary>
     /// determine whether the file exists
+    ///
     /// 判断文件是否存在
     /// </summary>
-    /// <param name="bucketName">bucket name（空间名称）</param>
-    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="request"></param>
     /// <returns></returns>
-    bool Exists(
-        string bucketName,
-        string objectName);
+    bool Exists(ExistObjectStorageRequest request);
 
     /// <summary>
     /// delete Files
     /// 删除文件
     /// </summary>
-    /// <param name="bucketName">bucket name（空间名称）</param>
-    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="request">bucket name（空间名称）</param>
     /// <returns></returns>
-    void Delete(
-        string bucketName,
-        string objectName);
+    void Delete(DeleteObjectStorageRequest request);
 
     /// <summary>
     /// batch delete file
     /// 批量删除文件
     /// </summary>
-    /// <param name="bucketName">bucket name（空间名称）</param>
-    /// <param name="objectNames">A collection of filenames to be deleted（待删除的文件集合）</param>
+    /// <param name="request"></param>
     /// <returns></returns>
-    void DeleteRange(
-        string bucketName,
-        IEnumerable<string> objectNames);
+    void BatchDelete(BatchDeleteObjectStorageRequest request);
 
     #endregion
 
     #region async
 
-    Task<Stream> GetObjectAsync(
-        string bucketName,
-        string objectName,
-        CancellationToken cancellationToken = default);
+    Task<ObjectInfoResponse> GetObjectAsync(GetObjectInfoRequest request, CancellationToken cancellationToken = default);
 
-    Task<Stream> GetObjectAsync(
-        string bucketName,
-        string objectName,
-        out long contentLength,
-        CancellationToken cancellationToken = default);
-
-    Task<Stream> GetObjectAsync(
-        string bucketName,
-        string objectName,
-        long offset,
-        long length,
-        CancellationToken cancellationToken = default);
+    Task<ObjectInfoResponse> GetObjectAsync(GetObjectInfoChunkRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// upload files
     /// 上传文件
     /// </summary>
-    /// <param name="bucketName">bucket name（空间名称）</param>
-    /// <param name="objectName">file name（文件名）</param>
-    /// <param name="data">数据流</param>
+    /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task PutAsync(
-        string bucketName,
-        string objectName,
-        Stream data,
-        CancellationToken cancellationToken = default);
+    Task PutAsync(PutObjectStorageRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// determine whether the file exists
     /// 判断文件是否存在
     /// </summary>
-    /// <param name="bucketName">bucket name（空间名称）</param>
-    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<bool> ExistsAsync(
-        string bucketName,
-        string objectName,
-        CancellationToken cancellationToken = default);
+    Task<bool> ExistsAsync(ExistObjectStorageRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// delete Files
+    ///
     /// 删除文件
     /// </summary>
-    /// <param name="bucketName">bucket name（空间名称）</param>
-    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task DeleteAsync(
-        string bucketName,
-        string objectName,
-        CancellationToken cancellationToken = default);
+    Task DeleteAsync(DeleteObjectStorageRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// batch delete file
     /// 批量删除文件
     /// </summary>
-    /// <param name="bucketName">bucket name（空间名称）</param>
-    /// <param name="objectNames">A collection of filenames to be deleted（待删除的文件集合）</param>
+    /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task DeleteRangeAsync(
-        string bucketName,
-        IEnumerable<string> objectNames,
-        CancellationToken cancellationToken = default);
+    Task DeleteRangeAsync(BatchDeleteObjectStorageRequest request, CancellationToken cancellationToken = default);
 
     #endregion
 

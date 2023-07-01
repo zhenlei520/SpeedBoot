@@ -60,6 +60,25 @@ public class DefaultObjectStorageClientTest
 
     #endregion
 
+    #region Upload file locally（上传文件到云）
+
+    /// <summary>
+    /// Upload file locally（上传文件到云）
+    /// </summary>
+    /// <param name="isMaster"></param>
+    [DataRow(true)]
+    [DataTestMethod]
+    public void TestUploadFile(bool isMaster)
+    {
+        var objectStorageClient = GetObjectStorageClient(isMaster, out AliyunObjectStorageOptions aliyunObjectStorageOptions);
+        objectStorageClient.UploadFile(
+            aliyunObjectStorageOptions.BucketName,
+            OBJECT_NAME,
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "packageIcon.png"));
+    }
+
+    #endregion
+
     #region Get Object Storage Client（获取对象存储客户端）
 
     private DefaultObjectStorageClient GetObjectStorageClient(
@@ -110,4 +129,5 @@ public class DefaultObjectStorageClientTest
     }
 
     #endregion
+
 }

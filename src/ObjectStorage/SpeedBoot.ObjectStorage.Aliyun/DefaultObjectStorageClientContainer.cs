@@ -18,44 +18,39 @@ public class DefaultObjectStorageClientContainer : IObjectStorageClientContainer
         _aliyunClientProvider = aliyunClientProvider;
     }
 
-    public Stream GetObject(string objectName)
-        => _objectStorageClient.GetObject(BucketName, objectName);
-
-    public Stream GetObject(string objectName,
-        long offset,
-        long length)
-        => _objectStorageClient.GetObject(BucketName, objectName, offset, length);
+    public ObjectInfoResponse GetObject(string objectName)
+        => _objectStorageClient.GetObject(new GetObjectInfoRequest(BucketName, objectName));
 
     public void Put(string objectName, Stream data)
-        => _objectStorageClient.Put(BucketName, objectName, data);
+        => Put(objectName, data, null);
+
+    public void Put(string objectName, Stream data, bool? enableOverwrite)
+        => _objectStorageClient.Put(new PutObjectStorageRequest(BucketName, objectName, data, enableOverwrite));
 
     public bool Exists(string objectName)
-        => _objectStorageClient.Exists(BucketName, objectName);
+        => _objectStorageClient.Exists(new ExistObjectStorageRequest(BucketName, objectName));
 
     public void Delete(string objectName)
-        => _objectStorageClient.Delete(BucketName, objectName);
+        => _objectStorageClient.Delete(new DeleteObjectStorageRequest(BucketName, objectName));
 
     public void DeleteRange(IEnumerable<string> objectNames)
-        => _objectStorageClient.DeleteRange(BucketName, objectNames);
+        => _objectStorageClient.BatchDelete(new BatchDeleteObjectStorageRequest(BucketName, objectNames.ToList()));
 
-    public Task<Stream> GetObjectAsync(string objectName, CancellationToken cancellationToken = default)
-        => _objectStorageClient.GetObjectAsync(BucketName, objectName, cancellationToken);
-
-    public Task<Stream> GetObjectAsync(string objectName,
-        long offset,
-        long length,
-        CancellationToken cancellationToken = default)
-        => _objectStorageClient.GetObjectAsync(BucketName, objectName, offset, length, cancellationToken);
+    public Task<ObjectInfoResponse> GetObjectAsync(string objectName, CancellationToken cancellationToken = default)
+        => _objectStorageClient.GetObjectAsync(new GetObjectInfoRequest(BucketName, objectName), cancellationToken);
 
     public Task PutAsync(string objectName, Stream data, CancellationToken cancellationToken = default)
-        => _objectStorageClient.PutAsync(BucketName, objectName, data, cancellationToken);
+        => PutAsync(objectName, data, null, cancellationToken);
+
+    public Task PutAsync(string objectName, Stream data, bool? enableOverwrite, CancellationToken cancellationToken = default)
+        => _objectStorageClient.PutAsync(new PutObjectStorageRequest(BucketName, objectName, data, enableOverwrite), cancellationToken);
 
     public Task<bool> ExistsAsync(string objectName, CancellationToken cancellationToken = default)
-        => _objectStorageClient.ExistsAsync(BucketName, objectName, cancellationToken);
+        => _objectStorageClient.ExistsAsync(new ExistObjectStorageRequest(BucketName, objectName), cancellationToken);
 
     public Task DeleteAsync(string objectName, CancellationToken cancellationToken = default)
-        => _objectStorageClient.DeleteAsync(BucketName, objectName, cancellationToken);
+        => _objectStorageClient.DeleteAsync(new DeleteObjectStorageRequest(BucketName, objectName), cancellationToken);
 
     public Task DeleteRangeAsync(IEnumerable<string> objectNames, CancellationToken cancellationToken = default)
-        => _objectStorageClient.DeleteRangeAsync(BucketName, objectNames, cancellationToken);
+        => _objectStorageClient.DeleteRangeAsync(new BatchDeleteObjectStorageRequest(BucketName, objectNames.ToList()), cancellationToken);
 }

@@ -24,6 +24,13 @@ public class GlobalObjectStorageConfig
     public static long BigFileLength = 10 * (long)Math.Pow(1024, 2);
 
     /// <summary>
+    /// enable file overwrite
+    ///
+    /// 启用文件覆盖
+    /// </summary>
+    public static bool EnableOverwrite = true;
+
+    /// <summary>
     /// default: 4096 bytes（4k）
     ///
     /// 块大小：默认 4k

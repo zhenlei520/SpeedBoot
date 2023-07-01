@@ -20,21 +20,24 @@ public static class ObjectStorageClientExtensions
     /// <param name="bucketName">bucket name（空间名称）</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
-    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖，当为 null 且使用分块下载时使用<paramref>GlobalObjectStorageConfig.EnableOverwrite</paramref></param>
     /// <param name="chunkSize">chunk size（分块大小，当为 null 且使用分块下载时使用<paramref>GlobalObjectStorageConfig.BigFileLength</paramref>）</param>
     public static void DownloadFile(
         this IObjectStorageClient objectStorageClient,
         string bucketName,
         string objectName,
         string fileFullPath,
-        bool enableOverwrite = false,
+        bool? enableOverwrite = null,
         int? chunkSize = null)
     {
-        var stream = objectStorageClient.GetObject(bucketName, objectName, out var contentLength);
-        if (contentLength > GlobalObjectStorageConfig.BigFileLength)
-            stream.SaveToBigFile(fileFullPath, chunkSize ?? GlobalObjectStorageConfig.ChunkSize, enableOverwrite);
+        var actualEnableOverwrite = enableOverwrite ?? GlobalObjectStorageConfig.EnableOverwrite;
+        ObjectStorageUtils.CheckFileExist(fileFullPath, actualEnableOverwrite);
+
+        var objectInfoResponse = objectStorageClient.GetObject(GetObjectInfoRequest(bucketName, objectName));
+        if (ObjectStorageUtils.IsBigFile(objectInfoResponse.ContentLength))
+            objectInfoResponse.Stream.SaveToBigFile(fileFullPath, chunkSize ?? GlobalObjectStorageConfig.ChunkSize, actualEnableOverwrite);
         else
-            stream.SaveToSmallFile(fileFullPath, enableOverwrite);
+            objectInfoResponse.Stream.SaveToSmallFile(fileFullPath, actualEnableOverwrite);
     }
 
     /// <summary>
@@ -53,11 +56,14 @@ public static class ObjectStorageClientExtensions
         string bucketName,
         string objectName,
         string fileFullPath,
-        bool enableOverwrite = false,
+        bool? enableOverwrite = null,
         int? chunkSize = null)
     {
-        var stream = objectStorageClient.GetObject(bucketName, objectName);
-        stream.SaveToBigFile(fileFullPath, chunkSize ?? GlobalObjectStorageConfig.ChunkSize, enableOverwrite);
+        var actualEnableOverwrite = enableOverwrite ?? GlobalObjectStorageConfig.EnableOverwrite;
+        ObjectStorageUtils.CheckFileExist(fileFullPath, actualEnableOverwrite);
+
+        var objectInfoResponse = objectStorageClient.GetObject(GetObjectInfoRequest(bucketName, objectName));
+        objectInfoResponse.Stream.SaveToBigFile(fileFullPath, chunkSize ?? GlobalObjectStorageConfig.ChunkSize, actualEnableOverwrite);
     }
 
     /// <summary>
@@ -75,10 +81,12 @@ public static class ObjectStorageClientExtensions
         string bucketName,
         string objectName,
         string fileFullPath,
-        bool enableOverwrite = false)
+        bool enableOverwrite = true)
     {
-        var stream = objectStorageClient.GetObject(bucketName, objectName);
-        stream.SaveToSmallFile(fileFullPath, enableOverwrite);
+        ObjectStorageUtils.CheckFileExist(fileFullPath, enableOverwrite);
+
+        var objectInfoResponse = objectStorageClient.GetObject(GetObjectInfoRequest(bucketName, objectName));
+        objectInfoResponse.Stream.SaveToSmallFile(fileFullPath, enableOverwrite);
     }
 
     #endregion
@@ -102,16 +110,20 @@ public static class ObjectStorageClientExtensions
         string bucketName,
         string objectName,
         string fileFullPath,
-        bool enableOverwrite = false,
+        bool? enableOverwrite = null,
         int? chunkSize = null,
         CancellationToken cancellationToken = default)
     {
-        var stream = await objectStorageClient.GetObjectAsync(bucketName, objectName, out var contentLength, cancellationToken);
-        if (contentLength > GlobalObjectStorageConfig.BigFileLength)
-            await stream.SaveToBigFileAsync(fileFullPath, chunkSize ?? GlobalObjectStorageConfig.ChunkSize, enableOverwrite,
+        var actualEnableOverwrite = enableOverwrite ?? GlobalObjectStorageConfig.EnableOverwrite;
+        ObjectStorageUtils.CheckFileExist(fileFullPath, actualEnableOverwrite);
+
+        var objectInfoResponse = await objectStorageClient.GetObjectAsync(GetObjectInfoRequest(bucketName, objectName), cancellationToken);
+        if (ObjectStorageUtils.IsBigFile(objectInfoResponse.ContentLength))
+            await objectInfoResponse.Stream.SaveToBigFileAsync(fileFullPath, chunkSize ?? GlobalObjectStorageConfig.ChunkSize,
+                actualEnableOverwrite,
                 cancellationToken);
         else
-            await stream.SaveToSmallFileAsync(fileFullPath, enableOverwrite, cancellationToken);
+            await objectInfoResponse.Stream.SaveToSmallFileAsync(fileFullPath, actualEnableOverwrite, cancellationToken);
     }
 
     /// <summary>
@@ -123,20 +135,26 @@ public static class ObjectStorageClientExtensions
     /// <param name="bucketName">bucket name（空间名称）</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
-    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: true</param>
     /// <param name="chunkSize">chunk size（分块大小，当为 null 且使用分块下载时使用<paramref>GlobalObjectStorageConfig.BigFileLength</paramref>）</param>
     /// <param name="cancellationToken"></param>
-    public static Task DownloadBigFileAsync(
+    public static async Task DownloadBigFileAsync(
         this IObjectStorageClient objectStorageClient,
         string bucketName,
         string objectName,
         string fileFullPath,
-        bool enableOverwrite = false,
+        bool? enableOverwrite = null,
         int? chunkSize = null,
         CancellationToken cancellationToken = default)
     {
-        var stream = objectStorageClient.GetObject(bucketName, objectName);
-        return stream.SaveToBigFileAsync(fileFullPath, chunkSize ?? GlobalObjectStorageConfig.ChunkSize, enableOverwrite,
+        var actualEnableOverwrite = enableOverwrite ?? GlobalObjectStorageConfig.EnableOverwrite;
+        ObjectStorageUtils.CheckFileExist(fileFullPath, actualEnableOverwrite);
+
+        var objectInfoResponse = await objectStorageClient.GetObjectAsync(GetObjectInfoRequest(bucketName, objectName), cancellationToken);
+        await objectInfoResponse.Stream.SaveToBigFileAsync(
+            fileFullPath,
+            chunkSize ?? GlobalObjectStorageConfig.ChunkSize,
+            actualEnableOverwrite,
             cancellationToken: cancellationToken);
     }
 
@@ -149,21 +167,173 @@ public static class ObjectStorageClientExtensions
     /// <param name="bucketName">bucket name（空间名称）</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
-    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: true</param>
     /// <param name="cancellationToken"></param>
     public static async Task DownloadSmallFileAsync(
         this IObjectStorageClient objectStorageClient,
         string bucketName,
         string objectName,
         string fileFullPath,
-        bool enableOverwrite = false,
+        bool? enableOverwrite = null,
         CancellationToken cancellationToken = default)
     {
-        var stream = await objectStorageClient.GetObjectAsync(bucketName, objectName, cancellationToken);
-        await stream.SaveToSmallFileAsync(fileFullPath, enableOverwrite, cancellationToken);
+        var actualEnableOverwrite = enableOverwrite ?? GlobalObjectStorageConfig.EnableOverwrite;
+        ObjectStorageUtils.CheckFileExist(fileFullPath, actualEnableOverwrite);
+
+        var objectInfoResponse = await objectStorageClient.GetObjectAsync(GetObjectInfoRequest(bucketName, objectName), cancellationToken);
+        await objectInfoResponse.Stream.SaveToSmallFileAsync(fileFullPath, actualEnableOverwrite, cancellationToken);
     }
 
     #endregion
 
+    private static GetObjectInfoRequest GetObjectInfoRequest(string bucketName, string objectName)
+        => new(bucketName, objectName);
+
     #endregion
+
+    #region upload file（上传文件）
+
+    #region sync
+
+    /// <summary>
+    /// upload file（上传文件）
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="fileFullPath">full file path（完整文件地址）</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
+    public static void UploadFile(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        string objectName,
+        string fileFullPath,
+        bool? enableOverwrite = null)
+    {
+        var contentLength = FileUtils.GetFileContentLength(fileFullPath);
+        using var stream = ObjectStorageUtils.IsBigFile(contentLength) ?
+            FileUtils.GetBigFileStream(fileFullPath) :
+            FileUtils.GetSmallFileStream(fileFullPath);
+        objectStorageClient.Put(GetPutObjectStorageRequest(bucketName, objectName, stream, enableOverwrite));
+    }
+
+    /// <summary>
+    /// upload small file（上传小文件）
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="fileFullPath">full file path（完整文件地址）</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
+    public static void UploadSmallFile(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        string objectName,
+        string fileFullPath,
+        bool? enableOverwrite = null)
+    {
+        using var stream = FileUtils.GetSmallFileStream(fileFullPath);
+        objectStorageClient.Put(GetPutObjectStorageRequest(bucketName, objectName, stream, enableOverwrite));
+    }
+
+    /// <summary>
+    /// upload big file（上传大文件）
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="fileFullPath">full file path（完整文件地址）</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
+    public static void UploadBigFile(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        string objectName,
+        string fileFullPath,
+        bool? enableOverwrite = null)
+    {
+        using var stream = FileUtils.GetBigFileStream(fileFullPath);
+        objectStorageClient.Put(GetPutObjectStorageRequest(bucketName, objectName, stream, enableOverwrite));
+    }
+
+    #endregion
+
+    #region async
+
+    /// <summary>
+    /// upload file（上传文件）
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="fileFullPath">full file path（完整文件地址）</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
+    /// <param name="cancellationToken"></param>
+    public static Task UploadFileAsync(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        string objectName,
+        string fileFullPath,
+        bool? enableOverwrite = null,
+        CancellationToken cancellationToken = default)
+    {
+        var contentLength = FileUtils.GetFileContentLength(fileFullPath);
+        using var stream = ObjectStorageUtils.IsBigFile(contentLength) ?
+            FileUtils.GetBigFileStream(fileFullPath) :
+            FileUtils.GetSmallFileStream(fileFullPath);
+        return objectStorageClient.PutAsync(GetPutObjectStorageRequest(bucketName, objectName, stream, enableOverwrite), cancellationToken);
+    }
+
+    /// <summary>
+    /// upload small file（上传小文件）
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="fileFullPath">full file path（完整文件地址）</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
+    /// <param name="cancellationToken"></param>
+    public static Task UploadSmallFileAsync(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        string objectName,
+        string fileFullPath,
+        bool? enableOverwrite = null,
+        CancellationToken cancellationToken = default)
+    {
+        using var stream = FileUtils.GetSmallFileStream(fileFullPath);
+        return objectStorageClient.PutAsync(GetPutObjectStorageRequest(bucketName, objectName, stream, enableOverwrite), cancellationToken);
+    }
+
+    /// <summary>
+    /// upload big file（上传大文件）
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <param name="fileFullPath">full file path（完整文件地址）</param>
+    /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
+    /// <param name="cancellationToken"></param>
+    public static Task UploadBigFileAsync(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        string objectName,
+        string fileFullPath,
+        bool? enableOverwrite = null,
+        CancellationToken cancellationToken = default)
+    {
+        using var stream = FileUtils.GetBigFileStream(fileFullPath);
+        return objectStorageClient.PutAsync(GetPutObjectStorageRequest(bucketName, objectName, stream, enableOverwrite), cancellationToken);
+    }
+
+    #endregion
+
+    private static PutObjectStorageRequest GetPutObjectStorageRequest(
+        string bucketName,
+        string objectName,
+        Stream stream,
+        bool? enableOverwrite)
+        => new(bucketName, objectName, stream, enableOverwrite);
+
+    #endregion
+
 }

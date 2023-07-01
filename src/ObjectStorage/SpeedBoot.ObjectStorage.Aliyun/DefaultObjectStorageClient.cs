@@ -23,124 +23,135 @@ public class DefaultObjectStorageClient : IObjectStorageClient
 
     public string GetToken() => throw new NotSupportedException("GetToken is not supported, please use GetSecurityToken");
 
-    public Stream GetObject(string bucketName, string objectName)
-        => GetObject(bucketName, objectName, out _);
-
-    public Stream GetObject(
-        string bucketName,
-        string objectName,
-        out long contentLength)
+    public ObjectInfoResponse GetObject(GetObjectInfoRequest request)
     {
-        var result = Oss.GetObject(bucketName, objectName);
+        var result = Oss.GetObject(request.BucketName, request.ObjectName);
 
         _logger?.LogDebug("----- Get {ObjectName} from {BucketName} - ({Result})",
-            objectName,
-            bucketName,
+            request.BucketName,
+            request.ObjectName,
             result);
 
-        contentLength = result.ContentLength;
-        return result.Content;
+        return new ObjectInfoResponse()
+        {
+            RequestId = result.RequestId,
+            Stream = result.Content,
+            ContentLength = result.ContentLength,
+            ContentMd5 = result.Metadata.ContentMd5,
+            ContentType = result.Metadata.ContentType,
+            ContentEncoding = result.Metadata.ContentEncoding,
+            LastModified = result.Metadata.LastModified,
+            ExpirationTime = result.Metadata.ExpirationTime,
+            Expand = GetExpand()
+        };
+
+        Dictionary<string, object> GetExpand()
+        {
+            var expand = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+            foreach (var item in result.Metadata.HttpMetadata)
+            {
+                if (expand.ContainsKey(item.Key))
+                    continue;
+
+                expand.Add(item.Key, item.Value);
+            }
+            return expand;
+        }
     }
 
-    public Stream GetObject(string bucketName, string objectName, long offset, long length)
+    public ObjectInfoResponse GetObject(GetObjectInfoChunkRequest request)
     {
-        if (length < 0 && length != -1)
-            throw new ArgumentOutOfRangeException(nameof(length), $"{length} should be greater than 0 or -1");
+        if (request.Length < 0 && request.Length != -1)
+            throw new ArgumentOutOfRangeException(nameof(request.Length), $"{request.Length} should be greater than 0 or -1");
 
-        var request = new GetObjectRequest(bucketName, objectName);
-        request.SetRange(offset, length > 0 ? offset + length : length);
-        var result = Oss.GetObject(request);
+        var objectRequest = new GetObjectRequest(request.BucketName, request.ObjectName);
+        objectRequest.SetRange(request.Offset, request.Length > 0 ? request.Offset + request.Length : request.Length);
+        var result = Oss.GetObject(objectRequest);
 
         _logger?.LogDebug("----- Get {ObjectName} from {BucketName} - ({Result})",
-            objectName,
-            bucketName,
+            request.ObjectName,
+            request.BucketName,
             result);
 
-        return result.Content;
+        return new ObjectInfoResponse()
+        {
+            Stream = result.Content,
+            ContentLength = result.ContentLength
+        };
     }
 
-    public void Put(string bucketName, string objectName, Stream data)
+    public void Put(PutObjectStorageRequest request)
     {
         var objectMetadata = _aliyunClientProvider.BuildCallbackMetadata();
 
-        var result = _aliyunClientProvider.EnableResumableUpload(data.Length) ?
-            Oss.PutObject(bucketName, objectName, data, objectMetadata) :
-            Oss.ResumableUploadObject(new UploadObjectRequest(bucketName, objectName, data)
+        var result = _aliyunClientProvider.EnableResumableUpload(request.Stream.Length) ?
+            Oss.PutObject(request.BucketName, request.ObjectName, request.Stream, objectMetadata) :
+            Oss.ResumableUploadObject(new UploadObjectRequest(request.BucketName, request.ObjectName, request.Stream)
             {
                 PartSize = _aliyunClientProvider.AliyunObjectStorageOptions.PartSize,
                 Metadata = objectMetadata
             });
 
         _logger?.LogDebug("----- Upload {ObjectName} from {BucketName} - ({Result})",
-            objectName,
-            bucketName,
+            request.ObjectName,
+            request.BucketName,
             result);
     }
 
-    public bool Exists(string bucketName, string objectName)
+    public bool Exists(ExistObjectStorageRequest request)
     {
-        return Oss.DoesObjectExist(bucketName, objectName);
+        return Oss.DoesObjectExist(request.BucketName, request.ObjectName);
     }
 
-    public void Delete(string bucketName, string objectName)
+    public void Delete(DeleteObjectStorageRequest request)
     {
-        var result = Oss.DeleteObject(bucketName, objectName);
+        var result = Oss.DeleteObject(request.BucketName, request.ObjectName);
         _logger?.LogDebug("----- Delete {ObjectName} from {BucketName} - ({Result})",
-            objectName,
-            bucketName,
+            request.ObjectName,
+            request.BucketName,
             result);
     }
 
-    public void DeleteRange(string bucketName, IEnumerable<string> objectNames)
+    public void BatchDelete(BatchDeleteObjectStorageRequest request)
     {
-        var result = Oss.DeleteObjects(new DeleteObjectsRequest(bucketName, objectNames.ToList(),
+        var result = Oss.DeleteObjects(new DeleteObjectsRequest(request.BucketName, request.ObjectNames,
             _aliyunClientProvider.AliyunObjectStorageOptions.Quiet));
         _logger?.LogDebug("----- Delete {ObjectNames} from {BucketName} - ({Result})",
-            objectNames,
-            bucketName,
+            request.ObjectNames,
+            request.BucketName,
             result);
     }
 
-    public Task<Stream> GetObjectAsync(string bucketName, string objectName, CancellationToken cancellationToken = default)
-        => Task.FromResult(GetObject(bucketName, objectName));
+    public Task<ObjectInfoResponse> GetObjectAsync(GetObjectInfoRequest request, CancellationToken cancellationToken = default)
+        => Task.FromResult(GetObject(request));
 
-    public Task<Stream> GetObjectAsync(
-        string bucketName,
-        string objectName,
-        out long contentLength,
-        CancellationToken cancellationToken = default)
-        => Task.FromResult(GetObject(bucketName, objectName, out contentLength));
-
-    public Task<Stream> GetObjectAsync(string bucketName,
-        string objectName,
-        long offset,
-        long length,
+    public Task<ObjectInfoResponse> GetObjectAsync(GetObjectInfoChunkRequest request,
         CancellationToken cancellationToken = default)
     {
-        return Task.FromResult(GetObject(bucketName, objectName, offset, length));
+        return Task.FromResult(GetObject(request));
     }
 
-    public Task PutAsync(string bucketName, string objectName, Stream data, CancellationToken cancellationToken = default)
+    public Task PutAsync(PutObjectStorageRequest request, CancellationToken cancellationToken = default)
     {
-        Put(bucketName, objectName, data);
+        Put(request);
         return Task.CompletedTask;
     }
 
-    public Task<bool> ExistsAsync(string bucketName, string objectName, CancellationToken cancellationToken = default)
+    public Task<bool> ExistsAsync(ExistObjectStorageRequest request, CancellationToken cancellationToken = default)
     {
-        var res = Exists(bucketName, objectName);
+        var res = Exists(request);
         return Task.FromResult(res);
     }
 
-    public Task DeleteAsync(string bucketName, string objectName, CancellationToken cancellationToken = default)
+    public Task DeleteAsync(DeleteObjectStorageRequest request, CancellationToken cancellationToken = default)
     {
-        Delete(bucketName, objectName);
+        Delete(request);
         return Task.CompletedTask;
     }
 
-    public Task DeleteRangeAsync(string bucketName, IEnumerable<string> objectNames, CancellationToken cancellationToken = default)
+    public Task DeleteRangeAsync(BatchDeleteObjectStorageRequest request, CancellationToken cancellationToken = default)
     {
-        DeleteRange(bucketName, objectNames);
+        BatchDelete(request);
         return Task.CompletedTask;
     }
 }

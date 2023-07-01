@@ -104,6 +104,13 @@ public class AliyunObjectStorageOptions
     public string BucketName { get; set; }
 
     /// <summary>
+    /// enable file overwrite
+    ///
+    /// 启用文件覆盖（当为null时使用<paramref>GlobalObjectStorageConfig.EnableOverwrite</paramref>/>）
+    /// </summary>
+    public bool? EnableOverwrite { get; set; }
+
+    /// <summary>
     /// cache configuration
     ///
     /// 缓存配置
