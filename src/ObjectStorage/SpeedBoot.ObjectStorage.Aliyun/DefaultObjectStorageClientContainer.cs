@@ -33,7 +33,7 @@ public class DefaultObjectStorageClientContainer : IObjectStorageClientContainer
     public void Delete(string objectName)
         => _objectStorageClient.Delete(new DeleteObjectStorageRequest(BucketName, objectName));
 
-    public void DeleteRange(IEnumerable<string> objectNames)
+    public void BatchDelete(IEnumerable<string> objectNames)
         => _objectStorageClient.BatchDelete(new BatchDeleteObjectStorageRequest(BucketName, objectNames.ToList()));
 
     public Task<ObjectInfoResponse> GetObjectAsync(string objectName, CancellationToken cancellationToken = default)
@@ -51,6 +51,6 @@ public class DefaultObjectStorageClientContainer : IObjectStorageClientContainer
     public Task DeleteAsync(string objectName, CancellationToken cancellationToken = default)
         => _objectStorageClient.DeleteAsync(new DeleteObjectStorageRequest(BucketName, objectName), cancellationToken);
 
-    public Task DeleteRangeAsync(IEnumerable<string> objectNames, CancellationToken cancellationToken = default)
-        => _objectStorageClient.DeleteRangeAsync(new BatchDeleteObjectStorageRequest(BucketName, objectNames.ToList()), cancellationToken);
+    public Task BatchDeleteAsync(IEnumerable<string> objectNames, CancellationToken cancellationToken = default)
+        => _objectStorageClient.BatchDeleteAsync(new BatchDeleteObjectStorageRequest(BucketName, objectNames.ToList()), cancellationToken);
 }

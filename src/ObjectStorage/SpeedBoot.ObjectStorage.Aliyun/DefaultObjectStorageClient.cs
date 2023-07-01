@@ -149,7 +149,7 @@ public class DefaultObjectStorageClient : IObjectStorageClient
         return Task.CompletedTask;
     }
 
-    public Task DeleteRangeAsync(BatchDeleteObjectStorageRequest request, CancellationToken cancellationToken = default)
+    public Task BatchDeleteAsync(BatchDeleteObjectStorageRequest request, CancellationToken cancellationToken = default)
     {
         BatchDelete(request);
         return Task.CompletedTask;
