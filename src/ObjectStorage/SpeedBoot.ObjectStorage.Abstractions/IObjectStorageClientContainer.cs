@@ -62,7 +62,7 @@ public interface IObjectStorageClientContainer
     /// </summary>
     /// <param name="objectNames">A collection of filenames to be deleted（待删除的文件集合）</param>
     /// <returns></returns>
-    void DeleteRange(IEnumerable<string> objectNames);
+    void BatchDelete(IEnumerable<string> objectNames);
 
     #endregion
 
@@ -127,7 +127,7 @@ public interface IObjectStorageClientContainer
     /// <param name="objectNames">A collection of filenames to be deleted（待删除的文件集合）</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task DeleteRangeAsync(
+    Task BatchDeleteAsync(
         IEnumerable<string> objectNames,
         CancellationToken cancellationToken = default);
 
