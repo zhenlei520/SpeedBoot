@@ -82,13 +82,24 @@ public class DefaultObjectStorageClient : IObjectStorageClient
 
     public void Put(PutObjectStorageRequest request)
     {
-        var objectMetadata = _aliyunClientProvider.BuildCallbackMetadata();
+        var objectMetadata = _aliyunClientProvider.BuildCallbackMetadata() ?? new ObjectMetadata();
+        var enableOverwrite = request.EnableOverwrite ??
+            _aliyunClientProvider.AliyunObjectStorageOptions.EnableOverwrite ??
+            GlobalObjectStorageConfig.EnableOverwrite;
+        if (!enableOverwrite)
+        {
+            // When x-oss-forbid-overwrite is specified as true, it means that it is forbidden to overwrite the Object with the same name
+            //
+            // 指定x-oss-forbid-overwrite为true时，表示禁止覆盖同名Object
+            objectMetadata.AddHeader("x-oss-forbid-overwrite", "true");
+        }
 
         var result = _aliyunClientProvider.EnableResumableUpload(request.Stream.Length) ?
             Oss.PutObject(request.BucketName, request.ObjectName, request.Stream, objectMetadata) :
             Oss.ResumableUploadObject(new UploadObjectRequest(request.BucketName, request.ObjectName, request.Stream)
             {
                 PartSize = _aliyunClientProvider.AliyunObjectStorageOptions.PartSize,
+                ParallelThreadCount = _aliyunClientProvider.AliyunObjectStorageOptions.ParallelThreadCount,
                 Metadata = objectMetadata
             });
 

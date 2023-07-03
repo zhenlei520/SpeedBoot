@@ -31,18 +31,18 @@ public interface IObjectStorageClient
     string GetToken();
 
     /// <summary>
-    /// 得到文件信息
-    ///
     /// get file information
+    ///
+    /// 得到文件信息
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
     ObjectInfoResponse GetObject(GetObjectInfoRequest request);
 
     /// <summary>
-    /// 得到文件信息
-    ///
     /// get file information
+    ///
+    /// 得到文件信息（范围下载）
     /// </summary>
     /// <param name="request"></param>
     /// <returns></returns>
@@ -89,9 +89,9 @@ public interface IObjectStorageClient
     #region async
 
     /// <summary>
-    /// 得到文件信息
-    ///
     /// get file information
+    ///
+    /// 得到文件信息
     /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>
@@ -99,9 +99,9 @@ public interface IObjectStorageClient
     Task<ObjectInfoResponse> GetObjectAsync(GetObjectInfoRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// 得到文件信息
+    /// get file information（range download）
     ///
-    /// get file information
+    /// 得到文件信息（范围下载）
     /// </summary>
     /// <param name="request"></param>
     /// <param name="cancellationToken"></param>

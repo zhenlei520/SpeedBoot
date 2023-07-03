@@ -18,10 +18,9 @@ public class ConfigurationHelperTest
         var aliyunObjectStorageOptions = ConfigurationHelper.GetAliyunObjectStorageOptions();
 
         Assert.AreEqual(true, aliyunObjectStorageOptions.EnableSts);
-        Assert.AreEqual(null, aliyunObjectStorageOptions.Master);
         Assert.IsNotNull(aliyunObjectStorageOptions.Sts);
-        Assert.AreEqual("AccessKeyId-storage-sts", aliyunObjectStorageOptions.Sts.AccessKeyId);
-        Assert.AreEqual("AccessKeySecret-storage-sts", aliyunObjectStorageOptions.Sts.AccessKeySecret);
+        Assert.AreEqual("AccessKeyId-storage-sts", aliyunObjectStorageOptions.AccessKeyId);
+        Assert.AreEqual("AccessKeySecret-storage-sts", aliyunObjectStorageOptions.AccessKeySecret);
         Assert.AreEqual("RegionId-storage-sts", aliyunObjectStorageOptions.Sts.RegionId);
         Assert.AreEqual(900, aliyunObjectStorageOptions.Sts.DurationSeconds);
         Assert.AreEqual("Policy-storage-sts", aliyunObjectStorageOptions.Sts.Policy);
@@ -51,9 +50,8 @@ public class ConfigurationHelperTest
 
         Assert.AreEqual(false, aliyunObjectStorageOptions.EnableSts);
         Assert.IsNull(aliyunObjectStorageOptions.Sts);
-        Assert.IsNotNull(aliyunObjectStorageOptions.Master);
-        Assert.AreEqual("AccessKeyId-storage-master-2", aliyunObjectStorageOptions.Master.AccessKeyId);
-        Assert.AreEqual("AccessKeySecret-storage-master-2", aliyunObjectStorageOptions.Master.AccessKeySecret);
+        Assert.AreEqual("AccessKeyId-storage-master-2", aliyunObjectStorageOptions.AccessKeyId);
+        Assert.AreEqual("AccessKeySecret-storage-master-2", aliyunObjectStorageOptions.AccessKeySecret);
         Assert.AreEqual("Endpoint-storage-2", aliyunObjectStorageOptions.Endpoint);
         Assert.AreEqual("CallbackUrl-storage-2", aliyunObjectStorageOptions.CallbackUrl);
         Assert.AreEqual("CallbackBody-storage-2", aliyunObjectStorageOptions.CallbackBody);
@@ -76,10 +74,9 @@ public class ConfigurationHelperTest
         var aliyunObjectStorageOptions = ConfigurationHelper.GetAliyunObjectStorageOptions();
 
         Assert.AreEqual(true, aliyunObjectStorageOptions.EnableSts);
-        Assert.AreEqual(null, aliyunObjectStorageOptions.Master);
         Assert.IsNotNull(aliyunObjectStorageOptions.Sts);
-        Assert.AreEqual("AccessKeyId-sts", aliyunObjectStorageOptions.Sts.AccessKeyId);
-        Assert.AreEqual("AccessKeySecret-sts", aliyunObjectStorageOptions.Sts.AccessKeySecret);
+        Assert.AreEqual("AccessKeyId-sts", aliyunObjectStorageOptions.AccessKeyId);
+        Assert.AreEqual("AccessKeySecret-sts", aliyunObjectStorageOptions.AccessKeySecret);
         Assert.AreEqual("RegionId-sts", aliyunObjectStorageOptions.Sts.RegionId);
         Assert.AreEqual(903, aliyunObjectStorageOptions.Sts.DurationSeconds);
         Assert.AreEqual("Policy-sts", aliyunObjectStorageOptions.Sts.Policy);
@@ -109,9 +106,8 @@ public class ConfigurationHelperTest
 
         Assert.AreEqual(false, aliyunObjectStorageOptions.EnableSts);
         Assert.IsNull(aliyunObjectStorageOptions.Sts);
-        Assert.IsNotNull(aliyunObjectStorageOptions.Master);
-        Assert.AreEqual("AccessKeyId-master", aliyunObjectStorageOptions.Master.AccessKeyId);
-        Assert.AreEqual("AccessKeySecret-master", aliyunObjectStorageOptions.Master.AccessKeySecret);
+        Assert.AreEqual("AccessKeyId-master", aliyunObjectStorageOptions.AccessKeyId);
+        Assert.AreEqual("AccessKeySecret-master", aliyunObjectStorageOptions.AccessKeySecret);
         Assert.AreEqual("Endpoint-storage-4", aliyunObjectStorageOptions.Endpoint);
         Assert.AreEqual("CallbackUrl-storage-4", aliyunObjectStorageOptions.CallbackUrl);
         Assert.AreEqual("CallbackBody-storage-4", aliyunObjectStorageOptions.CallbackBody);

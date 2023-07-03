@@ -10,18 +10,8 @@ namespace SpeedBoot.ObjectStorage.Aliyun;
 ///
 /// 阿里云存储配置
 /// </summary>
-public class AliyunObjectStorageOptions
+public class AliyunObjectStorageOptions : AliyunOptions
 {
-
-    #region Aliyun account information 账户信息
-
-    /// <summary>
-    /// Aliyun master account information
-    ///
-    /// 阿里云主账户信息
-    /// </summary>
-    public AliyunOptions? Master { get; set; }
-
     /// <summary>
     /// Aliyun temporary credential information
     ///
@@ -29,14 +19,12 @@ public class AliyunObjectStorageOptions
     /// </summary>
     public AliyunStsOptions? Sts { get; set; }
 
-    #endregion
-
     /// <summary>
     /// If Sts is not equal to null, use temporary credentials
     ///
     /// 如果Sts不等于null，则使用临时凭证
     /// </summary>
-    public bool EnableSts => Sts != null;
+    public bool EnableSts => Sts != null && !Sts.RoleArn.IsNullOrWhiteSpace();
 
     /// <summary>
     /// ObjectStorage API domain information
@@ -80,12 +68,23 @@ public class AliyunObjectStorageOptions
     public long BigObjectContentLength { get; set; } = GlobalObjectStorageConfig.BigFileLength;
 
     /// <summary>
-    /// Gets or sets the size of the part (Required when resuming uploads is enabled)
+    /// Get or set the size of multipart upload (Required when resuming uploads is enabled)
     ///
-    /// 获取或设置零件的大小（开启断点续传时需要）
+    /// 获取或设置分片上传的大小（开启断点续传时需要）
     /// </summary>
     /// <value>The size of the part.</value>
     public long? PartSize { get; set; }
+
+    /// <summary>
+    /// Gets or sets the parallel thread count
+    /// The parallel thread count
+    /// default：3
+    ///
+    /// 获取或设置并行线程数
+    /// 并行线程数
+    /// 默认：3
+    /// </summary>
+    public int ParallelThreadCount { get; set; } = 3;
 
     /// <summary>
     /// true: quiet mode; false: detail mode

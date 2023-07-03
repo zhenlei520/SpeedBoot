@@ -7,6 +7,7 @@ namespace SpeedBoot.ObjectStorage;
 
 public static class ObjectStorageClientExtensions
 {
+
     #region download file（下载文件）
 
     #region async（同步）
@@ -333,6 +334,120 @@ public static class ObjectStorageClientExtensions
         Stream stream,
         bool? enableOverwrite)
         => new(bucketName, objectName, stream, enableOverwrite);
+
+    #endregion
+
+    #region exist （文件是否存在）
+
+    #region sync（同步）
+
+    /// <summary>
+    /// Does the file exist
+    ///
+    /// 文件是否存在
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <returns></returns>
+    public static bool Exists(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        string objectName)
+        => objectStorageClient.Exists(new ExistObjectStorageRequest(bucketName, objectName));
+
+    #endregion
+
+    #region async（异步）
+
+    /// <summary>
+    /// Does the file exist
+    ///
+    /// 文件是否存在
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <returns></returns>
+    public static Task<bool> ExistsAsync(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        string objectName)
+        => objectStorageClient.ExistsAsync(new ExistObjectStorageRequest(bucketName, objectName));
+
+    #endregion
+
+    #endregion
+
+    #region delete （删除文件）
+
+    #region sync（同步）
+
+    /// <summary>
+    /// delete file
+    ///
+    /// 删除文件
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <returns></returns>
+    public static void Delete(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        string objectName)
+        => objectStorageClient.Delete(new DeleteObjectStorageRequest(bucketName, objectName));
+
+    /// <summary>
+    /// Batch delete files
+    ///
+    /// 批量删除文件
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectNames">collection of files to be deleted（待删除的文件集合）</param>
+    /// <returns></returns>
+    public static void BatchDelete(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        params string[] objectNames)
+        => objectStorageClient.BatchDelete(new BatchDeleteObjectStorageRequest(bucketName, objectNames));
+
+    #endregion
+
+    #region async（异步）
+
+    /// <summary>
+    /// Does the file exist
+    ///
+    /// 文件是否存在
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <returns></returns>
+    public static Task DeleteAsync(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        string objectName)
+        => objectStorageClient.DeleteAsync(new DeleteObjectStorageRequest(bucketName, objectName));
+
+    /// <summary>
+    /// Batch delete files
+    ///
+    /// 批量删除文件
+    /// </summary>
+    /// <param name="objectStorageClient"></param>
+    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="objectNames">collection of files to be deleted（待删除的文件集合）</param>
+    /// <returns></returns>
+    public static Task BatchDeleteAsync(
+        this IObjectStorageClient objectStorageClient,
+        string bucketName,
+        params string[] objectNames)
+        => objectStorageClient.BatchDeleteAsync(new BatchDeleteObjectStorageRequest(bucketName, objectNames));
+
+    #endregion
 
     #endregion
 

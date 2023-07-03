@@ -61,6 +61,17 @@ internal class AliyunObjectStorageOptions : Aliyun.AliyunOptions
     public long? PartSize { get; set; }
 
     /// <summary>
+    /// Gets or sets the parallel thread count
+    /// The parallel thread count
+    /// default：3
+    ///
+    /// 获取或设置并行线程数
+    /// 并行线程数
+    /// 默认：3
+    /// </summary>
+    public int ParallelThreadCount { get; set; } = 3;
+
+    /// <summary>
     /// true: quiet mode; false: detail mode
     /// default: true
     ///

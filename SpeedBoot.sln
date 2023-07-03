@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 		LICENSE.md = LICENSE.md
 		packageIcon.png = packageIcon.png
 		README.md = README.md
+		README.zh-CN.md = README.zh-CN.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{20AF2DF3-F2E9-436E-BA4B-CE94C510E510}"

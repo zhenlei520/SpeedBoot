@@ -43,8 +43,8 @@ public class DefaultAliyunClientProvider : IAliyunClientProvider
         if (!_aliyunObjectStorageOptions.EnableSts)
         {
             return new CredentialsResponse(
-                _aliyunObjectStorageOptions.Master!.AccessKeyId,
-                _aliyunObjectStorageOptions.Master!.AccessKeySecret,
+                _aliyunObjectStorageOptions.AccessKeyId,
+                _aliyunObjectStorageOptions.AccessKeySecret,
                 null);
         }
 
@@ -87,8 +87,8 @@ public class DefaultAliyunClientProvider : IAliyunClientProvider
 
         temporaryCredentials = GetTemporaryCredentials(
             _aliyunObjectStorageOptions.Sts!.RegionId!,
-            _aliyunObjectStorageOptions.Sts.AccessKeyId,
-            _aliyunObjectStorageOptions.Sts.AccessKeySecret,
+            _aliyunObjectStorageOptions.AccessKeyId,
+            _aliyunObjectStorageOptions.AccessKeySecret,
             _aliyunObjectStorageOptions.Sts.RoleArn,
             _aliyunObjectStorageOptions.Sts.RoleSessionName,
             _aliyunObjectStorageOptions.Sts.Policy,

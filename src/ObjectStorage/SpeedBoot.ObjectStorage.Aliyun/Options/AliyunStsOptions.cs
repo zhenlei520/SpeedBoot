@@ -7,9 +7,10 @@ namespace SpeedBoot.ObjectStorage.Aliyun;
 
 /// <summary>
 /// aliyun Sts Options
+///
 /// 阿里云 Sts 配置
 /// </summary>
-public class AliyunStsOptions : AliyunOptions
+public class AliyunStsOptions
 {
     /// <summary>
     /// sts region id
@@ -49,6 +50,8 @@ public class AliyunStsOptions : AliyunOptions
 
     /// <summary>
     /// If policy is empty, the user will get all permissions under this role
+    ///
+    /// 如果policy为空，则用户将获得该角色下的所有权限
     /// </summary>
     public string Policy { get; set; }
 
