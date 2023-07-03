@@ -3,12 +3,11 @@
 
 // ReSharper disable once CheckNamespace
 
-
 namespace SpeedBoot.AspNetCore;
 
 public class GenericHostedService : IHostedService
 {
-    public GenericHostedService(IHost host) => AppCore.SetRootServiceProvider(host.Services);
+    public GenericHostedService(IHost host) => AppCore.TryConfigureRootServiceProvider(host.Services);
 
     public Task StartAsync(CancellationToken cancellationToken)
         => Task.CompletedTask;
