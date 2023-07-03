@@ -30,12 +30,27 @@ public interface IObjectStorageClient
     /// <returns></returns>
     string GetToken();
 
+    /// <summary>
+    /// 得到文件信息
+    ///
+    /// get file information
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     ObjectInfoResponse GetObject(GetObjectInfoRequest request);
 
+    /// <summary>
+    /// 得到文件信息
+    ///
+    /// get file information
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
     ObjectInfoResponse GetObject(GetObjectInfoChunkRequest request);
 
     /// <summary>
     /// upload files
+    ///
     /// 上传文件
     /// </summary>
     /// <param name="request"></param>
@@ -53,6 +68,7 @@ public interface IObjectStorageClient
 
     /// <summary>
     /// delete Files
+    ///
     /// 删除文件
     /// </summary>
     /// <param name="request">bucket name（空间名称）</param>
@@ -72,12 +88,29 @@ public interface IObjectStorageClient
 
     #region async
 
+    /// <summary>
+    /// 得到文件信息
+    ///
+    /// get file information
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     Task<ObjectInfoResponse> GetObjectAsync(GetObjectInfoRequest request, CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// 得到文件信息
+    ///
+    /// get file information
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     Task<ObjectInfoResponse> GetObjectAsync(GetObjectInfoChunkRequest request, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// upload files
+    ///
     /// 上传文件
     /// </summary>
     /// <param name="request"></param>
@@ -106,6 +139,7 @@ public interface IObjectStorageClient
 
     /// <summary>
     /// batch delete file
+    ///
     /// 批量删除文件
     /// </summary>
     /// <param name="request"></param>

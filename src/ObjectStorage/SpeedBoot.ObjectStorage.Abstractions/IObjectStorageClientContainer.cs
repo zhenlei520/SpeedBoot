@@ -14,6 +14,13 @@ public interface IObjectStorageClientContainer
 {
     #region sync
 
+    /// <summary>
+    /// 得到文件信息
+    ///
+    /// get file information
+    /// </summary>
+    /// <param name="objectName">file name（文件名）</param>
+    /// <returns></returns>
     ObjectInfoResponse GetObject(string objectName);
 
     /// <summary>
@@ -68,6 +75,14 @@ public interface IObjectStorageClientContainer
 
     #region async
 
+    /// <summary>
+    /// 得到文件信息
+    ///
+    /// get file information
+    /// </summary>
+    /// <param name="objectName"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     Task<ObjectInfoResponse> GetObjectAsync(
         string objectName,
         CancellationToken cancellationToken = default);
