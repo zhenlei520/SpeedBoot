@@ -18,7 +18,7 @@ public static class ObjectStorageClientExtensions
     /// 下载文件（根据文件大小自动选择下载方式，文件大小超过 <paramref>GlobalObjectStorageConfig.BigFileLength</paramref> 使用分块下载，否则使用小文件保存）
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖，当为 null 且使用分块下载时使用<paramref>GlobalObjectStorageConfig.EnableOverwrite</paramref></param>
@@ -47,7 +47,7 @@ public static class ObjectStorageClientExtensions
     /// 下载大文件
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
@@ -73,7 +73,7 @@ public static class ObjectStorageClientExtensions
     /// 下载小文件
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
@@ -100,7 +100,7 @@ public static class ObjectStorageClientExtensions
     /// 下载文件（根据文件大小自动选择下载方式，文件大小超过 <paramref>GlobalObjectStorageConfig.BigFileLength</paramref> 使用分块下载，否则使用小文件保存）
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
@@ -133,7 +133,7 @@ public static class ObjectStorageClientExtensions
     /// 下载大文件
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: true</param>
@@ -165,7 +165,7 @@ public static class ObjectStorageClientExtensions
     /// 下载小文件
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: true</param>
@@ -200,7 +200,7 @@ public static class ObjectStorageClientExtensions
     /// upload file（上传文件）
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
@@ -222,7 +222,7 @@ public static class ObjectStorageClientExtensions
     /// upload small file（上传小文件）
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
@@ -241,7 +241,7 @@ public static class ObjectStorageClientExtensions
     /// upload big file（上传大文件）
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
@@ -264,7 +264,7 @@ public static class ObjectStorageClientExtensions
     /// upload file（上传文件）
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
@@ -288,7 +288,7 @@ public static class ObjectStorageClientExtensions
     /// upload small file（上传小文件）
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
@@ -309,7 +309,7 @@ public static class ObjectStorageClientExtensions
     /// upload big file（上传大文件）
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <param name="fileFullPath">full file path（完整文件地址）</param>
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
@@ -347,7 +347,7 @@ public static class ObjectStorageClientExtensions
     /// 文件是否存在
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <returns></returns>
     public static bool Exists(
@@ -366,7 +366,7 @@ public static class ObjectStorageClientExtensions
     /// 文件是否存在
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <returns></returns>
     public static Task<bool> ExistsAsync(
@@ -389,7 +389,7 @@ public static class ObjectStorageClientExtensions
     /// 删除文件
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <returns></returns>
     public static void Delete(
@@ -404,7 +404,7 @@ public static class ObjectStorageClientExtensions
     /// 批量删除文件
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectNames">collection of files to be deleted（待删除的文件集合）</param>
     /// <returns></returns>
     public static void BatchDelete(
@@ -423,7 +423,7 @@ public static class ObjectStorageClientExtensions
     /// 文件是否存在
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectName">file name（文件名）</param>
     /// <returns></returns>
     public static Task DeleteAsync(
@@ -438,7 +438,7 @@ public static class ObjectStorageClientExtensions
     /// 批量删除文件
     /// </summary>
     /// <param name="objectStorageClient"></param>
-    /// <param name="bucketName">bucket name（空间名称）</param>
+    /// <param name="bucketName">bucket name（桶名（空间名））</param>
     /// <param name="objectNames">collection of files to be deleted（待删除的文件集合）</param>
     /// <returns></returns>
     public static Task BatchDeleteAsync(

@@ -12,18 +12,17 @@ namespace SpeedBoot.ObjectStorage.Aliyun;
 /// </summary>
 public class DefaultAliyunClientProvider : IAliyunClientProvider
 {
-    private readonly AliyunObjectStorageOptions _aliyunObjectStorageOptions;
     private readonly IAliyunAcsClientFactory _aliyunAcsClientFactory;
     private readonly IMemoryCache _memoryCache;
 
-    public AliyunObjectStorageOptions AliyunObjectStorageOptions => _aliyunObjectStorageOptions;
+    public AliyunObjectStorageOptions AliyunObjectStorageOptions { get; }
 
     public DefaultAliyunClientProvider(
         AliyunObjectStorageOptions aliyunObjectStorageOptions,
         IAliyunAcsClientFactory? aliyunAcsClientFactory = null,
         IMemoryCache? memoryCache = null)
     {
-        _aliyunObjectStorageOptions = aliyunObjectStorageOptions;
+        AliyunObjectStorageOptions = aliyunObjectStorageOptions;
         _aliyunAcsClientFactory = aliyunAcsClientFactory ?? new DefaultAliyunAcsClientFactory();
         _memoryCache = memoryCache ?? (aliyunObjectStorageOptions.MemoryCacheOptions != null ?
             new MemoryCache(aliyunObjectStorageOptions.MemoryCacheOptions) :
@@ -40,11 +39,11 @@ public class DefaultAliyunClientProvider : IAliyunClientProvider
     /// <returns></returns>
     public CredentialsResponse GetCredentials()
     {
-        if (!_aliyunObjectStorageOptions.EnableSts)
+        if (!AliyunObjectStorageOptions.EnableSts)
         {
             return new CredentialsResponse(
-                _aliyunObjectStorageOptions.AccessKeyId,
-                _aliyunObjectStorageOptions.AccessKeySecret,
+                AliyunObjectStorageOptions.AccessKeyId,
+                AliyunObjectStorageOptions.AccessKeySecret,
                 null);
         }
 
@@ -64,7 +63,7 @@ public class DefaultAliyunClientProvider : IAliyunClientProvider
     {
         var credential = GetCredentials();
         return new OssClient(
-            _aliyunObjectStorageOptions.Endpoint,
+            AliyunObjectStorageOptions.Endpoint,
             credential.AccessKeyId,
             credential.AccessKeySecret,
             credential.SecurityToken);
@@ -86,13 +85,13 @@ public class DefaultAliyunClientProvider : IAliyunClientProvider
             return temporaryCredentials!;
 
         temporaryCredentials = GetTemporaryCredentials(
-            _aliyunObjectStorageOptions.Sts!.RegionId!,
-            _aliyunObjectStorageOptions.AccessKeyId,
-            _aliyunObjectStorageOptions.AccessKeySecret,
-            _aliyunObjectStorageOptions.Sts.RoleArn,
-            _aliyunObjectStorageOptions.Sts.RoleSessionName,
-            _aliyunObjectStorageOptions.Sts.Policy,
-            _aliyunObjectStorageOptions.Sts.DurationSeconds);
+            AliyunObjectStorageOptions.Sts!.RegionId!,
+            AliyunObjectStorageOptions.AccessKeyId,
+            AliyunObjectStorageOptions.AccessKeySecret,
+            AliyunObjectStorageOptions.Sts.RoleArn,
+            AliyunObjectStorageOptions.Sts.RoleSessionName,
+            AliyunObjectStorageOptions.Sts.Policy,
+            AliyunObjectStorageOptions.Sts.DurationSeconds);
         SetTemporaryCredentials(temporaryCredentials);
         return temporaryCredentials!;
     }
@@ -144,7 +143,7 @@ public class DefaultAliyunClientProvider : IAliyunClientProvider
     /// <param name="credentials"></param>
     private void SetTemporaryCredentials(TemporaryCredentialsResponse credentials)
     {
-        var timespan = (DateTime.UtcNow - credentials.Expiration!.Value).TotalSeconds - _aliyunObjectStorageOptions.Sts!.EarlyExpires;
+        var timespan = (DateTime.UtcNow - credentials.Expiration!.Value).TotalSeconds - AliyunObjectStorageOptions.Sts!.EarlyExpires;
         if (timespan >= 0)
             _memoryCache.Set(AliyunStorageConstant.TEMPORARY_CREDENTIALS_CACHE_KEY, credentials, TimeSpan.FromSeconds(timespan));
     }
@@ -163,13 +162,13 @@ public class DefaultAliyunClientProvider : IAliyunClientProvider
     /// <returns></returns>
     public ObjectMetadata? BuildCallbackMetadata()
     {
-        if (_aliyunObjectStorageOptions.CallbackBody.IsNullOrWhiteSpace() ||
-            _aliyunObjectStorageOptions.CallbackUrl.IsNullOrWhiteSpace())
+        if (AliyunObjectStorageOptions.CallbackBody.IsNullOrWhiteSpace() ||
+            AliyunObjectStorageOptions.CallbackUrl.IsNullOrWhiteSpace())
         {
             return null;
         }
         var callbackHeaderBuilder =
-            new CallbackHeaderBuilder(_aliyunObjectStorageOptions.CallbackUrl, _aliyunObjectStorageOptions.CallbackBody).Build();
+            new CallbackHeaderBuilder(AliyunObjectStorageOptions.CallbackUrl, AliyunObjectStorageOptions.CallbackBody).Build();
         var metadata = new ObjectMetadata();
         metadata.AddHeader(HttpHeaders.Callback, callbackHeaderBuilder);
         return metadata;
@@ -188,7 +187,7 @@ public class DefaultAliyunClientProvider : IAliyunClientProvider
     /// <returns></returns>
     public bool EnableResumableUpload(long streamSize)
     {
-        return _aliyunObjectStorageOptions.EnableResumableUpload && _aliyunObjectStorageOptions.BigObjectContentLength > streamSize;
+        return AliyunObjectStorageOptions.EnableResumableUpload && AliyunObjectStorageOptions.BigObjectContentLength > streamSize;
     }
 
     #endregion

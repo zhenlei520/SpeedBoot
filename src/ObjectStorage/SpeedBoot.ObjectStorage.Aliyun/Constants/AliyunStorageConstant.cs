@@ -8,7 +8,7 @@ namespace SpeedBoot.ObjectStorage.Aliyun;
 public static class AliyunStorageConstant
 {
     /// <summary>
-    /// Alibaba Cloud storage configuration node
+    /// Aliyun storage configuration node
     ///
     /// 阿里云存储配置节点
     /// </summary>

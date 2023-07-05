@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Minio" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Extensions\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj" />
+    <ProjectReference Include="..\..\SpeedBoot.Core\SpeedBoot.Core.csproj" />
+    <ProjectReference Include="..\SpeedBoot.ObjectStorage.Abstractions\SpeedBoot.ObjectStorage.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\SpeedBoot.Core\Extensions\Internal\ServiceCollectionUtils.cs">
+      <Link>Internal\ServiceCollectionUtils.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+</Project>

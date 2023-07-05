@@ -27,13 +27,6 @@ public class ObjectInfoResponse : ObjectStorageResponseBase
     public long ContentLength { get; set; }
 
     /// <summary>
-    /// File md5 value (used to confirm whether it is the same file)
-    ///
-    /// 文件md5值（用于确认是否同一文件）
-    /// </summary>
-    public string ContentMd5 { get; set; }
-
-    /// <summary>
     /// File Content-Type
     ///
     /// 文件类型
@@ -55,18 +48,31 @@ public class ObjectInfoResponse : ObjectStorageResponseBase
     public DateTime? ExpirationTime { get; set; }
 
     /// <summary>
+    /// File md5 value (used to confirm whether it is the same file)
+    /// options
+    ///
+    /// 文件md5值（用于确认是否同一文件）
+    /// 可选
+    /// </summary>
+    public string? ContentMd5 { get; set; }
+
+    /// <summary>
     /// Content Encoding
+    /// options
     ///
     /// 编码格式
+    /// 可选
     /// </summary>
     public string? ContentEncoding { get; set; }
 
     /// <summary>
     /// Expand data（not uniform, inconsistent across platforms）
     /// The extended information includes ContentLength, ContentType and other information
+    /// Optional
     ///
     /// 扩展信息（不统一，各个平台不一致）
     /// 扩展信息中包含ContentLength、ContentType等信息
+    /// 可选
     /// </summary>
     public Dictionary<string, object> Expand { get; set; }
 }

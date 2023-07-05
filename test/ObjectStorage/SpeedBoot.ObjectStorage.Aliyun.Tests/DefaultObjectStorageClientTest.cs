@@ -18,9 +18,6 @@ public class DefaultObjectStorageClientTest
     /// <param name="isUseSts"></param>
     [DataRow(true)]
     [DataTestMethod]
-
-    #endregion
-
     public void TestGetCredentials(bool isUseSts)
     {
         var objectStorageClient = GetObjectStorageClient(isUseSts, out AliyunObjectStorageOptions aliyunObjectStorageOptions);
@@ -38,6 +35,7 @@ public class DefaultObjectStorageClientTest
             Assert.IsNotNull(credentials.SecurityToken);
         }
     }
+    #endregion
 
     #region Download the file locally（下载文件到本地）
 
@@ -48,6 +46,7 @@ public class DefaultObjectStorageClientTest
     /// </summary>
     /// <param name="isUseSts"></param>
     [DataRow(true)]
+    [DataRow(false)]
     [DataTestMethod]
     public void TestDownloadFile(bool isUseSts)
     {
@@ -65,7 +64,7 @@ public class DefaultObjectStorageClientTest
     /// Upload file locally（上传文件到云）
     /// </summary>
     /// <param name="isUseSts"></param>
-    // [DataRow(true)]
+    [DataRow(true)]
     [DataRow(false)]
     [DataTestMethod]
     public void TestUploadFile(bool isUseSts)
@@ -86,6 +85,7 @@ public class DefaultObjectStorageClientTest
     /// </summary>
     /// <param name="isUseSts"></param>
     [DataRow(true)]
+    [DataRow(false)]
     [DataTestMethod]
     public void Exist(bool isUseSts)
     {
@@ -102,6 +102,7 @@ public class DefaultObjectStorageClientTest
     /// </summary>
     /// <param name="isUseSts"></param>
     [DataRow(true)]
+    [DataRow(false)]
     [DataTestMethod]
     public void Delete(bool isUseSts)
     {
@@ -117,6 +118,7 @@ public class DefaultObjectStorageClientTest
     /// </summary>
     /// <param name="isUseSts"></param>
     [DataRow(true)]
+    [DataRow(false)]
     [DataTestMethod]
     public void BatchDelete(bool isUseSts)
     {
@@ -135,7 +137,7 @@ public class DefaultObjectStorageClientTest
         bool isUseSts,
         out AliyunObjectStorageOptions aliyunObjectStorageOptions)
     {
-        aliyunObjectStorageOptions = isUseSts ? GetAliyunObjectStorageOptionsByMaster() : GetAliyunObjectStorageOptionsByTemporary();
+        aliyunObjectStorageOptions = isUseSts ? GetAliyunObjectStorageOptions() : GetAliyunObjectStorageOptionsBySts();
         var aliyunClientProvider = new DefaultAliyunClientProvider(aliyunObjectStorageOptions);
         return new DefaultObjectStorageClient(aliyunClientProvider, null);
     }
@@ -150,9 +152,9 @@ public class DefaultObjectStorageClientTest
     /// 获取配置（主账户）
     /// </summary>
     /// <returns></returns>
-    private AliyunObjectStorageOptions GetAliyunObjectStorageOptionsByMaster()
+    private AliyunObjectStorageOptions GetAliyunObjectStorageOptions()
     {
-        var file = "aliyun.master.json";
+        var file = "aliyun.json";
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile(file)
@@ -167,9 +169,9 @@ public class DefaultObjectStorageClientTest
     /// 获取配置（临时凭证）
     /// </summary>
     /// <returns></returns>
-    private AliyunObjectStorageOptions GetAliyunObjectStorageOptionsByTemporary()
+    private AliyunObjectStorageOptions GetAliyunObjectStorageOptionsBySts()
     {
-        var file = "aliyun.temporary.json";
+        var file = "aliyun.sts.json";
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile(file)
