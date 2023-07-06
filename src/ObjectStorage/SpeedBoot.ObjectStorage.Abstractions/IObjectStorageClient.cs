@@ -71,7 +71,7 @@ public interface IObjectStorageClient
     ///
     /// 删除文件
     /// </summary>
-    /// <param name="request">bucket name（空间名称）</param>
+    /// <param name="request">bucket name（桶名（空间名））</param>
     /// <returns></returns>
     void Delete(DeleteObjectStorageRequest request);
 

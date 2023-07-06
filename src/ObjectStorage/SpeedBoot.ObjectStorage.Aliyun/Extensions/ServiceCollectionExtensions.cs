@@ -26,6 +26,7 @@ public static class ServiceCollectionExtensions
             return aliyunClientProvider;
         });
         services.AddSingleton<IObjectStorageClient, DefaultObjectStorageClient>();
+        services.AddSingleton<IObjectStorageClientContainer, DefaultObjectStorageClientContainer>();
         return services;
     }
 

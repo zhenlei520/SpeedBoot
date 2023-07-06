@@ -18,13 +18,18 @@ public class PutObjectStorageRequest : ObjectStorageRequestBase
     public Stream Stream { get; set; }
 
     /// <summary>
-    /// enable file overwrite（启用文件覆盖）
+    /// Enable file overwrite（启用文件覆盖）
     ///
     /// default: true
     /// </summary>
     public bool? EnableOverwrite { get; set; }
 
-    public PutObjectStorageRequest() { }
+    /// <summary>
+    /// Content Type
+    ///
+    /// 内容类型
+    /// </summary>
+    public string? ContentType { get; set; }
 
     public PutObjectStorageRequest(string bucketName, string objectName, Stream stream, bool? enableOverwrite = null)
         : base(bucketName, objectName)

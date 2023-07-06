@@ -13,7 +13,7 @@ namespace SpeedBoot.ObjectStorage;
 public abstract class ObjectStorageRequestBase
 {
     /// <summary>
-    /// bucket name（空间名称）
+    /// bucket name（桶名称（空间名称））
     /// </summary>
     public string BucketName { get; set; }
 

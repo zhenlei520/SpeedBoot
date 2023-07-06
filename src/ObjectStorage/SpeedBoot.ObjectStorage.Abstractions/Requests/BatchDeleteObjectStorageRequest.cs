@@ -8,7 +8,7 @@ namespace SpeedBoot.ObjectStorage;
 public class BatchDeleteObjectStorageRequest
 {
     /// <summary>
-    /// bucket name（空间名称）
+    /// bucket name（桶名（空间名））
     /// </summary>
     public string BucketName { get; set; }
 

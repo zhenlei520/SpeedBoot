@@ -56,6 +56,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ObjectStorage", "ObjectStor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.ObjectStorage.Aliyun.Tests", "test\ObjectStorage\SpeedBoot.ObjectStorage.Aliyun.Tests\SpeedBoot.ObjectStorage.Aliyun.Tests.csproj", "{4629A199-B115-4C86-888C-9E28DB163BA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.ObjectStorage.Minio", "src\ObjectStorage\SpeedBoot.ObjectStorage.Minio\SpeedBoot.ObjectStorage.Minio.csproj", "{49329F99-3BEB-47C1-A4CF-699B5FEB774D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.ObjectStorage.Minio.Tests", "test\ObjectStorage\SpeedBoot.ObjectStorage.Minio.Tests\SpeedBoot.ObjectStorage.Minio.Tests.csproj", "{E55F548B-C24D-4E1D-9D3C-D491D63A1E89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +122,14 @@ Global
 		{4629A199-B115-4C86-888C-9E28DB163BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4629A199-B115-4C86-888C-9E28DB163BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4629A199-B115-4C86-888C-9E28DB163BA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49329F99-3BEB-47C1-A4CF-699B5FEB774D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49329F99-3BEB-47C1-A4CF-699B5FEB774D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49329F99-3BEB-47C1-A4CF-699B5FEB774D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49329F99-3BEB-47C1-A4CF-699B5FEB774D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E55F548B-C24D-4E1D-9D3C-D491D63A1E89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E55F548B-C24D-4E1D-9D3C-D491D63A1E89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E55F548B-C24D-4E1D-9D3C-D491D63A1E89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E55F548B-C24D-4E1D-9D3C-D491D63A1E89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,5 +154,7 @@ Global
 		{6D5681B1-2C84-4A08-BF65-BC84EA35D5BF} = {5AE8DCA0-484F-4E69-BDDF-A2950F7011FD}
 		{89C89792-41EA-4E3A-87DF-0CCEB7CE31C8} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{4629A199-B115-4C86-888C-9E28DB163BA9} = {89C89792-41EA-4E3A-87DF-0CCEB7CE31C8}
+		{49329F99-3BEB-47C1-A4CF-699B5FEB774D} = {5AE8DCA0-484F-4E69-BDDF-A2950F7011FD}
+		{E55F548B-C24D-4E1D-9D3C-D491D63A1E89} = {89C89792-41EA-4E3A-87DF-0CCEB7CE31C8}
 	EndGlobalSection
 EndGlobal
