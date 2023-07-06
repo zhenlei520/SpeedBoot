@@ -3,7 +3,6 @@
 
 // ReSharper disable once CheckNamespace
 
-
 namespace SpeedBoot.ObjectStorage.Minio;
 
 public class MinioObjectStorageOptions
@@ -12,13 +11,13 @@ public class MinioObjectStorageOptions
     /// account AccessKey ID（optional）
     /// 访问秘钥id（可选）
     /// </summary>
-    public string AccessKeyId { get; set; }
+    public string AccessKey { get; set; }
 
     /// <summary>
     /// account AccessKey Secret（optional）
     /// 访问秘钥密码（可选）
     /// </summary>
-    public string AccessKeySecret { get; set; }
+    public string SecretKey { get; set; }
 
     /// <summary>
     /// ObjectStorage API domain information

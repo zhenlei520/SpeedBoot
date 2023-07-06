@@ -35,6 +35,7 @@ public class DefaultObjectStorageClientTest
             Assert.IsNotNull(credentials.SecurityToken);
         }
     }
+
     #endregion
 
     #region Download the file locally（下载文件到本地）
@@ -97,6 +98,7 @@ public class DefaultObjectStorageClientTest
     #endregion
 
     #region delete file（删除文件）
+
     /// <summary>
     /// delete file（删除文件）
     /// </summary>
@@ -137,7 +139,7 @@ public class DefaultObjectStorageClientTest
         bool isUseSts,
         out AliyunObjectStorageOptions aliyunObjectStorageOptions)
     {
-        aliyunObjectStorageOptions = isUseSts ? GetAliyunObjectStorageOptions() : GetAliyunObjectStorageOptionsBySts();
+        aliyunObjectStorageOptions = isUseSts ? GetAliyunObjectStorageOptionsBySts() : GetAliyunObjectStorageOptions();
         var aliyunClientProvider = new DefaultAliyunClientProvider(aliyunObjectStorageOptions);
         return new DefaultObjectStorageClient(aliyunClientProvider, null);
     }
@@ -181,4 +183,5 @@ public class DefaultObjectStorageClientTest
     }
 
     #endregion
+
 }

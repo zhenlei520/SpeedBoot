@@ -44,17 +44,25 @@ public class DefaultObjectStorageClient : IObjectStorageClient
 
     public async Task<ObjectInfoResponse> GetObjectAsync(GetObjectInfoRequest request, CancellationToken cancellationToken = default)
     {
-        Stream? objectStream = null;
+        var memoryStream = new MemoryStream();
         var getObjectArgs = GetObjectsArgs<GetObjectArgs>(request)
             .WithCallbackStream(stream =>
             {
-                objectStream = stream;
+                if (stream != null)
+                {
+                    stream.CopyTo(memoryStream);
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                }
+                else
+                {
+                    memoryStream = null;
+                }
             });
         var objectStat = await MinioClient.GetObjectAsync(getObjectArgs, cancellationToken);
         return new ObjectInfoResponse()
         {
             RequestId = objectStat.VersionId,
-            Stream = objectStream!,
+            Stream = memoryStream!,
             ContentLength = objectStat.Size,
             ContentType = objectStat.ContentType,
             LastModified = objectStat.LastModified,
@@ -88,7 +96,8 @@ public class DefaultObjectStorageClient : IObjectStorageClient
     public async Task PutAsync(PutObjectStorageRequest request, CancellationToken cancellationToken = default)
     {
         var putObjectArgs = GetObjectsArgs<PutObjectArgs>(request)
-            .WithStreamData(request.Stream);
+            .WithStreamData(request.Stream)
+            .WithObjectSize(request.Stream.Length);
 
         if (!request.ContentType.IsNullOrWhiteSpace())
         {

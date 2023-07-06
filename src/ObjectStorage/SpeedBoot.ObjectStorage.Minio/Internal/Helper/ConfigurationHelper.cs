@@ -17,9 +17,9 @@ internal static class ConfigurationHelper
     /// <returns></returns>
     public static MinioObjectStorageOptions GetMinioObjectStorageOptions()
     {
-        var aliyunObjectStorageSectionName = GetMinioObjectStorageSectionName();
+        var minioObjectStorageSectionName = GetMinioObjectStorageSectionName();
 
-        var minioObjectStorageOptions = AppConfiguration.GetOptions<MinioObjectStorageOptions>(aliyunObjectStorageSectionName);
+        var minioObjectStorageOptions = AppConfiguration.GetOptions<MinioObjectStorageOptions>(minioObjectStorageSectionName);
 
         return minioObjectStorageOptions;
     }
