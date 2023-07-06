@@ -14,7 +14,7 @@ public class DefaultMinioClientProvider : IMinioClientProvider
 
     public CredentialsResponse GetCredentials()
     {
-        return new CredentialsResponse(MinioObjectStorageOptions.AccessKey, MinioObjectStorageOptions.SecretKey, null);
+        return new CredentialsResponse(MinioObjectStorageOptions.AccessKeyId, MinioObjectStorageOptions.AccessKeySecret, null);
     }
 
     public MinioClient GetClient()

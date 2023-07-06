@@ -13,4 +13,9 @@ public static class MinioStorageConstant
     /// Minio存储配置节点
     /// </summary>
     public const string Minio_OBJECT_STORAGE_SECTION_NAME = "MinioObjectStorage";
+
+    /// <summary>
+    /// Minio临时凭证缓存key
+    /// </summary>
+    public const string TEMPORARY_CREDENTIALS_CACHE_KEY = "Minio.Storage.TemporaryCredentials";
 }

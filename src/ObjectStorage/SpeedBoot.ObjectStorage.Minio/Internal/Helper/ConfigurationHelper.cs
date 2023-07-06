@@ -19,9 +19,20 @@ internal static class ConfigurationHelper
     {
         var minioObjectStorageSectionName = GetMinioObjectStorageSectionName();
 
-        var minioObjectStorageOptions = AppConfiguration.GetOptions<MinioObjectStorageOptions>(minioObjectStorageSectionName);
+        var minioObjectStorageOptions =
+            AppConfiguration.GetOptions<SpeedBoot.ObjectStorage.Minio.Internal.Options.MinioObjectStorageOptions>(minioObjectStorageSectionName);
 
-        return minioObjectStorageOptions;
+        return new MinioObjectStorageOptions()
+        {
+            AccessKeyId = minioObjectStorageOptions.AccessKeyId,
+            AccessKeySecret = minioObjectStorageOptions.AccessKeySecret,
+            Endpoint = minioObjectStorageOptions.Endpoint,
+            EnableHttps = minioObjectStorageOptions.EnableHttps,
+            Timeout = minioObjectStorageOptions.Timeout,
+            Region = minioObjectStorageOptions.Region,
+            BucketName = minioObjectStorageOptions.BucketName,
+            EnableOverwrite=minioObjectStorageOptions.EnableOverwrite
+        };
     }
 
     /// <summary>

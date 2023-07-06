@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMinio(this IServiceCollection services)
-        => services.AddMinio(null);
+        => services.AddMinio(ConfigurationHelper.GetMinioObjectStorageOptions());
 
     public static IServiceCollection AddMinio(
         this IServiceCollection services,
@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
             return minioClientProvider;
         });
         services.AddSingleton<IObjectStorageClient, DefaultObjectStorageClient>();
+        services.AddSingleton<IObjectStorageClientContainer, DefaultObjectStorageClientContainer>();
         return services;
     }
 

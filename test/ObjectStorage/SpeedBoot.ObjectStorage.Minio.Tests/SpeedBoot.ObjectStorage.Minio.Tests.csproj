@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Extensions\SpeedBoot.Extensions.DependencyInjection\SpeedBoot.Extensions.DependencyInjection.csproj" />
     <ProjectReference Include="..\..\..\src\ObjectStorage\SpeedBoot.ObjectStorage.Minio\SpeedBoot.ObjectStorage.Minio.csproj" />
   </ItemGroup>
 

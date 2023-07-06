@@ -1,9 +1,7 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-// ReSharper disable once CheckNamespace
-
-namespace SpeedBoot.ObjectStorage.Minio;
+namespace SpeedBoot.ObjectStorage.Minio.Internal.Options;
 
 public class MinioObjectStorageOptions
 {
@@ -25,13 +23,6 @@ public class MinioObjectStorageOptions
     /// ObjectStorage API域信息
     /// </summary>
     public string Endpoint { get; set; }
-
-    /// <summary>
-    /// Web Proxy
-    ///
-    /// Web代理
-    /// </summary>
-    public IWebProxy? WebProxy { get; set; }
 
     /// <summary>
     /// enable https

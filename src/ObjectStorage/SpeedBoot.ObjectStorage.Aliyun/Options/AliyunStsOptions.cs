@@ -18,8 +18,8 @@ public class AliyunStsOptions
     /// https://www.alibabacloud.com/help/en/resource-access-management/latest/endpoints#reference-sdg-3pv-xdb
     /// example: cn-hongkong
     ///
-    /// 如果RegionId缺失，则无法获取临时Sts凭证。
     /// sts区域id
+    /// 如果RegionId缺失，则无法获取临时Sts凭证。
     /// https://help.aliyun.com/document_detail/371859.html
     /// 例如：cn-hongkong
     /// </summary>

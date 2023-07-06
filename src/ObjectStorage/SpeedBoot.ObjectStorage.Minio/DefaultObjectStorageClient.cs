@@ -95,6 +95,17 @@ public class DefaultObjectStorageClient : IObjectStorageClient
 
     public async Task PutAsync(PutObjectStorageRequest request, CancellationToken cancellationToken = default)
     {
+        var enableOverwrite = request.EnableOverwrite ??
+            _minioClientProvider.MinioObjectStorageOptions.EnableOverwrite ??
+            GlobalObjectStorageConfig.EnableOverwrite;
+
+        if (!enableOverwrite)
+        {
+            if (await ExistsAsync(new ExistObjectStorageRequest(request.BucketName, request.ObjectName), cancellationToken))
+            {
+                throw new SpeedFriendlyException("The file already exists, please change the file name or allow the file to be overwritten");
+            }
+        }
         var putObjectArgs = GetObjectsArgs<PutObjectArgs>(request)
             .WithStreamData(request.Stream)
             .WithObjectSize(request.Stream.Length);
@@ -103,7 +114,7 @@ public class DefaultObjectStorageClient : IObjectStorageClient
         {
             putObjectArgs = putObjectArgs.WithContentType(request.ContentType);
         }
-        var putObjectResponse = await MinioClient.PutObjectAsync(putObjectArgs, cancellationToken);
+        await MinioClient.PutObjectAsync(putObjectArgs, cancellationToken);
     }
 
     public async Task<bool> ExistsAsync(ExistObjectStorageRequest request, CancellationToken cancellationToken = default)
@@ -114,7 +125,7 @@ public class DefaultObjectStorageClient : IObjectStorageClient
         try
         {
             var statObjectArgs = GetObjectsArgs<StatObjectArgs>(request);
-            var objectStat = await MinioClient.StatObjectAsync(statObjectArgs, cancellationToken);
+            await MinioClient.StatObjectAsync(statObjectArgs, cancellationToken);
             return true;
         }
         catch (Exception ex)

@@ -13,13 +13,10 @@ public class DefaultObjectStorageClientTest
     /// <summary>
     /// Upload file locally（上传文件到云）
     /// </summary>
-    /// <param name="isUseSts"></param>
-    // [DataRow(true)]
-    [DataRow(false)]
-    [DataTestMethod]
-    public void TestUploadFile(bool isUseSts)
+    [TestMethod]
+    public void TestUploadFile()
     {
-        var objectStorageClient = GetObjectStorageClient(isUseSts, out MinioObjectStorageOptions minioObjectStorageOptions);
+        var objectStorageClient = GetObjectStorageClient(out var minioObjectStorageOptions);
         objectStorageClient.UploadFile(
             minioObjectStorageOptions.BucketName,
             OBJECT_NAME,
@@ -35,13 +32,10 @@ public class DefaultObjectStorageClientTest
     ///
     /// 下载文件到本地
     /// </summary>
-    /// <param name="isUseSts"></param>
-    // [DataRow(true)]
-    [DataRow(false)]
-    [DataTestMethod]
-    public void TestDownloadFile(bool isUseSts)
+    [TestMethod]
+    public void TestDownloadFile()
     {
-        var objectStorageClient = GetObjectStorageClient(isUseSts, out MinioObjectStorageOptions minioObjectStorageOptions);
+        var objectStorageClient = GetObjectStorageClient(out MinioObjectStorageOptions minioObjectStorageOptions);
         var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logo.jpg");
         objectStorageClient.DownloadFile(minioObjectStorageOptions.BucketName, OBJECT_NAME, filePath);
         Assert.IsTrue(File.Exists(filePath));
@@ -54,13 +48,10 @@ public class DefaultObjectStorageClientTest
     /// <summary>
     /// Exist（是否存在）
     /// </summary>
-    /// <param name="isUseSts"></param>
-    // [DataRow(true)]
-    [DataRow(false)]
-    [DataTestMethod]
-    public void Exist(bool isUseSts)
+    [TestMethod]
+    public void Exist()
     {
-        var objectStorageClient = GetObjectStorageClient(isUseSts, out MinioObjectStorageOptions minioObjectStorageOptions);
+        var objectStorageClient = GetObjectStorageClient( out var minioObjectStorageOptions);
 
         Assert.AreEqual(true, objectStorageClient.Exists(minioObjectStorageOptions.BucketName, OBJECT_NAME));
     }
@@ -72,13 +63,10 @@ public class DefaultObjectStorageClientTest
     /// <summary>
     /// delete file（删除文件）
     /// </summary>
-    /// <param name="isUseSts"></param>
-    // [DataRow(true)]
-    [DataRow(false)]
-    [DataTestMethod]
-    public void Delete(bool isUseSts)
+    [TestMethod]
+    public void Delete()
     {
-        var objectStorageClient = GetObjectStorageClient(isUseSts, out MinioObjectStorageOptions minioObjectStorageOptions);
+        var objectStorageClient = GetObjectStorageClient(out var minioObjectStorageOptions);
 
         Assert.AreEqual(true, objectStorageClient.Exists(minioObjectStorageOptions.BucketName, OBJECT_NAME));
         objectStorageClient.Delete(minioObjectStorageOptions.BucketName, OBJECT_NAME);
@@ -88,13 +76,10 @@ public class DefaultObjectStorageClientTest
     /// <summary>
     /// delete file（删除文件）
     /// </summary>
-    /// <param name="isUseSts"></param>
-    // [DataRow(true)]
-    [DataRow(false)]
-    [DataTestMethod]
-    public void BatchDelete(bool isUseSts)
+    [TestMethod]
+    public void BatchDelete()
     {
-        var objectStorageClient = GetObjectStorageClient(isUseSts, out MinioObjectStorageOptions minioObjectStorageOptions);
+        var objectStorageClient = GetObjectStorageClient(out var minioObjectStorageOptions);
 
         Assert.AreEqual(true, objectStorageClient.Exists(minioObjectStorageOptions.BucketName, OBJECT_NAME));
         objectStorageClient.BatchDelete(minioObjectStorageOptions.BucketName, OBJECT_NAME);
@@ -106,10 +91,9 @@ public class DefaultObjectStorageClientTest
     #region Get Object Storage Client（获取对象存储客户端）
 
     private DefaultObjectStorageClient GetObjectStorageClient(
-        bool isUseSts,
         out MinioObjectStorageOptions minioObjectStorageOptions)
     {
-        minioObjectStorageOptions = isUseSts ? GetMinioObjectStorageOptionsBySts() : GetMinioObjectStorageOptions();
+        minioObjectStorageOptions = GetMinioObjectStorageOptions();
         var minioClientProvider = new DefaultMinioClientProvider(minioObjectStorageOptions);
         return new DefaultObjectStorageClient(minioClientProvider, null);
     }
@@ -127,23 +111,6 @@ public class DefaultObjectStorageClientTest
     private MinioObjectStorageOptions GetMinioObjectStorageOptions()
     {
         const string file = "minio.json";
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(file)
-            .Build();
-        AppCore.ConfigureConfiguration(configuration);
-        return ConfigurationHelper.GetMinioObjectStorageOptions();
-    }
-
-    /// <summary>
-    /// Get configuration (temporary credentials)
-    ///
-    /// 获取配置（临时凭证）
-    /// </summary>
-    /// <returns></returns>
-    private MinioObjectStorageOptions GetMinioObjectStorageOptionsBySts()
-    {
-        const string file = "minio.sts.json";
         var configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile(file)

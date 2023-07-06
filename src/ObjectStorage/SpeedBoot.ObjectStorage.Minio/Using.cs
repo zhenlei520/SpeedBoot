@@ -9,3 +9,5 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using SpeedBoot.ObjectStorage;
 global using System.Runtime.CompilerServices;
+global using Minio.Credentials;
+global using Microsoft.Extensions.Caching.Memory;
