@@ -10,12 +10,7 @@ public class ConfigurationHelperTest
     public void TestGetAliyunObjectStorageOptions()
     {
         var file = "appsettings.json";
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(file)
-            .Build();
-        AppCore.ConfigureConfiguration(configuration);
-        var aliyunObjectStorageOptions = ConfigurationHelper.GetAliyunObjectStorageOptions();
+        var aliyunObjectStorageOptions = AliyunObjectStorageOptionsUtils.GetAliyunObjectStorageOptions(file);
 
         Assert.AreEqual(true, aliyunObjectStorageOptions.EnableSts);
         Assert.IsNotNull(aliyunObjectStorageOptions.Sts);
@@ -41,12 +36,7 @@ public class ConfigurationHelperTest
     public void TestGetAliyunObjectStorageOptions2()
     {
         var file = "appsettings2.json";
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(file)
-            .Build();
-        AppCore.ConfigureConfiguration(configuration);
-        var aliyunObjectStorageOptions = ConfigurationHelper.GetAliyunObjectStorageOptions();
+        var aliyunObjectStorageOptions = AliyunObjectStorageOptionsUtils.GetAliyunObjectStorageOptions(file);
 
         Assert.AreEqual(false, aliyunObjectStorageOptions.EnableSts);
         Assert.IsNull(aliyunObjectStorageOptions.Sts);
@@ -66,12 +56,7 @@ public class ConfigurationHelperTest
     public void TestGetAliyunObjectStorageOptions3()
     {
         var file = "appsettings3.json";
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(file)
-            .Build();
-        AppCore.ConfigureConfiguration(configuration);
-        var aliyunObjectStorageOptions = ConfigurationHelper.GetAliyunObjectStorageOptions();
+        var aliyunObjectStorageOptions = AliyunObjectStorageOptionsUtils.GetAliyunObjectStorageOptions(file);
 
         Assert.AreEqual(true, aliyunObjectStorageOptions.EnableSts);
         Assert.IsNotNull(aliyunObjectStorageOptions.Sts);
@@ -97,12 +82,7 @@ public class ConfigurationHelperTest
     public void TestGetAliyunObjectStorageOptions4()
     {
         var file = "appsettings4.json";
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(file)
-            .Build();
-        AppCore.ConfigureConfiguration(configuration);
-        var aliyunObjectStorageOptions = ConfigurationHelper.GetAliyunObjectStorageOptions();
+        var aliyunObjectStorageOptions = AliyunObjectStorageOptionsUtils.GetAliyunObjectStorageOptions(file);
 
         Assert.AreEqual(false, aliyunObjectStorageOptions.EnableSts);
         Assert.IsNull(aliyunObjectStorageOptions.Sts);

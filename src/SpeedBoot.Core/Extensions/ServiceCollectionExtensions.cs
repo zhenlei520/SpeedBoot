@@ -7,75 +7,45 @@ namespace SpeedBoot;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure = null)
+    public static SpeedBootApplicationExternal AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure = null)
     {
         if (!ServiceCollectionUtils.TryAdd<SpeedProvider>(services))
-            return services;
+            return services.GetRequiredSingletonInstance<SpeedBootApplicationExternal>();
 
         var speedOptions = new SpeedOptions();
         configure?.Invoke(speedOptions);
 
+        var speedBootApplication = new SpeedBootApplication(services);
         var assemblies = GetValidAssemblies();
+        speedBootApplication.AddServiceRegisterComponents(assemblies);
+        var speedBootApplicationExternal = new SpeedBootApplicationExternal(speedBootApplication, assemblies);
+        services.AddSingleton(speedBootApplicationExternal);
+        services.AddSingleton(speedBootApplication);
+        services.AddSingleton<ISpeedBootApplication>(_ => speedBootApplication);
 
-        Initialized();
-        AddDefaultServiceComponents();
-        InitializedStartup();
-
-        void Initialized()
-        {
-            InternalApp.ConfigureServices(services);
-            InternalApp.ConfigureAssemblies(assemblies);
-            InternalApp.ConfigureEnvironment(speedOptions.Environment);
-        }
+        App.SetApplicationExternal(speedBootApplicationExternal);
+        return speedBootApplicationExternal;
 
         Assembly[] GetValidAssemblies()
         {
             Expression<Func<string, bool>> condition = name => true;
-            var assemblyNames = speedOptions.GetEffectAssemblyNames();
+            var includeAssemblyRules = speedOptions.GetIncludeAssemblyRules();
+            var excludeAssemblyRules = speedOptions.GetExcludeAssemblyRules();
             condition = condition.And(
-                assemblyNames.Count > 0,
-                name => assemblyNames.Any(n => Regex.Match(name, n).Success));
+                includeAssemblyRules.Count > 0 || excludeAssemblyRules.Count > 0,
+                assemblyName =>
+                    includeAssemblyRules.Any(n => Regex.Match(assemblyName, n).Success) &&
+                    !excludeAssemblyRules.Any(n => Regex.Match(assemblyName, n).Success));
             return AssemblyUtils.GetAllAssembly(condition);
         }
-
-        void AddDefaultServiceComponents()
-        {
-            if (!speedOptions.EnabledServiceComponent)
-                return;
-
-            services.AddServiceComponents(assemblies);
-        }
-
-        void InitializedStartup()
-        {
-            foreach (var appStartup in InternalApp.AppStartupContextList.OrderBy(context => context.Order))
-            {
-                appStartup.Initialized();
-            }
-        }
-
-        return services;
     }
 
-    /// <summary>
-    /// Add service components
-    /// </summary>
-    /// <param name="services">collection of services</param>
-    /// <param name="assemblies">assembly collection</param>
-    /// <returns></returns>
-    public static IServiceCollection AddServiceComponents(this IServiceCollection services, params Assembly[] assemblies)
-    {
-        if (!ServiceCollectionUtils.TryAdd<ServiceComponentProvider>(services))
-            return services;
+    public static TInstance? GetSingletonInstance<TInstance>(this IServiceCollection services) where TInstance : class
+        => services.Where(d => d.ServiceType == typeof(TInstance)).Select(d => d.ImplementationInstance as TInstance).FirstOrDefault();
 
-        InternalApp.AppStartupContextList.Add(new ServiceCollectionStartup(services, assemblies, null));
-        return services;
-    }
-
-    // ReSharper disable once ClassNeverInstantiated.Local
-    private sealed class ServiceComponentProvider
-    {
-    }
+    public static TInstance GetRequiredSingletonInstance<TInstance>(this IServiceCollection services) where TInstance : class
+        => services.GetSingletonInstance<TInstance>() ??
+            throw new SpeedException($"Could not find an object of {typeof(TInstance).AssemblyQualifiedName} in services");
 
     // ReSharper disable once ClassNeverInstantiated.Local
     private sealed class SpeedProvider

@@ -22,10 +22,10 @@ public abstract class AppStartupBase : IAppStartup
 
     protected virtual void PreInitialized()
     {
-        _logger?.Log(_logLevel ?? LogLevel.Debug, messageTemplate: "AppStartup：【{0}】，初始化前", propertyValues: Name);
+        _logger?.Log(_logLevel ?? LogLevel.Debug, messageTemplate: "AppStartup：【{0}】，before initialization", propertyValues: Name);
     }
 
-    public virtual void Initialized()
+    public virtual void Initialize()
     {
         PreInitialized();
 
@@ -38,6 +38,6 @@ public abstract class AppStartupBase : IAppStartup
 
     protected virtual void PostInitialized()
     {
-        _logger?.Log(_logLevel ?? LogLevel.Debug, messageTemplate: "AppStartup：【{0}】，初始化后", propertyValues: Name);
+        _logger?.Log(_logLevel ?? LogLevel.Debug, messageTemplate: "AppStartup：【{0}】，after initialization", propertyValues: Name);
     }
 }

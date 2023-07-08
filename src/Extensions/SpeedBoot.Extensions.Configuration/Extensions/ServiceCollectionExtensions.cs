@@ -3,7 +3,6 @@
 
 // ReSharper disable once CheckNamespace
 
-
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
@@ -13,14 +12,9 @@ public static class ServiceCollectionExtensions
         if (!ServiceCollectionUtils.TryAdd<ConfigurationProvider>(services))
             return services;
 
-        Initialized();
+        services.TryAddSingleton(configuration);
 
         return services;
-
-        void Initialized()
-        {
-            AppCore.TryConfigureConfiguration(configuration);
-        }
     }
 
     // ReSharper disable once ClassNeverInstantiated.Local

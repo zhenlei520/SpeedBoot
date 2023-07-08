@@ -15,13 +15,33 @@ public class SpeedHostingStartup : IHostingStartup
             services.AddHostedService<GenericHostedService>();
 
             services.AddConfiguration(webHostBuilderContext.Configuration);
-            services.AddSpeed(options =>
+            var speedBootApplicationExternal = services.AddSpeed(speedOptions =>
             {
-                var assemblyName = webHostBuilderContext.Configuration["SpeedBoot:AssemblyName"];
-                if (assemblyName != null) options.AssemblyName = assemblyName;
+                var includeAssemblyRules = webHostBuilderContext.Configuration.GetSection("SpeedBoot")
+                    .GetValue<List<string>>("IncludeAssemblyRules");
+                if (includeAssemblyRules.IsAny())
+                {
+                    speedOptions.IncludeAssemblyRules = includeAssemblyRules;
+                }
+                else
+                {
+                    var assemblyName = webHostBuilderContext.Configuration["SpeedBoot:AssemblyName"];
+                    if (assemblyName != null) speedOptions.IncludeAssemblyRules = new List<string>() { assemblyName };
+                }
+                var excludeAssemblyRules = webHostBuilderContext.Configuration.GetSection("SpeedBoot").GetValue<List<string>>("ExcludeAssemblyRules");
+                if (excludeAssemblyRules.IsAny())
+                {
+                    speedOptions.ExcludeAssemblyRules = excludeAssemblyRules;
+                }
 
-                options.Environment = webHostBuilderContext.HostingEnvironment.EnvironmentName;
+                var defaultExcludeAssemblyRules = webHostBuilderContext.Configuration.GetSection("SpeedBoot").GetValue<List<string>>("DefaultExcludeAssemblyRules");
+                if (defaultExcludeAssemblyRules.IsAny())
+                {
+                    speedOptions.DefaultExcludeAssemblyRules = defaultExcludeAssemblyRules;
+                }
+                speedOptions.Environment = webHostBuilderContext.HostingEnvironment.EnvironmentName;
             });
+            speedBootApplicationExternal.Initialize();
         });
     }
 }

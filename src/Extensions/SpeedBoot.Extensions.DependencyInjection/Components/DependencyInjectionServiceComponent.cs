@@ -9,6 +9,6 @@ public class DependencyInjectionServiceComponent : ServiceComponentBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {
-        services.AddAutoInject(AppCore.Assemblies ?? AppDomain.CurrentDomain.GetAssemblies());
+        services.AddAutoInject(App.ApplicationExternal.Assemblies ?? AppDomain.CurrentDomain.GetAssemblies());
     }
 }

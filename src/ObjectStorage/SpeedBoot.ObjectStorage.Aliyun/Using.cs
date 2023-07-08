@@ -12,3 +12,4 @@ global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using System.Runtime.CompilerServices;
 global using SpeedBoot.ObjectStorage;
 global using SpeedBoot.ObjectStorage.Aliyun;
+global using SpeedBoot.Configuration;

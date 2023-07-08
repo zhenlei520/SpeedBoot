@@ -3,4 +3,4 @@
 
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
-global using SpeedBoot;
+global using Microsoft.Extensions.DependencyInjection.Extensions;

@@ -23,4 +23,11 @@ public static class EnumerableExtensions
         bool isCompose,
         Expression<Func<TSource, bool>?> predicate)
         => EnumerableUtils.WhereIf(source, isCompose, predicate);
+
+    public static bool IsAny<TSource>(
+#if NETCOREAPP3_0_OR_GREATER
+        [NotNullWhen(true)]
+#endif
+        this IEnumerable<TSource>? sources)
+        => sources != null && sources.Any();
 }
