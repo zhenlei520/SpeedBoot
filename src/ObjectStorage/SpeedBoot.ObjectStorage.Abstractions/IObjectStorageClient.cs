@@ -15,22 +15,6 @@ public interface IObjectStorageClient
     #region sync
 
     /// <summary>
-    /// get credentials
-    ///
-    /// 获取凭证
-    /// </summary>
-    /// <returns></returns>
-    CredentialsResponse GetCredentials();
-
-    /// <summary>
-    /// get credentials
-    ///
-    /// 获取凭证
-    /// </summary>
-    /// <returns></returns>
-    string GetToken();
-
-    /// <summary>
     /// get file information
     ///
     /// 得到文件信息
@@ -83,6 +67,22 @@ public interface IObjectStorageClient
     /// <param name="request"></param>
     /// <returns></returns>
     void BatchDelete(BatchDeleteObjectStorageRequest request);
+
+    /// <summary>
+    /// get credentials
+    ///
+    /// 获取凭证
+    /// </summary>
+    /// <returns></returns>
+    CredentialsResponse GetCredentials();
+
+    /// <summary>
+    /// get credentials
+    ///
+    /// 获取凭证
+    /// </summary>
+    /// <returns></returns>
+    string GetToken(CredentialsRequestBase credentialsRequest);
 
     #endregion
 
@@ -146,6 +146,17 @@ public interface IObjectStorageClient
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
     Task BatchDeleteAsync(BatchDeleteObjectStorageRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// get credentials
+    ///
+    /// 获取凭证
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<CredentialsResponse> GetCredentialsAsync(CancellationToken cancellationToken = default);
+
+    Task<string> GetTokenAsync(CredentialsRequestBase credentialsRequest, CancellationToken cancellationToken = default);
 
     #endregion
 

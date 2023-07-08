@@ -10,18 +10,26 @@ public interface IMinioClientProvider
     MinioObjectStorageOptions MinioObjectStorageOptions { get; }
 
     /// <summary>
-    /// get credentials
-    ///
-    /// 获取凭证
-    /// </summary>
-    /// <returns></returns>
-    CredentialsResponse GetCredentials();
-
-    /// <summary>
     /// Get Oss Client
     ///
     /// 得到存储客户端
     /// </summary>
     /// <returns></returns>
     MinioClient GetClient();
+
+    /// <summary>
+    /// 获得上传凭证
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<string> GetUploadCredentialAsync(UploadCredentialRequest request, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// 获取下载凭证
+    /// </summary>
+    /// <param name="request"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    Task<string> GetDownloadCredentialAsync(DownloadCredentialRequest request, CancellationToken cancellationToken = default);
 }

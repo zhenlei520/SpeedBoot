@@ -23,7 +23,6 @@ public static class ServiceCollectionExtensions
             return minioClientProvider;
         });
         services.AddSingleton<IObjectStorageClient, DefaultObjectStorageClient>();
-        services.AddSingleton<IObjectStorageClientContainer, DefaultObjectStorageClientContainer>();
         return services;
     }
 

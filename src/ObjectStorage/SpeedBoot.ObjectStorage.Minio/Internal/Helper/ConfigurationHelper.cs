@@ -43,10 +43,10 @@ internal static class ConfigurationHelper
     /// <returns></returns>
     private static string GetMinioObjectStorageSectionName()
     {
-        var objectStorageSectionName = Environment.GetEnvironmentVariable(MinioStorageConstant.Minio_OBJECT_STORAGE_SECTION_NAME);
+        var objectStorageSectionName = Environment.GetEnvironmentVariable(MinioStorageConstant.MINIO_OBJECT_STORAGE_SECTION_NAME);
         if (objectStorageSectionName.IsNullOrWhiteSpace())
         {
-            objectStorageSectionName = MinioStorageConstant.Minio_OBJECT_STORAGE_SECTION_NAME;
+            objectStorageSectionName = MinioStorageConstant.MINIO_OBJECT_STORAGE_SECTION_NAME;
         }
         return objectStorageSectionName;
     }

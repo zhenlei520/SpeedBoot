@@ -10,7 +10,7 @@ namespace SpeedBoot.ObjectStorage;
 ///
 /// 对象存储客户端容器
 /// </summary>
-public interface IObjectStorageClientContainer
+public interface ObjectStorageClientContainer
 {
     #region sync
 

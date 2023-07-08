@@ -19,11 +19,6 @@ public class DefaultObjectStorageClient : IObjectStorageClient
         _logger = logger;
     }
 
-    public CredentialsResponse GetCredentials()
-        => _minioClientProvider.GetCredentials();
-
-    public string GetToken() => throw new NotSupportedException("GetToken is not supported, please use GetSecurityToken");
-
     public ObjectInfoResponse GetObject(GetObjectInfoRequest request)
         => GetObjectAsync(request).ToSync();
 
@@ -42,10 +37,16 @@ public class DefaultObjectStorageClient : IObjectStorageClient
     public void BatchDelete(BatchDeleteObjectStorageRequest request)
         => BatchDeleteAsync(request).ToSync();
 
+    public CredentialsResponse GetCredentials()
+        => throw new NotSupportedException("GetCredentials is not supported, please use GetToken");
+
+    public string GetToken(CredentialsRequestBase credentialsRequest)
+        => GetTokenAsync(credentialsRequest).ToSync();
+
     public async Task<ObjectInfoResponse> GetObjectAsync(GetObjectInfoRequest request, CancellationToken cancellationToken = default)
     {
         var memoryStream = new MemoryStream();
-        var getObjectArgs = GetObjectsArgs<GetObjectArgs>(request)
+        var getObjectArgs = request.GetObjectsArgs<GetObjectArgs>()
             .WithCallbackStream(stream =>
             {
                 if (stream != null)
@@ -74,7 +75,7 @@ public class DefaultObjectStorageClient : IObjectStorageClient
     public async Task<ObjectInfoResponse> GetObjectAsync(GetObjectInfoChunkRequest request, CancellationToken cancellationToken = default)
     {
         Stream? objectStream = null;
-        var getObjectArgs = GetObjectsArgs<GetObjectArgs>(request)
+        var getObjectArgs = request.GetObjectsArgs<GetObjectArgs>()
             .WithOffsetAndLength(request.Offset, request.Length)
             .WithCallbackStream(stream =>
             {
@@ -103,10 +104,11 @@ public class DefaultObjectStorageClient : IObjectStorageClient
         {
             if (await ExistsAsync(new ExistObjectStorageRequest(request.BucketName, request.ObjectName), cancellationToken))
             {
-                throw new SpeedFriendlyException("The file already exists, please change the file name or allow the file to be overwritten");
+                throw new SpeedFriendlyException(
+                    "The file already exists, please change the file name or allow the file to be overwritten");
             }
         }
-        var putObjectArgs = GetObjectsArgs<PutObjectArgs>(request)
+        var putObjectArgs = request.GetObjectsArgs<PutObjectArgs>()
             .WithStreamData(request.Stream)
             .WithObjectSize(request.Stream.Length);
 
@@ -124,7 +126,7 @@ public class DefaultObjectStorageClient : IObjectStorageClient
 
         try
         {
-            var statObjectArgs = GetObjectsArgs<StatObjectArgs>(request);
+            var statObjectArgs = request.GetObjectsArgs<StatObjectArgs>();
             await MinioClient.StatObjectAsync(statObjectArgs, cancellationToken);
             return true;
         }
@@ -161,14 +163,16 @@ public class DefaultObjectStorageClient : IObjectStorageClient
         return MinioClient.RemoveObjectsAsync(removeObjectsArgs, cancellationToken);
     }
 
-    private static TObjectsArgs GetObjectsArgs<TObjectsArgs>(ObjectStorageRequestBase requestBase)
-        where TObjectsArgs : ObjectConditionalQueryArgs<TObjectsArgs>, new()
+    public Task<CredentialsResponse> GetCredentialsAsync(CancellationToken cancellationToken = default)
+        => Task.FromResult(GetCredentials());
+
+    public Task<string> GetTokenAsync(CredentialsRequestBase credentialsRequest, CancellationToken cancellationToken = default)
     {
-        return new TObjectsArgs()
-            {
-                IsBucketCreationRequest = false
-            }
-            .WithBucket(requestBase.BucketName)
-            .WithObject(requestBase.ObjectName);
+        return credentialsRequest switch
+        {
+            DownloadCredentialRequest downloadCredentialRequest => _minioClientProvider.GetDownloadCredentialAsync(downloadCredentialRequest, cancellationToken),
+            UploadCredentialRequest putCredentialRequest => _minioClientProvider.GetUploadCredentialAsync(putCredentialRequest, cancellationToken),
+            _ => throw new NotSupportedException("Unsupported credential request")
+        };
     }
 }

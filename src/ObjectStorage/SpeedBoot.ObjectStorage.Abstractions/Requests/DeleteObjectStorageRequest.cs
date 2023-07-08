@@ -9,7 +9,12 @@ public class DeleteObjectStorageRequest : ObjectStorageRequestBase
 {
     public DeleteObjectStorageRequest() { }
 
-    public DeleteObjectStorageRequest(string bucketName, string objectName)
+    public DeleteObjectStorageRequest(string objectName)
+        : this(null, objectName)
+    {
+    }
+
+    public DeleteObjectStorageRequest(string? bucketName, string objectName)
         : base(bucketName, objectName)
     {
     }

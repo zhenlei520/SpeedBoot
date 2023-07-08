@@ -24,7 +24,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="chunkSize">chunk size（分块大小，当为 null 且使用分块下载时使用<paramref>GlobalObjectStorageConfig.BigFileLength</paramref>）</param>
     public static void DownloadFile(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool? enableOverwrite = null,
@@ -53,7 +53,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="chunkSize">chunk size（分块大小，当为 null 且使用分块下载时使用<paramref>GlobalObjectStorageConfig.BigFileLength</paramref>）</param>
     public static void DownloadBigFile(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool? enableOverwrite = null,
@@ -78,7 +78,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
     public static void DownloadSmallFile(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool enableOverwrite = true)
@@ -107,7 +107,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="cancellationToken"></param>
     public static async Task DownloadFileAsync(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool? enableOverwrite = null,
@@ -140,7 +140,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="cancellationToken"></param>
     public static async Task DownloadBigFileAsync(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool? enableOverwrite = null,
@@ -171,7 +171,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="cancellationToken"></param>
     public static async Task DownloadSmallFileAsync(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool? enableOverwrite = null,
@@ -186,7 +186,7 @@ public static class ObjectStorageClientExtensions
 
     #endregion
 
-    private static GetObjectInfoRequest GetObjectInfoRequest(string bucketName, string objectName)
+    private static GetObjectInfoRequest GetObjectInfoRequest(string? bucketName, string objectName)
         => new(bucketName, objectName);
 
     #endregion
@@ -205,7 +205,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
     public static void UploadFile(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool? enableOverwrite = null)
@@ -227,7 +227,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
     public static void UploadSmallFile(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool? enableOverwrite = null)
@@ -246,7 +246,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖）</param>
     public static void UploadBigFile(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool? enableOverwrite = null)
@@ -270,7 +270,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="cancellationToken"></param>
     public static Task UploadFileAsync(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool? enableOverwrite = null,
@@ -294,7 +294,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="cancellationToken"></param>
     public static Task UploadSmallFileAsync(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool? enableOverwrite = null,
@@ -315,7 +315,7 @@ public static class ObjectStorageClientExtensions
     /// <param name="cancellationToken"></param>
     public static Task UploadBigFileAsync(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName,
         string fileFullPath,
         bool? enableOverwrite = null,
@@ -328,7 +328,7 @@ public static class ObjectStorageClientExtensions
     #endregion
 
     private static PutObjectStorageRequest GetPutObjectStorageRequest(
-        string bucketName,
+        string? bucketName,
         string objectName,
         Stream stream,
         bool? enableOverwrite)
@@ -351,7 +351,7 @@ public static class ObjectStorageClientExtensions
     /// <returns></returns>
     public static bool Exists(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName)
         => objectStorageClient.Exists(new ExistObjectStorageRequest(bucketName, objectName));
 
@@ -370,7 +370,7 @@ public static class ObjectStorageClientExtensions
     /// <returns></returns>
     public static Task<bool> ExistsAsync(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName)
         => objectStorageClient.ExistsAsync(new ExistObjectStorageRequest(bucketName, objectName));
 
@@ -393,7 +393,7 @@ public static class ObjectStorageClientExtensions
     /// <returns></returns>
     public static void Delete(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName)
         => objectStorageClient.Delete(new DeleteObjectStorageRequest(bucketName, objectName));
 
@@ -408,7 +408,7 @@ public static class ObjectStorageClientExtensions
     /// <returns></returns>
     public static void BatchDelete(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         params string[] objectNames)
         => objectStorageClient.BatchDelete(new BatchDeleteObjectStorageRequest(bucketName, objectNames));
 
@@ -427,7 +427,7 @@ public static class ObjectStorageClientExtensions
     /// <returns></returns>
     public static Task DeleteAsync(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         string objectName)
         => objectStorageClient.DeleteAsync(new DeleteObjectStorageRequest(bucketName, objectName));
 
@@ -442,7 +442,7 @@ public static class ObjectStorageClientExtensions
     /// <returns></returns>
     public static Task BatchDeleteAsync(
         this IObjectStorageClient objectStorageClient,
-        string bucketName,
+        string? bucketName,
         params string[] objectNames)
         => objectStorageClient.BatchDeleteAsync(new BatchDeleteObjectStorageRequest(bucketName, objectNames));
 

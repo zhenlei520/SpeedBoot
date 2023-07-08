@@ -100,7 +100,7 @@ public class AliyunObjectStorageOptions : AliyunOptions
     ///
     /// bucket name
     /// </summary>
-    public string BucketName { get; set; }
+    public string? BucketName { get; set; }
 
     /// <summary>
     /// enable file overwrite

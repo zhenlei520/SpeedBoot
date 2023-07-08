@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Minio" Version="5.0.0"/>
+    <PackageReference Include="Minio" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Extensions\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj"/>
-    <ProjectReference Include="..\..\SpeedBoot.Core\SpeedBoot.Core.csproj"/>
-    <ProjectReference Include="..\SpeedBoot.ObjectStorage.Abstractions\SpeedBoot.ObjectStorage.Abstractions.csproj"/>
+    <ProjectReference Include="..\..\Extensions\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj" />
+    <ProjectReference Include="..\..\SpeedBoot.Core\SpeedBoot.Core.csproj" />
+    <ProjectReference Include="..\SpeedBoot.ObjectStorage.Abstractions\SpeedBoot.ObjectStorage.Abstractions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,5 +19,6 @@
       <Link>Internal\ServiceCollectionUtils.cs</Link>
     </Compile>
   </ItemGroup>
+
 
 </Project>

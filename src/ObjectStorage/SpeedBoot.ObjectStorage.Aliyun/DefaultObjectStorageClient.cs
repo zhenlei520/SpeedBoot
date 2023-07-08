@@ -19,10 +19,6 @@ public class DefaultObjectStorageClient : IObjectStorageClient
         _logger = logger;
     }
 
-    public CredentialsResponse GetCredentials() => _aliyunClientProvider.GetCredentials();
-
-    public string GetToken() => throw new NotSupportedException("GetToken is not supported, please use GetSecurityToken");
-
     public ObjectInfoResponse GetObject(GetObjectInfoRequest request)
     {
         var result = Oss.GetObject(request.BucketName, request.ObjectName);
@@ -133,6 +129,11 @@ public class DefaultObjectStorageClient : IObjectStorageClient
             result);
     }
 
+    public CredentialsResponse GetCredentials() => _aliyunClientProvider.GetCredentials();
+
+    public string GetToken(CredentialsRequestBase credentialsRequest)
+        => throw new NotSupportedException("GetToken is not supported, please use GetSecurityToken");
+
     public Task<ObjectInfoResponse> GetObjectAsync(GetObjectInfoRequest request, CancellationToken cancellationToken = default)
         => Task.FromResult(GetObject(request));
 
@@ -165,4 +166,10 @@ public class DefaultObjectStorageClient : IObjectStorageClient
         BatchDelete(request);
         return Task.CompletedTask;
     }
+
+    public Task<CredentialsResponse> GetCredentialsAsync(CancellationToken cancellationToken = default) => Task.FromResult(GetCredentials());
+
+    public Task<string> GetTokenAsync(CredentialsRequestBase credentialsRequest, CancellationToken cancellationToken = default)
+        => Task.FromResult(GetToken(credentialsRequest));
+
 }
