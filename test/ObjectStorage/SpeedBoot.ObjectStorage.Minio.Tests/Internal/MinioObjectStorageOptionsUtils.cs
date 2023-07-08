@@ -3,16 +3,16 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace SpeedBoot.ObjectStorage.Aliyun.Tests;
+namespace SpeedBoot.ObjectStorage.Minio.Tests;
 
-internal static class AliyunObjectStorageOptionsUtils
+internal static class MinioObjectStorageOptionsUtils
 {
-    public static AliyunObjectStorageOptions GetAliyunObjectStorageOptions(string jsonFile)
+    public static MinioObjectStorageOptions GetMinioObjectStorageOptions(string jsonFile)
     {
         var services = new ServiceCollection();
         services.AddJsonConfiguration(jsonFile);
         services.AddSpeed(options => options.EnabledServiceRegisterComponent = false);
         App.ApplicationExternal.SetServiceProvider(services.BuildServiceProvider());
-        return ConfigurationHelper.GetAliyunObjectStorageOptions();
+        return ConfigurationHelper.GetMinioObjectStorageOptions();
     }
 }

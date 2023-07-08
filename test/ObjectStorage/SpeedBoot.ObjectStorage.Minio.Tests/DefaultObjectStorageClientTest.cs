@@ -149,12 +149,7 @@ public class DefaultObjectStorageClientTest
     private MinioObjectStorageOptions GetMinioObjectStorageOptions()
     {
         const string file = "minio.json";
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(file)
-            .Build();
-        AppCore.ConfigureConfiguration(configuration);
-        return ConfigurationHelper.GetMinioObjectStorageOptions();
+        return MinioObjectStorageOptionsUtils.GetMinioObjectStorageOptions(file);
     }
 
     #endregion
