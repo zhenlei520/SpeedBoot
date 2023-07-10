@@ -12,7 +12,7 @@ public static class SpeedBootApplicationExternalExtensions
     /// It can be used to obtain request information and response information
     /// </summary>
     public static HttpContext? GetHttpContext(this SpeedBootApplicationExternal applicationExternal)
-        => applicationExternal.RootServiceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
+        => applicationExternal.GetRequiredRootServiceProvider().GetRequiredService<IHttpContextAccessor>().HttpContext;
 
     /// <summary>
     /// Get the <typeparamref name="TService"/> service (may be empty，Only API requests are supported)
@@ -36,7 +36,7 @@ public static class SpeedBootApplicationExternalExtensions
     {
         var httpContext = applicationExternal.GetHttpContext();
         SpeedArgumentException.ThrowIfNull(httpContext);
-        return httpContext.RequestServices.GetRequiredService<TService>();
+        return httpContext!.RequestServices.GetRequiredService<TService>();
     }
 
     /// <summary>
@@ -50,6 +50,6 @@ public static class SpeedBootApplicationExternalExtensions
     {
         var httpContext = applicationExternal.GetHttpContext();
         SpeedArgumentException.ThrowIfNull(httpContext);
-        return httpContext.RequestServices.GetServices<TService>();
+        return httpContext!.RequestServices.GetServices<TService>();
     }
 }

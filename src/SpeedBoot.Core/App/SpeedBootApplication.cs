@@ -9,7 +9,7 @@ public class SpeedBootApplication : ISpeedBootApplication
 {
     public IServiceCollection Services { get; }
 
-    public IServiceProvider RootServiceProvider { get; private set; }
+    public IServiceProvider? RootServiceProvider { get; private set; }
 
     public Assembly[] Assemblies { get; private set; }
 

@@ -8,9 +8,9 @@ namespace SpeedBoot;
 public class SpeedBootApplicationExternal
 {
     private readonly SpeedBootApplication _speedBootApplication;
-
+    public IServiceCollection Services => _speedBootApplication.Services;
     public IReadOnlyList<Assembly>? Assemblies { get; }
-    public IServiceProvider RootServiceProvider => _speedBootApplication.RootServiceProvider;
+    public IServiceProvider? RootServiceProvider => _speedBootApplication.RootServiceProvider;
 
     internal SpeedBootApplicationExternal(SpeedBootApplication speedBootApplication, Assembly[]? assemblies)
     {

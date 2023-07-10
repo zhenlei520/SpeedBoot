@@ -5,8 +5,16 @@
 
 namespace SpeedBoot;
 
-public static class SpeedBootApplicationExternalExtensions
+internal static class SpeedBootApplicationExternalExtensions
 {
+    public static IServiceProvider GetRequiredRootServiceProvider(this SpeedBootApplicationExternal applicationExternal)
+    {
+        if (applicationExternal.RootServiceProvider == null)
+            return applicationExternal.Services.BuildServiceProvider();
+
+        return applicationExternal.RootServiceProvider;
+    }
+
     /// <summary>
     /// Get the <typeparamref name="TService"/> service (may be empty，Only API requests are supported)
     ///
@@ -17,7 +25,7 @@ public static class SpeedBootApplicationExternalExtensions
     /// <returns></returns>
     public static TService? GetSingletonService<TService>(this SpeedBootApplicationExternal applicationExternal)
         where TService : notnull
-        => applicationExternal.RootServiceProvider.GetService<TService>();
+        => applicationExternal.GetRequiredRootServiceProvider().GetService<TService>();
 
     /// <summary>
     /// Get the <typeparamref name="TService"/> service (not empty，Only API requests are supported)
@@ -28,7 +36,7 @@ public static class SpeedBootApplicationExternalExtensions
     /// <returns></returns>
     public static TService GetRequiredSingletonService<TService>(this SpeedBootApplicationExternal applicationExternal)
         where TService : notnull
-        => applicationExternal.RootServiceProvider.GetRequiredService<TService>();
+        => applicationExternal.GetRequiredRootServiceProvider().GetRequiredService<TService>();
 
     /// <summary>
     /// Get the service set of <typeparamref name="TService"/>
@@ -39,5 +47,5 @@ public static class SpeedBootApplicationExternalExtensions
     /// <returns></returns>
     public static IEnumerable<TService> GetSingletonServices<TService>(this SpeedBootApplicationExternal applicationExternal)
         where TService : notnull
-        => applicationExternal.RootServiceProvider.GetServices<TService>();
+        => applicationExternal.GetRequiredRootServiceProvider().GetServices<TService>();
 }

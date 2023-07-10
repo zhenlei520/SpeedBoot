@@ -9,7 +9,7 @@ public interface ISpeedBootApplication
 {
     IServiceCollection Services { get; }
 
-    IServiceProvider RootServiceProvider { get; }
+    IServiceProvider? RootServiceProvider { get; }
 
     void Shutdown();
 }
