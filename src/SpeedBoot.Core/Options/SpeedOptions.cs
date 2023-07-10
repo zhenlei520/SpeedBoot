@@ -7,7 +7,7 @@ namespace SpeedBoot;
 
 public class SpeedOptions
 {
-    public bool EnabledServiceComponent { get; set; } = true;
+    public bool EnabledServiceRegisterComponent { get; set; } = true;
 
     #region Valid Assemblies
 
@@ -21,19 +21,39 @@ public class SpeedOptions
     /// <summary>
     /// Framework Assembly Rules
     /// </summary>
-    internal List<string> FrameworkAssemblyNames { get; set; } = new()
+    internal List<string> DefaultIncludeAssemblyRules { get; set; } = new()
     {
         "SpeedBoot.*"
     };
 
     /// <summary>
-    /// Assembly name prefix
+    /// Assembly rules loaded by default
     /// default: *
     /// Support for regular expressions
     /// When no assembly collection is specified, automatic matching based on the assembly name satisfies the use of
     /// <!--AssemblyName < Assemblies-->
     /// </summary>
-    public string AssemblyName { get; set; } = ".*";
+    public List<string> IncludeAssemblyRules { get; set; } = new()
+    {
+        ".*"
+    };
+
+    /// <summary>
+    /// Rules for assemblies excluded by default
+    /// </summary>
+    public List<string>? ExcludeAssemblyRules { get; set; }
+
+    /// <summary>
+    /// Rules for assemblies excluded by default
+    /// </summary>
+    public List<string> DefaultExcludeAssemblyRules { get; set; } = new()
+    {
+        "^System.*",
+        "^Microsoft.*",
+        "^Serilog.*",
+        "^Swashbuckle.*",
+        "^Npgsql.*"
+    };
 
     #endregion
 
@@ -46,12 +66,22 @@ public class SpeedOptions
     /// Get the valid set of assembly rules
     /// </summary>
     /// <returns></returns>
-    internal List<string> GetEffectAssemblyNames()
+    internal List<string> GetIncludeAssemblyRules()
     {
-        var assemblyNames = new List<string>(FrameworkAssemblyNames)
-        {
-            AssemblyName
-        };
-        return assemblyNames;
+        var assemblyRules = new List<string>(DefaultIncludeAssemblyRules);
+        assemblyRules.AddRange(IncludeAssemblyRules);
+        return assemblyRules.Distinct().ToList();
+    }
+
+    /// <summary>
+    /// Get the valid set of assembly rules
+    /// </summary>
+    /// <returns></returns>
+    internal List<string> GetExcludeAssemblyRules()
+    {
+        var excludeAssemblyRules = new List<string>(DefaultExcludeAssemblyRules);
+        if (ExcludeAssemblyRules != null && ExcludeAssemblyRules.Any())
+            excludeAssemblyRules.AddRange(ExcludeAssemblyRules);
+        return excludeAssemblyRules.Distinct().ToList();
     }
 }
