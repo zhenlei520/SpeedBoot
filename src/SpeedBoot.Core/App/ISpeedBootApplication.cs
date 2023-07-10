@@ -5,11 +5,11 @@
 
 namespace SpeedBoot;
 
-public interface IAppStartup
+public interface ISpeedBootApplication
 {
-    int Order { get; }
+    IServiceCollection Services { get; }
 
-    string Name { get; }
+    IServiceProvider? RootServiceProvider { get; }
 
-    void Initialize();
+    void Shutdown();
 }

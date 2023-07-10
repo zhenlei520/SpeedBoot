@@ -157,12 +157,7 @@ public class DefaultObjectStorageClientTest
     private AliyunObjectStorageOptions GetAliyunObjectStorageOptions()
     {
         var file = "aliyun.json";
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(file)
-            .Build();
-        AppCore.ConfigureConfiguration(configuration);
-        return ConfigurationHelper.GetAliyunObjectStorageOptions();
+        return AliyunObjectStorageOptionsUtils.GetAliyunObjectStorageOptions(file);
     }
 
     /// <summary>
@@ -174,12 +169,7 @@ public class DefaultObjectStorageClientTest
     private AliyunObjectStorageOptions GetAliyunObjectStorageOptionsBySts()
     {
         var file = "aliyun.sts.json";
-        var configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile(file)
-            .Build();
-        AppCore.ConfigureConfiguration(configuration);
-        return ConfigurationHelper.GetAliyunObjectStorageOptions();
+        return AliyunObjectStorageOptionsUtils.GetAliyunObjectStorageOptions(file);
     }
 
     #endregion

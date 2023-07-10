@@ -5,14 +5,14 @@
 
 namespace SpeedBoot;
 
-public class ServiceCollectionStartup : AppStartupBase
+public class ServiceRegisterStartup : AppStartupBase
 {
     private readonly IServiceCollection _services;
     private readonly List<Type> _allServiceComponentTypes;
 
     public override string Name => "ServiceRegisterComponent";
 
-    public ServiceCollectionStartup(
+    public ServiceRegisterStartup(
         IServiceCollection services,
         IEnumerable<Assembly> assemblies,
         ILogger? logger,

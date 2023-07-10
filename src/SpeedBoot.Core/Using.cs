@@ -11,3 +11,4 @@ global using System.Reflection;
 global using Microsoft.Extensions.DependencyInjection;
 global using SpeedBoot;
 global using System.Text.RegularExpressions;
+global using System.Collections.ObjectModel;

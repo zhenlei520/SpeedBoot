@@ -9,3 +9,4 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using SpeedBoot.ObjectStorage;
 global using System.Runtime.CompilerServices;
+global using SpeedBoot.Configuration;

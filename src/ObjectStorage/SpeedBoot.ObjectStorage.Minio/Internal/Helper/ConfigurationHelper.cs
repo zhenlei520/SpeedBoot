@@ -19,8 +19,7 @@ internal static class ConfigurationHelper
     {
         var minioObjectStorageSectionName = GetMinioObjectStorageSectionName();
 
-        var minioObjectStorageOptions =
-            AppConfiguration.GetOptions<SpeedBoot.ObjectStorage.Minio.Internal.Options.MinioObjectStorageOptions>(minioObjectStorageSectionName);
+        var minioObjectStorageOptions = App.ApplicationExternal.GetOptions<SpeedBoot.ObjectStorage.Minio.Internal.Options.MinioObjectStorageOptions>(minioObjectStorageSectionName);
 
         return new MinioObjectStorageOptions()
         {
