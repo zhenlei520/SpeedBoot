@@ -5,17 +5,14 @@
 
 namespace SpeedBoot.ObjectStorage;
 
-public class GetObjectInfoRequest : ObjectStorageRequestBase
+/// <summary>
+/// 凭证
+/// </summary>
+public abstract class CredentialsRequestBase : ObjectStorageRequestBase
 {
-    public GetObjectInfoRequest() { }
-
-    public GetObjectInfoRequest(string objectName)
-        : this(null, objectName)
-    {
-    }
-
-    public GetObjectInfoRequest(string? bucketName, string objectName)
+    protected CredentialsRequestBase(string? bucketName, string objectName)
         : base(bucketName, objectName)
     {
+
     }
 }

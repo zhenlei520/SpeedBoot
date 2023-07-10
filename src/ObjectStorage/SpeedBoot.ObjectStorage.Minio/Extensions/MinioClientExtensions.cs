@@ -16,7 +16,7 @@ public static class MinioClientExtensions
     /// <param name="bucketName">bucket name（桶名称、空间名）</param>
     /// <param name="cancellationToken">Optional cancellation token to cancel the operation</param>
     /// <returns></returns>
-    public static Task<bool> BucketExistsAsync(this MinioClient minioClient, string bucketName, CancellationToken cancellationToken)
+    public static Task<bool> BucketExistsAsync(this MinioClient minioClient, string? bucketName, CancellationToken cancellationToken)
     {
         var bucketExistsArgs = new BucketExistsArgs()
         {

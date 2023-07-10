@@ -15,7 +15,7 @@ public abstract class ObjectStorageRequestBase
     /// <summary>
     /// bucket name（桶名称（空间名称））
     /// </summary>
-    public string BucketName { get; set; }
+    public string? BucketName { get; set; }
 
     /// <summary>
     /// file name（文件名）
@@ -24,7 +24,7 @@ public abstract class ObjectStorageRequestBase
 
     protected ObjectStorageRequestBase() { }
 
-    protected ObjectStorageRequestBase(string bucketName, string objectName)
+    protected ObjectStorageRequestBase(string? bucketName, string objectName)
     {
         BucketName = bucketName;
         ObjectName = objectName;

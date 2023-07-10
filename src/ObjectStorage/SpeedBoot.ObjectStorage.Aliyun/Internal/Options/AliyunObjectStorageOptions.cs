@@ -94,5 +94,5 @@ internal class AliyunObjectStorageOptions : Aliyun.AliyunOptions
     ///
     /// bucket name
     /// </summary>
-    public string BucketName { get; set; }
+    public string? BucketName { get; set; }
 }

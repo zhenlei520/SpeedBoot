@@ -10,7 +10,7 @@ public class BatchDeleteObjectStorageRequest
     /// <summary>
     /// bucket name（桶名（空间名））
     /// </summary>
-    public string BucketName { get; set; }
+    public string? BucketName { get; set; }
 
     /// <summary>
     /// A collection of filenames to be deleted
@@ -21,13 +21,23 @@ public class BatchDeleteObjectStorageRequest
 
     public BatchDeleteObjectStorageRequest() { }
 
-    public BatchDeleteObjectStorageRequest(string bucketName, List<string> objectNames)
+    public BatchDeleteObjectStorageRequest(List<string> objectNames)
+        : this(null, objectNames)
+    {
+    }
+
+    public BatchDeleteObjectStorageRequest(params string[] objectNames)
+        : this(null, objectNames)
+    {
+    }
+
+    public BatchDeleteObjectStorageRequest(string? bucketName, List<string> objectNames)
     {
         BucketName = bucketName;
         ObjectNames = objectNames;
     }
 
-    public BatchDeleteObjectStorageRequest(string bucketName, params string[] objectNames)
+    public BatchDeleteObjectStorageRequest(string? bucketName, params string[] objectNames)
         : this(bucketName, objectNames.ToList())
     {
     }

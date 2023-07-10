@@ -51,7 +51,7 @@ public class DefaultObjectStorageClientTest
     [TestMethod]
     public void Exist()
     {
-        var objectStorageClient = GetObjectStorageClient( out var minioObjectStorageOptions);
+        var objectStorageClient = GetObjectStorageClient(out var minioObjectStorageOptions);
 
         Assert.AreEqual(true, objectStorageClient.Exists(minioObjectStorageOptions.BucketName, OBJECT_NAME));
     }
@@ -88,6 +88,44 @@ public class DefaultObjectStorageClientTest
 
     #endregion
 
+    #region 凭证
+
+    /// <summary>
+    /// 获取上传凭证
+    /// </summary>
+    /// <returns></returns>
+    [TestMethod]
+    public async Task GetUploadTokenAsync()
+    {
+        var objectStorageClient = GetObjectStorageClient(out var minioObjectStorageOptions);
+        var uploadUrl = objectStorageClient.GetToken(new UploadCredentialRequest(minioObjectStorageOptions.BucketName, OBJECT_NAME)
+        {
+            Expiry = 24 * 3600
+        });
+        var httpClient = new HttpClient();
+        var fileFullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "packageIcon.png");
+        var fileStream = FileUtils.GetBigFileStream(fileFullPath);
+        var response = await httpClient.PutAsync(uploadUrl, new StreamContent(fileStream));
+        Assert.AreEqual(true, response.IsSuccessStatusCode);
+    }
+
+    /// <summary>
+    /// 获取下载凭证
+    /// </summary>
+    /// <returns></returns>
+    [TestMethod]
+    public void GetDownloadToken()
+    {
+        var objectStorageClient = GetObjectStorageClient(out var minioObjectStorageOptions);
+        var token = objectStorageClient.GetToken(new DownloadCredentialRequest(minioObjectStorageOptions.BucketName, OBJECT_NAME)
+        {
+            Expiry = 60 * 60
+        });
+        Assert.IsFalse(token.IsNullOrWhiteSpace());
+    }
+
+    #endregion
+
     #region Get Object Storage Client（获取对象存储客户端）
 
     private DefaultObjectStorageClient GetObjectStorageClient(
@@ -120,5 +158,4 @@ public class DefaultObjectStorageClientTest
     }
 
     #endregion
-
 }

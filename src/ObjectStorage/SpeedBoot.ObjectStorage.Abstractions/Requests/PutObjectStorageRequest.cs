@@ -31,7 +31,12 @@ public class PutObjectStorageRequest : ObjectStorageRequestBase
     /// </summary>
     public string? ContentType { get; set; }
 
-    public PutObjectStorageRequest(string bucketName, string objectName, Stream stream, bool? enableOverwrite = null)
+    public PutObjectStorageRequest(string objectName, Stream stream, bool? enableOverwrite = null)
+        : this(null, objectName, stream, enableOverwrite)
+    {
+    }
+
+    public PutObjectStorageRequest(string? bucketName, string objectName, Stream stream, bool? enableOverwrite = null)
         : base(bucketName, objectName)
     {
         Stream = stream;

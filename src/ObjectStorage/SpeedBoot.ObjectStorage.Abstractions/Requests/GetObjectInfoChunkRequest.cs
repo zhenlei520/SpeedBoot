@@ -19,7 +19,12 @@ public class GetObjectInfoChunkRequest : ObjectStorageRequestBase
 
     public GetObjectInfoChunkRequest() { }
 
-    public GetObjectInfoChunkRequest(string bucketName, string objectName, long offset, long length)
+    public GetObjectInfoChunkRequest(string objectName, long offset, long length)
+        : this(null, objectName, offset, length)
+    {
+    }
+
+    public GetObjectInfoChunkRequest(string? bucketName, string objectName, long offset, long length)
         : base(bucketName, objectName)
     {
         Offset = offset;

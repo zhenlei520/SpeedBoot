@@ -9,7 +9,13 @@ public class ExistObjectStorageRequest : ObjectStorageRequestBase
 {
     public ExistObjectStorageRequest() { }
 
-    public ExistObjectStorageRequest(string bucketName, string objectName) : base(bucketName, objectName)
+    public ExistObjectStorageRequest(string objectName)
+        : this(null, objectName)
+    {
+    }
+
+    public ExistObjectStorageRequest(string? bucketName, string objectName)
+        : base(bucketName, objectName)
     {
     }
 }

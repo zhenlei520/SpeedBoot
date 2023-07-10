@@ -61,7 +61,7 @@ public class MinioObjectStorageOptions
     /// <summary>
     /// 空间名
     /// </summary>
-    public string BucketName { get; set; }
+    public string? BucketName { get; set; }
 
     /// <summary>
     /// enable file overwrite
