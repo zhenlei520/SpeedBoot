@@ -12,10 +12,13 @@ public class SpeedBootApplicationExternal
     public IReadOnlyList<Assembly>? Assemblies { get; }
     public IServiceProvider? RootServiceProvider => _speedBootApplication.RootServiceProvider;
 
-    internal SpeedBootApplicationExternal(SpeedBootApplication speedBootApplication, Assembly[]? assemblies)
+    public string? Environment { get; private set; }
+
+    internal SpeedBootApplicationExternal(SpeedBootApplication speedBootApplication, Assembly[]? assemblies, string? environment)
     {
         _speedBootApplication = speedBootApplication;
         Assemblies = assemblies?.ToList();
+        Environment = environment;
     }
 
     public void Initialize() => _speedBootApplication.InitializeComponents();

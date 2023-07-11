@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
         var speedBootApplication = new SpeedBootApplication(services);
         var assemblies = GetValidAssemblies();
         speedBootApplication.AddServiceRegisterComponents(assemblies);
-        var speedBootApplicationExternal = new SpeedBootApplicationExternal(speedBootApplication, assemblies);
+        var speedBootApplicationExternal = new SpeedBootApplicationExternal(speedBootApplication, assemblies, speedOptions.Environment);
         services.AddSingleton(speedBootApplicationExternal);
         services.AddSingleton(speedBootApplication);
         services.AddSingleton<ISpeedBootApplication>(_ => speedBootApplication);
