@@ -45,9 +45,10 @@ public class DefaultAutoInjectProvider
             _allTypes.Where(type => type.IsInterface && type != dependencyType && dependencyType.IsAssignableFrom(type))
                 .Select(type => type.GetTypeInfo());
         var classServiceTypes = _allTypes.Where(type =>
-            !(type.IsAbstract || !type.IsClass) && dependencyType.IsAssignableFrom(type) &&
-            ((type.IsGenericType && !type.GetInterfaces().Any(t => interfaceServiceTypes.Contains(t.GetGenericTypeDefinition()))) ||
-             (!type.IsGenericType && !type.GetInterfaces().Any(t => interfaceServiceTypes.Contains(t)))));
+            !type.IsAbstract && dependencyType.IsAssignableFrom(type) &&
+            ((type.IsGenericType && !type.GetInterfaces()
+                    .Any(t => t.IsGenericType && interfaceServiceTypes.Contains(t.GetGenericTypeDefinition()))) ||
+                (!type.IsGenericType && !type.GetInterfaces().Any(t => interfaceServiceTypes.Contains(t)))));
 
         var list = new List<Type>(interfaceServiceTypes).Concat(classServiceTypes);
         return list.Distinct().ToList();
@@ -56,8 +57,8 @@ public class DefaultAutoInjectProvider
     internal List<Type> GetImplementationTypes(Type serviceType)
     {
         return _allTypes.Where(type =>
-            IsAssignableFrom(serviceType, type) &&
-            ((type != serviceType && serviceType.IsInterface) || (type == serviceType && serviceType.IsClass))).ToList();
+            (type != serviceType && serviceType.IsInterface && IsAssignableFrom(serviceType, type))
+            || (type == serviceType && serviceType.IsClass)).ToList();
     }
 
     private static bool IsAssignableFrom(Type serviceType, Type implementationType)
@@ -67,7 +68,7 @@ public class DefaultAutoInjectProvider
             case true when !implementationType.IsGenericType:
             case false when implementationType.IsGenericType:
             case true when serviceType.GetTypeInfo().GenericTypeParameters.Length !=
-                           implementationType.GetTypeInfo().GenericTypeParameters.Length:
+                implementationType.GetTypeInfo().GenericTypeParameters.Length:
                 return false;
             case true:
                 return implementationType.GetInterfaces().Any(t => t.IsGenericType && t.GetGenericTypeDefinition() == serviceType);

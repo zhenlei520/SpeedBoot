@@ -24,6 +24,14 @@ public static class EnumerableExtensions
         Expression<Func<TSource, bool>?> predicate)
         => EnumerableUtils.WhereIf(source, isCompose, predicate);
 
+    /// <summary>
+    /// is not null and is not an empty collection
+    ///
+    /// 不是 null 并且 不是空集合
+    /// </summary>
+    /// <param name="sources"></param>
+    /// <typeparam name="TSource"></typeparam>
+    /// <returns></returns>
     public static bool IsAny<TSource>(
 #if NETCOREAPP3_0_OR_GREATER
         [NotNullWhen(true)]
