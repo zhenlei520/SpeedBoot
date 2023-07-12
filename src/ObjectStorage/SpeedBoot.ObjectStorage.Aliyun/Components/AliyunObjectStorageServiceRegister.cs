@@ -3,12 +3,13 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace SpeedBoot.ObjectStorage.Aliyun;
 
-public class DependencyInjectionServiceComponent : ServiceComponentBase
+/// <summary>
+/// Alibaba Cloud Object Storage Registrar
+/// </summary>
+public class AliyunObjectStorageServiceRegister : ServiceRegisterComponentBase
 {
     public override void ConfigureServices(IServiceCollection services)
-    {
-        services.AddAutoInject(App.ApplicationExternal.Assemblies ?? AppDomain.CurrentDomain.GetAssemblies());
-    }
+        => services.AddAliyunStorage();
 }

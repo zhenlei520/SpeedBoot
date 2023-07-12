@@ -17,44 +17,11 @@ public class SpeedHostingStartup : IHostingStartup
             services.AddConfiguration(webHostBuilderContext.Configuration);
             var speedBootApplicationExternal = services.AddSpeed(speedOptions =>
             {
-                var includeAssemblyRules = GetRules(webHostBuilderContext.Configuration, "SpeedBoot:IncludeAssemblyRules");
-                if (includeAssemblyRules != null)
-                {
-                    speedOptions.IncludeAssemblyRules = includeAssemblyRules;
-                }
-                else
-                {
-                    var assemblyName = webHostBuilderContext.Configuration["SpeedBoot:AssemblyName"];
-                    if (assemblyName != null) speedOptions.IncludeAssemblyRules = new List<string>() { assemblyName };
-                }
-
-                var excludeAssemblyRules = GetRules(webHostBuilderContext.Configuration, "SpeedBoot:ExcludeAssemblyRules");
-                if (excludeAssemblyRules != null)
-                {
-                    speedOptions.ExcludeAssemblyRules = excludeAssemblyRules;
-                }
-
-                var defaultExcludeAssemblyRules = GetRules(webHostBuilderContext.Configuration, "SpeedBoot:DefaultExcludeAssemblyRules");
-                if (defaultExcludeAssemblyRules != null)
-                {
-                    speedOptions.DefaultExcludeAssemblyRules = defaultExcludeAssemblyRules;
-                }
+                speedOptions.Assemblies = webHostBuilderContext.Configuration.GetAssemblies();
 
                 speedOptions.Environment = webHostBuilderContext.HostingEnvironment.EnvironmentName;
             });
             speedBootApplicationExternal.Initialize();
         });
-
-        List<string>? GetRules(IConfiguration configuration, string sectionName)
-        {
-            var rules = new List<string>();
-            configuration.GetSection(sectionName).Bind(rules);
-            if (rules.IsAny())
-            {
-                return rules;
-            }
-            var rulesStr = configuration[sectionName];
-            return !rulesStr.IsNullOrWhiteSpace() ? rulesStr.Split(';').ToList() : null;
-        }
     }
 }

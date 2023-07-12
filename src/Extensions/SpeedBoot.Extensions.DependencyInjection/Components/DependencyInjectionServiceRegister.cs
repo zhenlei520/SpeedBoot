@@ -3,13 +3,12 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace SpeedBoot.ObjectStorage.Minio;
+namespace Microsoft.Extensions.DependencyInjection;
 
-/// <summary>
-/// Alibaba Cloud Object Storage Registrar
-/// </summary>
-public class MinioObjectStorageServiceComponent : ServiceComponentBase
+public class DependencyInjectionServiceRegister : ServiceRegisterComponentBase
 {
     public override void ConfigureServices(IServiceCollection services)
-        => services.AddMinio();
+    {
+        services.AddAutoInject(App.ApplicationExternal.Assemblies ?? AppDomain.CurrentDomain.GetAssemblies());
+    }
 }

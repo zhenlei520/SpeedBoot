@@ -5,7 +5,7 @@
 
 namespace SpeedBoot;
 
-public class App
+public static class App
 {
     public static SpeedBootApplicationExternal ApplicationExternal { get; private set; }
 

@@ -5,16 +5,8 @@
 
 namespace System;
 
-internal static partial class AssemblyUtils
+internal static class AssemblyUtils
 {
-    public static List<Type> GetServiceComponentTypes(params Assembly[] assemblies)
-    {
-        return assemblies.GetTypes(type => type is { IsClass: true, IsAbstract: false } && type.IsSubclassOf(typeof(IServiceComponent)));
-    }
-
-    public static Assembly[] GetAllAssembly()
-        => GetAllAssembly(name => true);
-
     public static Assembly[] GetAllAssembly(Expression<Func<string, bool>> condition)
     {
         var entryAssemblies = new List<Assembly>();

@@ -5,13 +5,13 @@
 
 namespace SpeedBoot;
 
-public static class SpeedBootApplicationExtensions
+internal static class SpeedBootApplicationExtensions
 {
-    internal static SpeedBootApplication AddServiceRegisterComponents(
+    public static SpeedBootApplication AddServiceRegisterComponents(
         this SpeedBootApplication application,
-        params Assembly[] assemblies)
+        Assembly[]? assemblies)
     {
-        var serviceRegisterStartup = new ServiceRegisterStartup(application.Services, assemblies, null);
+        var serviceRegisterStartup = new ServiceRegisterStartup(application.Services, assemblies ?? GlobalConfig.DefaultAssemblies, null);
         application.Startups.Add(serviceRegisterStartup);
         return application;
     }

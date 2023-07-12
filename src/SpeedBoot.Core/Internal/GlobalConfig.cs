@@ -5,7 +5,10 @@
 
 namespace SpeedBoot;
 
-public abstract class ServiceComponentBase : IServiceComponent
+internal static class GlobalConfig
 {
-    public abstract void ConfigureServices(IServiceCollection services);
+    /// <summary>
+    /// Default Assemblies Collection
+    /// </summary>
+    public static Assembly[] DefaultAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 }

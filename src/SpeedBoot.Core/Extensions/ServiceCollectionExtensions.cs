@@ -16,28 +16,18 @@ public static class ServiceCollectionExtensions
         configure?.Invoke(speedOptions);
 
         var speedBootApplication = new SpeedBootApplication(services);
-        var assemblies = GetValidAssemblies();
-        speedBootApplication.AddServiceRegisterComponents(assemblies);
-        var speedBootApplicationExternal = new SpeedBootApplicationExternal(speedBootApplication, assemblies, speedOptions.Environment);
+        if (speedOptions.EnabledServiceRegisterComponent)
+        {
+            speedBootApplication.AddServiceRegisterComponents(speedOptions.Assemblies);
+        }
+
+        var speedBootApplicationExternal = new SpeedBootApplicationExternal(speedBootApplication, speedOptions.Environment);
         services.AddSingleton(speedBootApplicationExternal);
         services.AddSingleton(speedBootApplication);
         services.AddSingleton<ISpeedBootApplication>(_ => speedBootApplication);
 
         App.SetApplicationExternal(speedBootApplicationExternal);
         return speedBootApplicationExternal;
-
-        Assembly[] GetValidAssemblies()
-        {
-            Expression<Func<string, bool>> condition = name => true;
-            var includeAssemblyRules = speedOptions.GetIncludeAssemblyRules();
-            var excludeAssemblyRules = speedOptions.GetExcludeAssemblyRules();
-            condition = condition.And(
-                includeAssemblyRules.Count > 0 || excludeAssemblyRules.Count > 0,
-                assemblyName =>
-                    includeAssemblyRules.Any(n => Regex.Match(assemblyName, n).Success) &&
-                    !excludeAssemblyRules.Any(n => Regex.Match(assemblyName, n).Success));
-            return AssemblyUtils.GetAllAssembly(condition);
-        }
     }
 
     public static TInstance? GetSingletonInstance<TInstance>(this IServiceCollection services) where TInstance : class

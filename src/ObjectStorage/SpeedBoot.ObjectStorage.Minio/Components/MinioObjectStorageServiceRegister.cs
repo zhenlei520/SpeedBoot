@@ -3,13 +3,13 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace SpeedBoot.ObjectStorage.Aliyun;
+namespace SpeedBoot.ObjectStorage.Minio;
 
 /// <summary>
 /// Alibaba Cloud Object Storage Registrar
 /// </summary>
-public class AliyunObjectStorageServiceComponent : ServiceComponentBase
+public class MinioObjectStorageServiceRegister : ServiceRegisterComponentBase
 {
     public override void ConfigureServices(IServiceCollection services)
-        => services.AddAliyunStorage();
+        => services.AddMinio();
 }
