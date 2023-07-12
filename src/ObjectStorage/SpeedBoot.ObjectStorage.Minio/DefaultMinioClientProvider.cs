@@ -1,8 +1,6 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-using Minio.DataModel;
-
 namespace SpeedBoot.ObjectStorage.Minio;
 
 public class DefaultMinioClientProvider : IMinioClientProvider
@@ -51,11 +49,7 @@ public class DefaultMinioClientProvider : IMinioClientProvider
         var presignedGetObjectArgs = request.GetObjectsArgs<PresignedGetObjectArgs>()
             .WithBucket(bucketName)
             .WithObject(request.ObjectName);
-
-        if (expiration != -1)
-        {
-            presignedGetObjectArgs = presignedGetObjectArgs.WithExpiry(expiration);
-        }
+        presignedGetObjectArgs = presignedGetObjectArgs.WithExpiry(expiration != -1 ? expiration : MinioStorageConstant.DEFAULT_DOWNLOAD_OBJECT_MAX_EXPIRATION_TIME);
         return GetClient().PresignedGetObjectAsync(presignedGetObjectArgs);
     }
 

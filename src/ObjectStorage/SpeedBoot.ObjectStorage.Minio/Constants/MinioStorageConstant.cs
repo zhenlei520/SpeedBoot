@@ -28,4 +28,9 @@ public static class MinioStorageConstant
     /// 默认最大上传文件失效时间
     /// </summary>
     public const int DEFAULT_PUT_OBJECT_MAX_EXPIRATION_TIME = 7 * 24 * 3600;
+
+    /// <summary>
+    /// 默认最大下载文件失效时间
+    /// </summary>
+    public const int DEFAULT_DOWNLOAD_OBJECT_MAX_EXPIRATION_TIME = 7 * 24 * 3600;
 }
