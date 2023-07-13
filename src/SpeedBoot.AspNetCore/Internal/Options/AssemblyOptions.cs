@@ -11,7 +11,7 @@ namespace SpeedBoot.AspNetCore;
 /// </summary>
 internal class AssemblyOptions
 {
-    public List<string> IncludeAssemblyRules { get; set; }
+    public List<string>? IncludeAssemblyRules { get; set; }
 
     public List<string> DefaultIncludeAssemblyRules { get; set; } = new()
     {
@@ -36,7 +36,10 @@ internal class AssemblyOptions
     internal List<string> GetIncludeAssemblyRules()
     {
         var assemblyRules = new List<string>(DefaultIncludeAssemblyRules);
-        assemblyRules.AddRange(IncludeAssemblyRules);
+        if (IncludeAssemblyRules.IsAny())
+        {
+            assemblyRules.AddRange(IncludeAssemblyRules!);
+        }
         return assemblyRules.Distinct().ToList();
     }
 
@@ -47,8 +50,10 @@ internal class AssemblyOptions
     internal List<string> GetExcludeAssemblyRules()
     {
         var excludeAssemblyRules = new List<string>(DefaultExcludeAssemblyRules);
-        if (ExcludeAssemblyRules != null && ExcludeAssemblyRules.Any())
-            excludeAssemblyRules.AddRange(ExcludeAssemblyRules);
+        if (ExcludeAssemblyRules.IsAny())
+        {
+            excludeAssemblyRules.AddRange(ExcludeAssemblyRules!);
+        }
         return excludeAssemblyRules.Distinct().ToList();
     }
 }
