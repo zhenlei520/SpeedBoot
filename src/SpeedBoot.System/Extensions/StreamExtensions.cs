@@ -7,7 +7,6 @@ namespace System.IO;
 
 public static class StreamExtensions
 {
-
     #region Convert stream to byte array（流转换为byte数组）
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿// Copyright (c) MASA Stack All rights reserved.
+﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
 namespace SpeedBoot.Security.Cryptography;
@@ -13,54 +13,40 @@ public class DESUtils : EncryptBase
     /// <summary>
     /// Default encryption key
     /// </summary>
-    private static readonly string DefaultEncryptKey =
-        GlobalConfigurationUtils.DefaultDesEncryptKey
-            .GetSpecifiedLengthString(8,FillPattern.Right);
+    private static readonly string DefaultEncryptKey = GlobalCryptographyConfig.DefaultDesKey;
 
     /// <summary>
     /// Default encryption iv
     /// </summary>
-    private static readonly string DefaultEncryptIv =
-        GlobalConfigurationUtils.DefaultDesEncryptIv
-            .GetSpecifiedLengthString(8,FillPattern.Right);
+    private static readonly string DefaultEncryptIv = GlobalCryptographyConfig.DefaultDesIv;
 
     /// <summary>
     /// Des encrypted string
     /// </summary>
     /// <param name="content">encrypted string</param>
-    /// <param name="desEncryptType">Des encryption method, default: improved (easy to transmit)</param>
     /// <param name="isToLower">Whether to convert the encrypted string to lowercase</param>
-    /// <param name="fillCharacter">character for complement</param>
     /// <param name="encoding">Encoding format, default UTF-8</param>
     /// <returns>encrypted result</returns>
     public static string Encrypt(
         string content,
-        DESEncryptType desEncryptType = DESEncryptType.Improved,
         bool isToLower = true,
-        char fillCharacter = ' ',
         Encoding? encoding = null)
-        => Encrypt(content, DefaultEncryptKey, desEncryptType, isToLower, FillPattern.Right, fillCharacter, encoding);
+        => Encrypt(content, DefaultEncryptKey, isToLower, encoding);
 
     /// <summary>
     /// Des encrypted string
     /// </summary>
     /// <param name="content">String to be encrypted</param>
     /// <param name="key">8-bit length key or complement by fillPattern to calculate an 8-bit string</param>
-    /// <param name="desEncryptType">Des encryption method, default: improved (easy to transmit)</param>
     /// <param name="isToLower">Whether to convert the encrypted string to lowercase</param>
-    /// <param name="fillPattern">Do you supplement key and iv? default: no fill(Only supports 8-bit keys)</param>
-    /// <param name="fillCharacter">character for complement</param>
     /// <param name="encoding">Encoding format, default UTF-8</param>
     /// <returns>encrypted result</returns>
     public static string Encrypt(
         string content,
         string key,
-        DESEncryptType desEncryptType = DESEncryptType.Improved,
         bool isToLower = true,
-        FillPattern fillPattern = FillPattern.NoFill,
-        char fillCharacter = ' ',
         Encoding? encoding = null)
-        => Encrypt(content, key, DefaultEncryptIv, desEncryptType, isToLower, fillPattern, fillCharacter, encoding);
+        => Encrypt(content, key, DefaultEncryptIv, isToLower, FillPattern.Right, ' ', encoding);
 
     /// <summary>
     /// Des encrypted string
@@ -68,7 +54,6 @@ public class DESUtils : EncryptBase
     /// <param name="content">String to be encrypted</param>
     /// <param name="key">8-bit length key or complement by fillPattern to calculate an 8-bit string</param>
     /// <param name="iv">8-bit length key or complement by fillPattern to calculate an 8-bit string</param>
-    /// <param name="desEncryptType">Des encryption method, default: improved (easy to transmit)</param>
     /// <param name="isToLower">Whether to convert the encrypted string to lowercase</param>
     /// <param name="fillPattern">Do you supplement key and iv? default: no fill(Only supports 8-bit keys)</param>
     /// <param name="fillCharacter">character for complement</param>
@@ -78,7 +63,6 @@ public class DESUtils : EncryptBase
         string content,
         string key,
         string iv,
-        DESEncryptType desEncryptType = DESEncryptType.Improved,
         bool isToLower = true,
         FillPattern fillPattern = FillPattern.NoFill,
         char fillCharacter = ' ',
@@ -93,8 +77,6 @@ public class DESUtils : EncryptBase
         using var cs = new CryptoStream(memoryStream, des.CreateEncryptor(keyBuffer, ivBuffer), CryptoStreamMode.Write);
         cs.Write(buffer, 0, buffer.Length);
         cs.FlushFinalBlock();
-        if (desEncryptType == DESEncryptType.Normal)
-            return memoryStream.ToArray().ToBase64String();
 
         StringBuilder stringBuilder = new();
         foreach (var b in memoryStream.ToArray())
@@ -109,34 +91,24 @@ public class DESUtils : EncryptBase
     /// DES decryption with default key
     /// </summary>
     /// <param name="content">String to be decrypted</param>
-    /// <param name="desEncryptType">Des encryption method, default: improved (easy to transmit)</param>
-    /// <param name="fillCharacter">character for complement</param>
     /// <param name="encoding">Encoding format, default UTF-8</param>
     /// <returns>decrypted result</returns>
     public static string Decrypt(string content,
-        DESEncryptType desEncryptType = DESEncryptType.Improved,
-        char fillCharacter = ' ',
         Encoding? encoding = null)
-        => Decrypt(content, DefaultEncryptKey, desEncryptType, FillPattern.Right, fillCharacter, encoding);
+        => Decrypt(content, DefaultEncryptKey, encoding);
 
     /// <summary>
     /// DES decryption
     /// </summary>
     /// <param name="content">String to be decrypted</param>
     /// <param name="key">8-bit length key</param>
-    /// <param name="desEncryptType">Des encryption method, default: improved (easy to transmit)</param>
-    /// <param name="fillPattern">Do you supplement key and iv? default: no fill(Only supports 8-bit keys)</param>
-    /// <param name="fillCharacter">character for complement</param>
     /// <param name="encoding">Encoding format, default UTF-8</param>
     /// <returns>decrypted result</returns>
     public static string Decrypt(
         string content,
         string key,
-        DESEncryptType desEncryptType = DESEncryptType.Improved,
-        FillPattern fillPattern = FillPattern.NoFill,
-        char fillCharacter = ' ',
         Encoding? encoding = null)
-        => Decrypt(content, key, DefaultEncryptIv, desEncryptType, fillPattern, fillCharacter, encoding);
+        => Decrypt(content, key, DefaultEncryptIv, FillPattern.Right, ' ', encoding);
 
     /// <summary>
     /// DES decryption
@@ -144,7 +116,6 @@ public class DESUtils : EncryptBase
     /// <param name="content">String to be decrypted</param>
     /// <param name="key">8-bit length key or complement by fillPattern to calculate an 8-bit string</param>
     /// <param name="iv">8-bit length key or complement by fillPattern to calculate an 8-bit string</param>
-    /// <param name="desEncryptType">Des encryption method, default: improved (easy to transmit)</param>
     /// <param name="fillPattern">Do you supplement key and iv? default: no fill(Only supports 8-bit keys)</param>
     /// <param name="fillCharacter">character for complement</param>
     /// <param name="encoding">Encoding format, default UTF-8</param>
@@ -153,22 +124,13 @@ public class DESUtils : EncryptBase
         string content,
         string key,
         string iv,
-        DESEncryptType desEncryptType = DESEncryptType.Improved,
         FillPattern fillPattern = FillPattern.NoFill,
         char fillCharacter = ' ',
         Encoding? encoding = null)
     {
         var currentEncoding = GetSafeEncoding(encoding);
         using var ms = new MemoryStream();
-        var buffers = desEncryptType == DESEncryptType.Improved ? new byte[content.Length / 2] : content.FromBase64String();
-        if (desEncryptType == DESEncryptType.Improved)
-        {
-            for (var x = 0; x < content.Length / 2; x++)
-            {
-                var i = Convert.ToInt32(content.Substring(x * 2, 2), 16);
-                buffers[x] = (byte)i;
-            }
-        }
+        var buffers = content.FromBase64String();
 
         using var des = DES.Create();
         var keyBuffer = GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter);
@@ -352,7 +314,7 @@ public class DESUtils : EncryptBase
     {
         using var fileStreamOut = new FileStream(outFilePath, FileMode.Create);
         using var des = DES.Create();
-        var transform = GetTransform(des, keyBuffer, ivBuffer, isEncrypt);
+        var transform = GetCryptoTransform(des, keyBuffer, ivBuffer, isEncrypt);
         EncryptOrDecryptFile(fileStream, fileStreamOut, transform);
     }
 

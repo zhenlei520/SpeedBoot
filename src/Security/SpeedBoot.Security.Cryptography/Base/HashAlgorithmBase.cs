@@ -1,4 +1,4 @@
-// Copyright (c) MASA Stack All rights reserved.
+// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
 // ReSharper disable once CheckNamespace
@@ -24,7 +24,6 @@ public abstract class HashAlgorithmBase : EncryptBase
         var buffer = GetSafeEncoding(encoding).GetBytes(content);
         buffer = hashAlgorithm.ComputeHash(buffer);
         return Encrypt(encryptType, buffer, hashAlgorithm, isToLower);
-
     }
 
     internal static string Encrypt(EncryptType encryptType, byte[] buffer, HashAlgorithm? hashAlgorithm = null, bool isToLower = true)

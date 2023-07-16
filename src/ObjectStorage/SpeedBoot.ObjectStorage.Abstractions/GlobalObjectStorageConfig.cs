@@ -10,7 +10,7 @@ namespace SpeedBoot.ObjectStorage;
 ///
 /// 全局对象存储配置
 /// </summary>
-public class GlobalObjectStorageConfig
+public static class GlobalObjectStorageConfig
 {
     /// <summary>
     /// large file length

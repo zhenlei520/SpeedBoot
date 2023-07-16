@@ -8,9 +8,7 @@ namespace System;
 public static class ExpressionExtensions
 {
     public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
-    {
-        return first.Compose(second, Expression.AndAlso);
-    }
+        => first.Compose(second, Expression.AndAlso);
 
     public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, bool isCompose, Expression<Func<T, bool>>? second)
     {
@@ -21,9 +19,7 @@ public static class ExpressionExtensions
     }
 
     public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
-    {
-        return first.Compose(second, Expression.OrElse);
-    }
+        => first.Compose(second, Expression.OrElse);
 
     public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, bool isCompose, Expression<Func<T, bool>>? second)
     {

@@ -1,4 +1,4 @@
-// Copyright (c) MASA Stack All rights reserved.
+// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
 // ReSharper disable once CheckNamespace
@@ -43,7 +43,7 @@ public abstract class EncryptBase
         }
     }
 
-    protected static ICryptoTransform GetTransform(
+    protected static ICryptoTransform GetCryptoTransform(
         SymmetricAlgorithm symmetricAlgorithm,
         byte[] keyBuffer,
         byte[] ivBuffer,
@@ -53,8 +53,5 @@ public abstract class EncryptBase
             symmetricAlgorithm.CreateDecryptor(keyBuffer, ivBuffer);
 
     protected static Encoding GetSafeEncoding(Encoding? encoding = null)
-        => GetSafeEncoding(() => Encoding.UTF8, encoding);
-
-    protected static Encoding GetSafeEncoding(Func<Encoding> func, Encoding? encoding = null)
-        => encoding ?? func.Invoke();
+        => encoding ?? GlobalCryptographyConfig.DefaultEncoding;
 }

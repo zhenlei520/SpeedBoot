@@ -1,4 +1,4 @@
-// Copyright (c) MASA Stack All rights reserved.
+// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
 namespace SpeedBoot.Security.Cryptography;
@@ -6,19 +6,12 @@ namespace SpeedBoot.Security.Cryptography;
 /// <summary>
 /// AES encryption and decryption
 /// </summary>
-public class AesUtils : EncryptBase
+// ReSharper disable once InconsistentNaming
+public class AESUtils : EncryptBase
 {
-    private static readonly string DefaultEncryptKey = InitDefaultEncryptKey();
-
-    private static readonly string DefaultEncryptIv = GlobalConfigurationUtils.DefaultAesEncryptIv;
-
-    private static int DefaultEncryptKeyLength => GlobalConfigurationUtils.DefaultAesEncryptKeyLength;
-
-    static string InitDefaultEncryptKey()
-    {
-        return GlobalConfigurationUtils.DefaultAesEncryptKey.GetSpecifiedLengthString(
-            DefaultEncryptKeyLength, FillPattern.Right, ' ');
-    }
+    private static readonly string DefaultEncryptKey = GlobalCryptographyConfig.DefaultAesKey;
+    private static readonly string DefaultEncryptIv = GlobalCryptographyConfig.DefaultAesIv;
+    private static readonly int DefaultEncryptKeyLength = GlobalCryptographyConfig.DefaultAesKeyLength;
 
     #region Encrypt
 
@@ -26,33 +19,25 @@ public class AesUtils : EncryptBase
     /// Symmetric encryption algorithm AES RijndaelManaged encryption (RijndaelManaged (AES) algorithm is a block encryption algorithm)
     /// </summary>
     /// <param name="content">String to be encrypted</param>
-    /// <param name="fillCharacter">character for complement</param>
     /// <param name="encoding">Encoding format, default UTF-8</param>
     /// <returns>encrypted result</returns>
     public static string Encrypt(
         string content,
-        char fillCharacter = ' ',
         Encoding? encoding = null)
-        => Encrypt(content, DefaultEncryptKey, FillPattern.Right, fillCharacter, encoding);
+        => Encrypt(content, DefaultEncryptKey, encoding);
 
     /// <summary>
     /// Symmetric encryption algorithm AES RijndaelManaged encryption (RijndaelManaged (AES) algorithm is a block encryption algorithm)
     /// </summary>
     /// <param name="content">String to be encrypted</param>
     /// <param name="key">Encryption key, must have half-width characters. 16-bit or 24-bit or 32-bit length key or complement by fillPattern to calculate an 16-bit or 24-bit or 32-bit string</param>
-    /// <param name="fillPattern">Whether to complement the key? default: no fill(Only supports 32-bit keys)</param>
-    /// <param name="fillCharacter">character for complement</param>
     /// <param name="encoding">Encoding format, default UTF-8</param>
-    /// <param name="aesLength">Aes key length</param>
     /// <returns>encrypted result</returns>
     public static string Encrypt(
         string content,
         string key,
-        FillPattern fillPattern = FillPattern.NoFill,
-        char fillCharacter = ' ',
-        Encoding? encoding = null,
-        int? aesLength = null)
-        => Encrypt(content, key, DefaultEncryptIv, fillPattern, fillCharacter, encoding, aesLength);
+        Encoding? encoding = null)
+        => Encrypt(content, key, DefaultEncryptIv, FillPattern.Right, ' ', encoding, DefaultEncryptKeyLength);
 
     /// <summary>
     /// Symmetric encryption algorithm AES RijndaelManaged encryption (RijndaelManaged (AES) algorithm is a block encryption algorithm)
@@ -215,18 +200,15 @@ public class AesUtils : EncryptBase
     /// </summary>
     /// <param name="stream">stream to be encrypted</param>
     /// <param name="outputPath">output file path</param>
-    /// <param name="fillCharacter">character for complement</param>
     /// <param name="encoding">Encoding format, default UTF-8</param>
     public static void EncryptFile(
         Stream stream,
         string outputPath,
-        char fillCharacter = ' ',
         Encoding? encoding = null)
         => EncryptFile(stream,
             DefaultEncryptKey,
             outputPath,
             FillPattern.Right,
-            fillCharacter,
             encoding);
 
     /// <summary>
@@ -244,10 +226,9 @@ public class AesUtils : EncryptBase
         string key,
         string outputPath,
         FillPattern fillPattern = FillPattern.NoFill,
-        char fillCharacter = ' ',
         Encoding? encoding = null,
         int? aesLength = null)
-        => EncryptFile(stream, key, DefaultEncryptIv, outputPath, fillPattern, fillCharacter, encoding, aesLength);
+        => EncryptFile(stream, key, DefaultEncryptIv, outputPath, fillPattern, ' ', encoding, aesLength);
 
     /// <summary>
     /// Encrypt the specified stream with AES and output a file
@@ -317,33 +298,25 @@ public class AesUtils : EncryptBase
     /// Symmetric encryption algorithm AES RijndaelManaged decrypts the string
     /// </summary>
     /// <param name="content">String to be decrypted</param>
-    /// <param name="fillCharacter">character for complement</param>
     /// <param name="encoding">Encoding format, default UTF-8</param>
     /// <returns>If the decryption succeeds, the decrypted string will be returned, and if it fails, the source string will be returned.</returns>
     public static string Decrypt(
         string content,
-        char fillCharacter = ' ',
         Encoding? encoding = null)
-        => Decrypt(content, DefaultEncryptKey, FillPattern.Right, fillCharacter, encoding);
+        => Decrypt(content, DefaultEncryptKey, encoding);
 
     /// <summary>
     /// Symmetric encryption algorithm AES RijndaelManaged decrypts the string
     /// </summary>
     /// <param name="content">String to be decrypted</param>
     /// <param name="key">Decryption key, same as encryption key. 32-bit length key or complement by fillPattern to calculate an 32-bit string</param>
-    /// <param name="fillPattern">Whether to complement the key? default: no fill(Only supports 32-bit keys)</param>
-    /// <param name="fillCharacter">character for complement</param>
     /// <param name="encoding">Encoding format, default UTF-8</param>
-    /// <param name="aesLength">Aes key length</param>
     /// <returns>Decryption success returns the decrypted string, failure returns empty</returns>
     public static string Decrypt(
         string content,
         string key,
-        FillPattern fillPattern = FillPattern.NoFill,
-        char fillCharacter = ' ',
-        Encoding? encoding = null,
-        int? aesLength = null)
-        => Decrypt(content, key, DefaultEncryptIv, fillPattern, fillCharacter, encoding, aesLength);
+        Encoding? encoding = null)
+        => Decrypt(content, key, DefaultEncryptIv, FillPattern.Right, ' ', encoding, DefaultEncryptKeyLength);
 
     /// <summary>
     /// Symmetric encryption algorithm AES RijndaelManaged decrypts the string
@@ -643,7 +616,7 @@ public class AesUtils : EncryptBase
         bool isEncrypt)
     {
         using var aes = Aes.Create();
-        var transform = GetTransform(aes, keyBuffer, ivBuffer, isEncrypt);
+        var transform = GetCryptoTransform(aes, keyBuffer, ivBuffer, isEncrypt);
         return transform.TransformFinalBlock(dataBuffers, 0, dataBuffers.Length);
     }
 
@@ -662,7 +635,7 @@ public class AesUtils : EncryptBase
         bool isEncrypt)
     {
         using var aes = Aes.Create();
-        var transform = GetTransform(aes, keyBuffer, ivBuffer, isEncrypt);
+        var transform = GetCryptoTransform(aes, keyBuffer, ivBuffer, isEncrypt);
         using var ms = new MemoryStream();
         var cryptoStream = new CryptoStream(ms, transform, CryptoStreamMode.Write);
         var cipherBytes = stream.ToBytes();
@@ -681,7 +654,7 @@ public class AesUtils : EncryptBase
     {
         using var fileStreamOut = new FileStream(outputPath, FileMode.Create);
         using var aes = Aes.Create();
-        var transform = GetTransform(aes, keyBuffer, ivBuffer, isEncrypt);
+        var transform = GetCryptoTransform(aes, keyBuffer, ivBuffer, isEncrypt);
         EncryptOrDecryptFile(stream, fileStreamOut, transform);
     }
 

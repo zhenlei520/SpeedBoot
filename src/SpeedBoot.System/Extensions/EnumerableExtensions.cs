@@ -7,19 +7,24 @@ namespace System;
 
 public static class EnumerableExtensions
 {
-    public static IEnumerable<TSource> WhereIfNotNull<TSource>(
-        this IEnumerable<TSource> source,
+    public static IEnumerable<TSource>? WhereIfAny<TSource>(
+        this IEnumerable<TSource>? source,
         Func<TSource, bool>? predicate)
-        => EnumerableUtils.WhereIf(source, true, predicate);
+        => EnumerableUtils.WhereIf(source, source.IsAny(), predicate);
 
-    public static IEnumerable<TSource> WhereIf<TSource>(
-        this IEnumerable<TSource> source,
+    public static IEnumerable<TSource>? WhereIfNotNull<TSource>(
+        this IEnumerable<TSource>? source,
+        Func<TSource, bool>? predicate)
+        => EnumerableUtils.WhereIf(source, source != null, predicate);
+
+    public static IEnumerable<TSource>? WhereIf<TSource>(
+        this IEnumerable<TSource>? source,
         bool isCompose,
         Func<TSource, bool>? predicate)
         => EnumerableUtils.WhereIf(source, isCompose, predicate);
 
-    public static IEnumerable<TSource> WhereIf<TSource>(
-        this IEnumerable<TSource> source,
+    public static IEnumerable<TSource>? WhereIf<TSource>(
+        this IEnumerable<TSource>? source,
         bool isCompose,
         Expression<Func<TSource, bool>?> predicate)
         => EnumerableUtils.WhereIf(source, isCompose, predicate);

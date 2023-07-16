@@ -11,7 +11,7 @@ namespace SpeedBoot.System;
 public enum FillPattern
 {
     /// <summary>
-    ///
+    /// not filled
     /// </summary>
     NoFill = 1,
 

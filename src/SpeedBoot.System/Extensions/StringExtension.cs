@@ -12,6 +12,13 @@ public static class StringExtension
         => str.IndexOf(value, stringComparison) >= 0;
 #endif
 
+    public static bool IsNull(
+#if NETCOREAPP3_0_OR_GREATER
+        [NotNullWhen(false)]
+#endif
+        this string? value)
+        => value == null;
+
     public static bool IsNullOrWhiteSpace(
 #if NETCOREAPP3_0_OR_GREATER
         [NotNullWhen(false)]
@@ -71,10 +78,7 @@ public static class StringExtension
         string trimParameter,
         StringComparison stringComparison)
     {
-        if (!value.EndsWith(trimParameter, stringComparison))
-            return value;
-
-        return value.Substring(0, value.Length - trimParameter.Length);
+        return !value.EndsWith(trimParameter, stringComparison) ? value : value.Substring(0, value.Length - trimParameter.Length);
     }
 
     #region get word count（获取字数）
@@ -174,6 +178,7 @@ public static class StringExtension
 
     /// <summary>
     /// Get a string of specified length（truncated if the length is exceeded, and completed if the length is insufficient）
+    ///
     /// 获取指定长度的字符串（超出长度截断，不足补全）
     /// </summary>
     /// <param name="value">string to match（待匹配的字符串）</param>
@@ -241,6 +246,7 @@ public static class StringExtension
 
     /// <summary>
     /// Convert Base64-encoded string to byte array
+    ///
     /// 将 Base64 编码的字符串转换为字节数组
     /// </summary>
     /// <param name="value">the string to be converted（待转换的字符串）</param>
@@ -250,4 +256,9 @@ public static class StringExtension
 
     #endregion
 
+    public static string SafeString(this string? value)
+        => value.IsNull() ? string.Empty : value;
+
+    public static string? WhereIfNull(this string? value, Func<string?> defaultFunc)
+        => value ?? defaultFunc.Invoke();
 }

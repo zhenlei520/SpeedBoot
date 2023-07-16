@@ -5,26 +5,22 @@
 
 namespace System;
 
-public static class EnumerableUtils
+internal static class EnumerableUtils
 {
-    public static IEnumerable<TSource> WhereIfNotNull<TSource>(
-        IEnumerable<TSource> source,
+    public static IEnumerable<TSource>? WhereIfNotNull<TSource>(
+        IEnumerable<TSource>? source,
         Func<TSource, bool>? predicate)
-        => WhereIf(source, true, predicate);
+        => WhereIf(source, source != null, predicate);
 
-    public static IEnumerable<TSource> WhereIf<TSource>(
-        IEnumerable<TSource> source,
+    public static IEnumerable<TSource>? WhereIf<TSource>(
+        IEnumerable<TSource>? source,
         bool isCompose,
         Func<TSource, bool>? predicate)
-    {
-        return isCompose && predicate != null ? source.Where(predicate) : source;
-    }
+        => isCompose && predicate != null ? source!.Where(predicate) : source;
 
-    public static IEnumerable<TSource> WhereIf<TSource>(
-        IEnumerable<TSource> source,
+    public static IEnumerable<TSource>? WhereIf<TSource>(
+        IEnumerable<TSource>? source,
         bool isCompose,
         Expression<Func<TSource, bool>?> predicate)
-    {
-        return WhereIf(source, isCompose, predicate.Compile());
-    }
+        => WhereIf(source, isCompose, predicate.Compile());
 }
