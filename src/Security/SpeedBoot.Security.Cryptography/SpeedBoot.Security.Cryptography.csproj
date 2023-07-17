@@ -8,8 +8,4 @@
     <ProjectReference Include="..\..\SpeedBoot.System\SpeedBoot.System.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Internal\Enum\" />
-  </ItemGroup>
-
 </Project>
