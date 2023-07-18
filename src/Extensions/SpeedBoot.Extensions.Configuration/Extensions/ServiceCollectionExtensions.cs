@@ -7,6 +7,12 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
+    /// <summary>
+    /// Register Configuration Services
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <returns></returns>
     public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         if (!ServiceCollectionUtils.TryAdd<ConfigurationProvider>(services))
