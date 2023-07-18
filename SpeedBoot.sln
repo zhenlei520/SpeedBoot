@@ -21,39 +21,43 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.SourceGenerator",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{216801A8-02DC-4AF4-9448-E13902585583}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.System.Tests", "test\SpeedBoot.System.Tests\SpeedBoot.System.Tests.csproj", "{FDDD0431-FEF6-4F7A-BEC3-1730156C4412}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.System.Tests", "test\SpeedBoot.System.Tests\SpeedBoot.System.Tests.csproj", "{FDDD0431-FEF6-4F7A-BEC3-1730156C4412}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.AspNetCore", "src\SpeedBoot.AspNetCore\SpeedBoot.AspNetCore.csproj", "{7F12A07A-84EA-43ED-8FF2-7A0C3FCDFC48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.AspNetCore", "src\SpeedBoot.AspNetCore\SpeedBoot.AspNetCore.csproj", "{7F12A07A-84EA-43ED-8FF2-7A0C3FCDFC48}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DependencyInjection", "DependencyInjection", "{103B4A55-CC90-4F4A-ABDE-B1220FD9E1A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.DependencyInjection.Tests", "test\SpeedBoot.Extensions.DependencyInjection.Tests\SpeedBoot.Extensions.DependencyInjection.Tests.csproj", "{C89872F7-EFF7-4C89-AD18-6A87E46232BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.Extensions.DependencyInjection.Tests", "test\SpeedBoot.Extensions.DependencyInjection.Tests\SpeedBoot.Extensions.DependencyInjection.Tests.csproj", "{C89872F7-EFF7-4C89-AD18-6A87E46232BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Core", "src\SpeedBoot.Core\SpeedBoot.Core.csproj", "{401CC389-7E37-4233-AE25-ACAA1EA112EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.Core", "src\SpeedBoot.Core\SpeedBoot.Core.csproj", "{401CC389-7E37-4233-AE25-ACAA1EA112EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Core.Tests", "test\SpeedBoot.Core.Tests\SpeedBoot.Core.Tests.csproj", "{CBCAA7AE-FDB9-44CA-BAE0-713E7BA308B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.Core.Tests", "test\SpeedBoot.Core.Tests\SpeedBoot.Core.Tests.csproj", "{CBCAA7AE-FDB9-44CA-BAE0-713E7BA308B7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Security", "Security", "{92D5D433-ED0F-4618-AE59-09400959D683}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Security.Cryptography", "src\Security\SpeedBoot.Security.Cryptography\SpeedBoot.Security.Cryptography.csproj", "{EB69FC7C-1F09-49BD-9439-3D03CC6A3A56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.Security.Cryptography", "src\Security\SpeedBoot.Security.Cryptography\SpeedBoot.Security.Cryptography.csproj", "{EB69FC7C-1F09-49BD-9439-3D03CC6A3A56}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{D05AAB2C-DBFA-441F-A6EB-8A4022170CF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.Configuration", "src\Extensions\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj", "{5D4F14CD-A269-468C-96F9-7DCBFE7A902D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.Extensions.Configuration", "src\Extensions\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj", "{5D4F14CD-A269-468C-96F9-7DCBFE7A902D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.DependencyInjection.Abstractions", "src\Extensions\SpeedBoot.Extensions.DependencyInjection.Abstractions\SpeedBoot.Extensions.DependencyInjection.Abstractions.csproj", "{10CB5528-9824-42D7-A52E-95463A3CEA05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.Extensions.DependencyInjection.Abstractions", "src\Extensions\SpeedBoot.Extensions.DependencyInjection.Abstractions\SpeedBoot.Extensions.DependencyInjection.Abstractions.csproj", "{10CB5528-9824-42D7-A52E-95463A3CEA05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.DependencyInjection", "src\Extensions\SpeedBoot.Extensions.DependencyInjection\SpeedBoot.Extensions.DependencyInjection.csproj", "{A61F798B-B910-4DFE-8D00-B19B290AFDED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.Extensions.DependencyInjection", "src\Extensions\SpeedBoot.Extensions.DependencyInjection\SpeedBoot.Extensions.DependencyInjection.csproj", "{A61F798B-B910-4DFE-8D00-B19B290AFDED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ObjectStorage", "ObjectStorage", "{5AE8DCA0-484F-4E69-BDDF-A2950F7011FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.ObjectStorage.Abstractions", "src\ObjectStorage\SpeedBoot.ObjectStorage.Abstractions\SpeedBoot.ObjectStorage.Abstractions.csproj", "{FDD2BE46-D3F9-4677-8408-BA0A94F8A55C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.ObjectStorage.Abstractions", "src\ObjectStorage\SpeedBoot.ObjectStorage.Abstractions\SpeedBoot.ObjectStorage.Abstractions.csproj", "{FDD2BE46-D3F9-4677-8408-BA0A94F8A55C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.ObjectStorage.Aliyun", "src\ObjectStorage\SpeedBoot.ObjectStorage.Aliyun\SpeedBoot.ObjectStorage.Aliyun.csproj", "{6D5681B1-2C84-4A08-BF65-BC84EA35D5BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.ObjectStorage.Aliyun", "src\ObjectStorage\SpeedBoot.ObjectStorage.Aliyun\SpeedBoot.ObjectStorage.Aliyun.csproj", "{6D5681B1-2C84-4A08-BF65-BC84EA35D5BF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ObjectStorage", "ObjectStorage", "{89C89792-41EA-4E3A-87DF-0CCEB7CE31C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.ObjectStorage.Aliyun.Tests", "test\ObjectStorage\SpeedBoot.ObjectStorage.Aliyun.Tests\SpeedBoot.ObjectStorage.Aliyun.Tests.csproj", "{4629A199-B115-4C86-888C-9E28DB163BA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.ObjectStorage.Aliyun.Tests", "test\ObjectStorage\SpeedBoot.ObjectStorage.Aliyun.Tests\SpeedBoot.ObjectStorage.Aliyun.Tests.csproj", "{4629A199-B115-4C86-888C-9E28DB163BA9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpeedBoot.ObjectStorage.Tencent", "src\ObjectStorage\SpeedBoot.ObjectStorage.Tencent\SpeedBoot.ObjectStorage.Tencent.csproj", "{8AABE2FC-2494-4E61-AFA6-C65267DBA889}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.ObjectStorage.Tencent.Tests", "test\ObjectStorage\SpeedBoot.ObjectStorage.Tencent.Tests\SpeedBoot.ObjectStorage.Tencent.Tests.csproj", "{CB17A4BD-4E29-4FC1-94A9-65A3A0D4C3F9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +121,14 @@ Global
 		{4629A199-B115-4C86-888C-9E28DB163BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4629A199-B115-4C86-888C-9E28DB163BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4629A199-B115-4C86-888C-9E28DB163BA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AABE2FC-2494-4E61-AFA6-C65267DBA889}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AABE2FC-2494-4E61-AFA6-C65267DBA889}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AABE2FC-2494-4E61-AFA6-C65267DBA889}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AABE2FC-2494-4E61-AFA6-C65267DBA889}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB17A4BD-4E29-4FC1-94A9-65A3A0D4C3F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB17A4BD-4E29-4FC1-94A9-65A3A0D4C3F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB17A4BD-4E29-4FC1-94A9-65A3A0D4C3F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB17A4BD-4E29-4FC1-94A9-65A3A0D4C3F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -126,13 +138,13 @@ Global
 		{CAD2A17D-391E-4D5C-AE9F-A4F0815536D2} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 		{FDDD0431-FEF6-4F7A-BEC3-1730156C4412} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{7F12A07A-84EA-43ED-8FF2-7A0C3FCDFC48} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
+		{103B4A55-CC90-4F4A-ABDE-B1220FD9E1A9} = {D05AAB2C-DBFA-441F-A6EB-8A4022170CF4}
 		{C89872F7-EFF7-4C89-AD18-6A87E46232BC} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{401CC389-7E37-4233-AE25-ACAA1EA112EF} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 		{CBCAA7AE-FDB9-44CA-BAE0-713E7BA308B7} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{92D5D433-ED0F-4618-AE59-09400959D683} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 		{EB69FC7C-1F09-49BD-9439-3D03CC6A3A56} = {92D5D433-ED0F-4618-AE59-09400959D683}
 		{D05AAB2C-DBFA-441F-A6EB-8A4022170CF4} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
-		{103B4A55-CC90-4F4A-ABDE-B1220FD9E1A9} = {D05AAB2C-DBFA-441F-A6EB-8A4022170CF4}
 		{5D4F14CD-A269-468C-96F9-7DCBFE7A902D} = {D05AAB2C-DBFA-441F-A6EB-8A4022170CF4}
 		{10CB5528-9824-42D7-A52E-95463A3CEA05} = {103B4A55-CC90-4F4A-ABDE-B1220FD9E1A9}
 		{A61F798B-B910-4DFE-8D00-B19B290AFDED} = {103B4A55-CC90-4F4A-ABDE-B1220FD9E1A9}
@@ -141,5 +153,10 @@ Global
 		{6D5681B1-2C84-4A08-BF65-BC84EA35D5BF} = {5AE8DCA0-484F-4E69-BDDF-A2950F7011FD}
 		{89C89792-41EA-4E3A-87DF-0CCEB7CE31C8} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{4629A199-B115-4C86-888C-9E28DB163BA9} = {89C89792-41EA-4E3A-87DF-0CCEB7CE31C8}
+		{8AABE2FC-2494-4E61-AFA6-C65267DBA889} = {5AE8DCA0-484F-4E69-BDDF-A2950F7011FD}
+		{CB17A4BD-4E29-4FC1-94A9-65A3A0D4C3F9} = {89C89792-41EA-4E3A-87DF-0CCEB7CE31C8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2F27B6E1-7C9B-477A-A972-E1D5982DFDAE}
 	EndGlobalSection
 EndGlobal
