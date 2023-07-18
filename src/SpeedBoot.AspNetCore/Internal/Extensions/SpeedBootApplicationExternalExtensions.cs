@@ -8,12 +8,7 @@ namespace SpeedBoot;
 internal static class SpeedBootApplicationExternalExtensions
 {
     public static IServiceProvider GetRequiredRootServiceProvider(this SpeedBootApplicationExternal applicationExternal)
-    {
-        if (applicationExternal.RootServiceProvider == null)
-            return applicationExternal.Services.BuildServiceProvider();
-
-        return applicationExternal.RootServiceProvider;
-    }
+        => applicationExternal.RootServiceProvider ?? applicationExternal.Services.BuildServiceProvider();
 
     /// <summary>
     /// Get the <typeparamref name="TService"/> service (may be empty，Only API requests are supported)
