@@ -7,7 +7,7 @@ namespace SpeedBoot;
 
 public static class App
 {
-    public static SpeedBootApplicationExternal ApplicationExternal { get; private set; }
+    public static SpeedBootApplicationExternal ApplicationExternal { get; private set; } = default!;
 
     internal static void SetApplicationExternal(SpeedBootApplicationExternal applicationExternal)
     {

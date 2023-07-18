@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;net5.0;net6.0;net7.0;</TargetFrameworks>
+    <Description>IdGenerator abstract class</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SpeedBoot.Core\SpeedBoot.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\SpeedBoot.AspNetCore\Internal\Extensions\SpeedBootApplicationExternalExtensions.cs">
+      <Link>Internal\SpeedBootApplicationExternalExtensions.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'netcoreapp2.2' or '$(TargetFramework)' == 'netcoreapp3.0' or '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0'">
+      <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.0.3" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.32" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+      </ItemGroup></When>
+    <Otherwise>
+      <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+
+</Project>

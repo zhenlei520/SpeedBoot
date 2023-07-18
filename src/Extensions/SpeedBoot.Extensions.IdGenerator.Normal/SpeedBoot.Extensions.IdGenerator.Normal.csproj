@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+      <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp2.1;netcoreapp2.2;netcoreapp3.0;netcoreapp3.1;net5.0;net6.0;net7.0;</TargetFrameworks>
+      <Description>Unordered IdGenerator</Description>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SpeedBoot.Extensions.IdGenerator\SpeedBoot.Extensions.IdGenerator.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Include="..\..\SpeedBoot.Core\Extensions\Internal\ServiceCollectionUtils.cs">
+        <Link>Internal\ServiceCollectionUtils.cs</Link>
+      </Compile>
+    </ItemGroup>
+</Project>
