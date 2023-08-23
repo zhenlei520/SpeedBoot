@@ -7,8 +7,16 @@ namespace SpeedBoot.System.Net.Tests;
 public class NetUtilsTest
 {
     [TestMethod]
-    public void TestGetLocalIpV4()
+    public void TestGetIpV4()
     {
         var localIpV4 = NetUtils.GetIpV4();
+        Assert.IsNotNull(localIpV4);
+    }
+
+    [TestMethod]
+    public void TestGetIpV6()
+    {
+        var localIpV4 = NetUtils.GetIpV6();
+        Assert.IsNotNull(localIpV4);
     }
 }

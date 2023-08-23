@@ -5,35 +5,60 @@ namespace SpeedBoot.System.Net;
 
 public static class NetUtils
 {
-    public static string? GetIpV4()
+    /// <summary>
+    /// Returns a collection of all ipv4 addresses
+    /// 返回所有 ipv4 地址集合
+    /// </summary>
+    /// <returns>返回网络接口状态与 ipv4 地址的集合</returns>
+    public static List<(OperationalStatus Status, string Address)> GetIpV4List() => GetAssignIpAddressList(AddressFamily.InterNetwork);
+
+    /// <summary>
+    /// Returns a collection of all ipv6 addresses
+    /// 返回所有 ipv6 地址集合
+    /// </summary>
+    /// <returns>返回网络接口状态与 ipv6 地址的集合</returns>
+    public static List<(OperationalStatus Status, string Address)> GetIpV6List() => GetAssignIpAddressList(AddressFamily.InterNetworkV6);
+
+    /// <summary>
+    /// If there are multiple network drivers, according to the state of the network interface, return the ipv4 record of the first network interface. Returns null if no network interface is available
+    /// 如果存在多个网络驱动器，则依据网络接口状态，返回第一条网络接口的 ipv4 记录。如果没有可用的网络接口，则返回 null
+    /// </summary>
+    /// <returns>Return the obtained ipv4 address 返回获取到的 ipv4 地址</returns>
+    public static string? GetIpV4() => GetIp(GetAssignIpAddressList(AddressFamily.InterNetwork));
+
+    /// <summary>
+    /// If there are multiple network drivers, according to the state of the network interface, return the ipv6 record of the first network interface. Returns null if no network interface is available
+    /// 如果存在多个网络驱动器，则依据网络接口状态，返回第一条网络接口的 ipv6 记录。如果没有可用的网络接口，则返回 null
+    /// </summary>
+    /// <returns>Return the obtained ipv6 address 返回获取到的 ipv6 地址</returns>
+    public static string? GetIpV6() => GetIp(GetAssignIpAddressList(AddressFamily.InterNetworkV6));
+
+    private static string? GetIp(List<(OperationalStatus Status, string Address)> ipAddressList)
+        => ipAddressList.OrderBy(ip => ip.Status).Select(ip => ip.Address).FirstOrDefault();
+
+    private static List<(OperationalStatus Status, string Address)> GetAssignIpAddressList(AddressFamily addressFamily)
     {
-        string? ipv4 = null;
         var allNetworkInterfaces = NetworkInterface.GetAllNetworkInterfaces();
-        foreach (NetworkInterface networkInterface in allNetworkInterfaces)
-        {
-            if ((networkInterface.NetworkInterfaceType != NetworkInterfaceType.Ethernet &&
-                 networkInterface.NetworkInterfaceType != NetworkInterfaceType.Wireless80211) ||
-                networkInterface.Name.ToUpper().Contains("BLUETOOTH") || networkInterface.Name.ToUpper().Contains("VMWARE")) continue;
-            ipv4 = GetIpv4StringFromNetworkAdapter(ipv4, networkInterface);
-            if (ipv4 != null)
-            {
-                break;
-            }
-        }
 
-        return ipv4;
+        return (from networkInterface in allNetworkInterfaces
+            where networkInterface.NetworkInterfaceType is NetworkInterfaceType.Ethernet or NetworkInterfaceType.Wireless80211 &&
+                  !networkInterface.Name.ToUpper().Contains("BLUETOOTH") && !networkInterface.Name.ToUpper().Contains("VMWARE")
+            let ip = GetResultStringFromNetworkAdapter(networkInterface)
+            where ip != null
+            select (networkInterface.OperationalStatus, ip)).ToList();
 
-        static string? GetIpv4StringFromNetworkAdapter(string? ipv4Address, NetworkInterface networkInterface)
+        string? GetResultStringFromNetworkAdapter(NetworkInterface networkInterface)
         {
+            string? ipAddress = null;
             foreach (var unicastAddress in networkInterface.GetIPProperties().UnicastAddresses)
             {
-                if (unicastAddress.Address.AddressFamily == AddressFamily.InterNetwork)
+                if (unicastAddress.Address.AddressFamily == addressFamily)
                 {
-                    ipv4Address = unicastAddress.Address.ToString();
+                    ipAddress = unicastAddress.Address.ToString();
                 }
             }
 
-            return ipv4Address;
+            return ipAddress;
         }
     }
 }
