@@ -7,3 +7,4 @@ global using System.Reflection;
 global using System.Runtime.CompilerServices;
 global using Microsoft.CodeAnalysis;
 global using SpeedBoot.SourceGenerator.Internal.Model;
+global using System.Globalization;
