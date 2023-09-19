@@ -43,4 +43,16 @@ public static class EnumerableExtensions
 #endif
         this IEnumerable<TSource>? sources)
         => sources != null && sources.Any();
+
+    public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this KeyValuePair<TKey, TValue>[] keyValuePairs)
+        where TKey : notnull
+    {
+        Dictionary<TKey, TValue> dictionary;
+#if NETSTANDARD2_0
+dictionary = keyValuePairs.ToDictionary(item => item.Key, item => item.Value);
+#else
+        dictionary = new Dictionary<TKey, TValue>(keyValuePairs);
+#endif
+        return dictionary;
+    }
 }
