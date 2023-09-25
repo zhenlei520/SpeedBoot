@@ -12,7 +12,7 @@ public interface IRepository<TEntity>
     Task AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
     #endregion
-    
+
     #region Update
 
     Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
@@ -20,22 +20,26 @@ public interface IRepository<TEntity>
     Task UpdateRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
     #endregion
-    
+
     #region Remove
 
     Task<TEntity> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default);
 
     Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default);
 
-    Task RemoveAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
+    Task RemoveAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken = default);
 
     #endregion
-    
+
     #region Find
 
-    Task<TEntity?> FindAsync(IEnumerable<KeyValuePair<string, object>> keyValues, CancellationToken cancellationToken = default);
+    Task<TEntity?> FindAsync(object keyValue, CancellationToken cancellationToken = default);
 
-    Task<TEntity?> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
+    Task<TEntity?> FindAsync(IEnumerable<object> keyValues, CancellationToken cancellationToken = default);
+
+    Task<TEntity?> FirstOrDefaultAsync(IEnumerable<KeyValuePair<string, object>> keyValues, CancellationToken cancellationToken = default);
+
+    Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken = default);
 
     #endregion
 }
