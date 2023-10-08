@@ -3,18 +3,20 @@
 
 namespace Speed.Boot.Data.EFCore;
 
-public class DefaultDbContextProvider: IDbContextProvider
+public class DefaultDbContextProvider : IDbContextProvider
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly CustomConcurrentDictionary<Type, object?> _contextDictionary;
 
     public DefaultDbContextProvider(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        _contextDictionary = new();
     }
 
-    public IDbContext GetDbContext<TEntity>(DbOperateTypes operateType) where TEntity : class, IEntity
+    public IDbContext? GetDbContext<TDbContext>() where TDbContext : IDbContext
     {
-        //todo: 得到对应的数据库上下文
-        return null;
+        var dbContext = _contextDictionary.GetOrAdd(typeof(TDbContext), (type) => _serviceProvider.GetRequiredService(type));
+        return dbContext as IDbContext;
     }
 }

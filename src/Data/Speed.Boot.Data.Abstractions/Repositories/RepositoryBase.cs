@@ -5,9 +5,10 @@
 
 namespace Speed.Boot.Data.Abstractions;
 
-public abstract class RepositoryBase<TEntity> :
-    IRepository<TEntity>
+public abstract class RepositoryBase<TEntity, TDbContext> :
+    IRepository<TEntity, TDbContext>
     where TEntity : class, IEntity
+    where TDbContext : IDbContext
 {
     protected IServiceProvider ServiceProvider { get; }
 
@@ -37,7 +38,8 @@ public abstract class RepositoryBase<TEntity> :
     public abstract Task<TEntity?> FirstOrDefaultAsync(IEnumerable<KeyValuePair<string, object>> keyValues,
         CancellationToken cancellationToken = default);
 
-    public abstract Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken = default);
+    public abstract Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> condition,
+        CancellationToken cancellationToken = default);
 
     public abstract Task<TEntity> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default);
 

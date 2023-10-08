@@ -5,5 +5,6 @@ namespace Speed.Boot.Data.Abstractions;
 
 public interface IDbContextProvider
 {
-    IDbContext GetDbContext<TEntity>(DbOperateTypes operateType) where TEntity : class, IEntity;
+    IDbContext? GetDbContext<TDbContext>()
+        where TDbContext : IDbContext;
 }

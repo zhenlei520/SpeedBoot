@@ -2,8 +2,15 @@
 
 namespace Speed.Boot.Data.Abstractions;
 
-public interface IRepository<TEntity>
+public interface IRepository<TEntity> : IRepository<TEntity, IDbContext>
     where TEntity : class, IEntity
+{
+
+}
+
+public interface IRepository<TEntity, TDbContext>
+    where TEntity : class, IEntity
+    where TDbContext : IDbContext
 {
     #region Add
 
@@ -42,4 +49,5 @@ public interface IRepository<TEntity>
     Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken = default);
 
     #endregion
+
 }
