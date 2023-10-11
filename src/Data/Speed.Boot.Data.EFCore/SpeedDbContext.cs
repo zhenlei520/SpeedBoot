@@ -3,7 +3,7 @@
 
 namespace Speed.Boot.Data.EFCore;
 
-public abstract class SpeedDbContext : DbContext
+public abstract class SpeedDbContext : DbContext, IDbContext
 {
     public SpeedDbContext()
     {

@@ -24,7 +24,6 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped(typeof(IDbContext), typeof(TDbContext));
         services.TryAddScoped<IConnectionStringProvider, DefaultConnectionStringProvider>();
 
-        //todo: 需要注册 IOptionsSnapshot<ConnectionStrings>
         var configuration = App.ApplicationExternal.GetConfiguration();
         services.Configure<ConnectionStrings>(Options.Options.DefaultName, connectionString =>
         {
@@ -32,7 +31,7 @@ public static class ServiceCollectionExtensions
             configurationSection.Bind(connectionString);
         });
 
-        var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder();
+        var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder(typeof(TDbContext));
         optionsAction?.Invoke(speedDbContextOptionsBuilder);
         services.AddDbContext<TDbContext>((serviceProvider, builder) =>
         {
