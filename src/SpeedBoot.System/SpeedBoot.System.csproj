@@ -9,6 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\SpeedBoot.SourceGenerator\Attributes\I18nResourceAttribute.cs">
+      <Link>Attributes\I18nResourceAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\SpeedBoot.SourceGenerator\Internal\Exceptions\ExceptionConstant.cs">
       <Link>Exceptions\Internal\ExceptionConstant.cs</Link>
     </Compile>
