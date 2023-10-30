@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.TryAddScoped(typeof(IDbContext), typeof(TDbContext));
         services.TryAddScoped<IConnectionStringProvider, DefaultConnectionStringProvider>();
+        services.TryAddScoped<IDbContextProvider, DefaultDbContextProvider>();
 
         var configuration = App.ApplicationExternal.GetConfiguration();
         services.Configure<ConnectionStrings>(Options.Options.DefaultName, connectionString =>

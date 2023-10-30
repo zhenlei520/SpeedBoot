@@ -8,3 +8,4 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Speed.Boot.Data.EFCore.Tests.Infrastructure;
 global using Microsoft.Extensions.Configuration;
 global using SpeedBoot;
+global using Speed.Boot.Data.Abstractions;

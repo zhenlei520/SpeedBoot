@@ -174,5 +174,4 @@ public abstract class RepositoryBase<TEntity, TDbContext> :
     }
 
     #endregion
-
 }

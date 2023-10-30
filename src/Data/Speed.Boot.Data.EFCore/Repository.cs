@@ -3,7 +3,7 @@
 
 namespace Speed.Boot.Data.EFCore;
 
-public class Repository<TEntity> : Repository<TEntity, IDbContext>
+public class Repository<TEntity> : Repository<TEntity, IDbContext>, IRepository<TEntity>
     where TEntity : class, IEntity
 {
     public Repository(IServiceProvider serviceProvider) : base(serviceProvider)
@@ -15,15 +15,12 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
     where TEntity : class, IEntity
     where TDbContext : IDbContext
 {
-    protected IServiceProvider ServiceProvider { get; }
-    
     private readonly IDbContextProvider _dbContextProvider;
 
     protected DbSet<TEntity> CurrentDbSet => GetDbContext().Set<TEntity>();
 
     public Repository(IServiceProvider serviceProvider) : base(serviceProvider)
     {
-        ServiceProvider = serviceProvider;
         _dbContextProvider = serviceProvider.GetRequiredService<IDbContextProvider>();
     }
 
