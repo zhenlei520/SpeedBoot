@@ -36,7 +36,6 @@ private protected SpeedDbContextOptions(
     }
 #endif
 
-
     /// <summary>
     /// <inheritdoc/>
     /// </summary>

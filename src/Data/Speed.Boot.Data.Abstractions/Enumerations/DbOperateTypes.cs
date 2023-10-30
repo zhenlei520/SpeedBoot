@@ -3,11 +3,14 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System;
+namespace Speed.Boot.Data.Abstractions;
 
 /// <summary>
-/// Component Multilingual Resources
+/// 操作类型
 /// </summary>
-internal static class ComponentConstant
+[Flags]
+public enum DbOperateTypes
 {
+    Read = 1,
+    Write = 2
 }

@@ -36,9 +36,12 @@ public static class LinqExtensions
     /// <param name="fields">Sorting field collection (key: sorting field, value: false ascending, true descending)（排序字段集合（key：排序字段、value：false升序、true降序））</param>
     /// <typeparam name="TEntity"></typeparam>
     /// <returns></returns>
-    public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, Dictionary<string, bool> fields)
+    public static IQueryable<TEntity> OrderBy<TEntity>(this IQueryable<TEntity> query, Dictionary<string, bool>? fields)
         where TEntity : class
     {
+        if (fields == null)
+            return query;
+
         var index = 0;
         foreach (var field in fields)
         {

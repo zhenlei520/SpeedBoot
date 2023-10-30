@@ -44,7 +44,7 @@ public static class EnumerableExtensions
         this IEnumerable<TSource>? sources)
         => sources != null && sources.Any();
 
-    public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this KeyValuePair<TKey, TValue>[] keyValuePairs)
+    public static Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this IEnumerable<KeyValuePair<TKey, TValue>> keyValuePairs)
         where TKey : notnull
     {
         Dictionary<TKey, TValue> dictionary;
