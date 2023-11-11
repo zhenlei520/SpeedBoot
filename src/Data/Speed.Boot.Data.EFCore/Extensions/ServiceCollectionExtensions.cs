@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
     {
         services.TryAddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-        services.TryAddScoped(typeof(IDbContext), typeof(TDbContext));
+        services.TryAddScoped(typeof(IDbContext), serviceProvider => serviceProvider.GetRequiredService(typeof(TDbContext)));
         services.TryAddScoped<IConnectionStringProvider, DefaultConnectionStringProvider>();
         services.TryAddScoped<IDbContextProvider, DefaultDbContextProvider>();
 
