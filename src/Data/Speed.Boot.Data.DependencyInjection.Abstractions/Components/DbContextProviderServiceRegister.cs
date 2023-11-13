@@ -3,13 +3,13 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace SpeedBoot.ObjectStorage.Aliyun;
+namespace Speed.Boot.Data.DependencyInjection.Abstractions;
 
 /// <summary>
-/// aliyun Object Storage Registrar
+/// DbContext Provider Registrar
 /// </summary>
-public class AliyunObjectStorageServiceRegister : ServiceRegisterComponentBase
+public class DbContextProviderServiceRegister : ServiceRegisterComponentBase
 {
     public override void ConfigureServices(IServiceCollection services)
-        => services.AddAliyunStorage();
+        => services.AddSpeedDbContextCore();
 }

@@ -27,6 +27,8 @@ public abstract class RepositoryBase<TEntity, TDbContext> :
         }
     }
 
+    public abstract Task<TEntity?> FindAsync(params object[] keyValues);
+
     public abstract Task<TEntity?> FindAsync(
         object keyValue,
         CancellationToken cancellationToken = default);
@@ -35,10 +37,12 @@ public abstract class RepositoryBase<TEntity, TDbContext> :
         IEnumerable<object> keyValues,
         CancellationToken cancellationToken = default);
 
-    public abstract Task<TEntity?> FirstOrDefaultAsync(IEnumerable<KeyValuePair<string, object>> keyValues,
+    public abstract Task<TEntity?> FirstOrDefaultAsync(
+        IEnumerable<KeyValuePair<string, object>> fields,
         CancellationToken cancellationToken = default);
 
-    public abstract Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> condition,
+    public abstract Task<TEntity?> FirstOrDefaultAsync(
+        Expression<Func<TEntity, bool>> condition,
         CancellationToken cancellationToken = default);
 
     public abstract Task<TEntity> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default);

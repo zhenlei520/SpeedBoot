@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Extensions\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj" />
     <ProjectReference Include="..\Speed.Boot.Data.Abstractions\Speed.Boot.Data.Abstractions.csproj" />
+    <ProjectReference Include="..\Speed.Boot.Data.DependencyInjection.Abstractions\Speed.Boot.Data.DependencyInjection.Abstractions.csproj" />
   </ItemGroup>
 
   <Choose>

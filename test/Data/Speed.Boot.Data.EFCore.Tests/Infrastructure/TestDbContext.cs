@@ -7,7 +7,15 @@ public class TestDbContext : SpeedDbContext
 {
     public DbSet<User> User { get; set; }
 
+    public DbSet<Person> Person { get; set; }
+
     public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
     {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Person>().HasKey(e => new { e.Id, e.Name });
+        base.OnModelCreating(modelBuilder);
     }
 }

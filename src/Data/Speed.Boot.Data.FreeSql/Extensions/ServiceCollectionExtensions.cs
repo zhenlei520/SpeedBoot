@@ -7,23 +7,18 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-    /// <summary>
-    /// 添加仓储，仅需要添加默认 DbContext的上下文即可
-    /// </summary>
-    /// <param name="services"></param>
-    /// <param name="optionsAction"></param>
-    /// <typeparam name="TDbContext"></typeparam>
-    /// <returns></returns>
     public static IServiceCollection AddSpeedDbContext<TDbContext>(
         this IServiceCollection services,
         Action<SpeedDbContextOptionsBuilder>? optionsAction = null)
-        where TDbContext : DbContext, IDbContext
+        where TDbContext : SpeedDbContext, IDbContext, new()
     {
         services.TryAddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.TryAddScoped(typeof(IDbContext), serviceProvider => serviceProvider.GetRequiredService(typeof(TDbContext)));
         services.TryAddScoped<IConnectionStringProvider, DefaultConnectionStringProvider>();
         services.AddSpeedDbContextCore();
+
+        services.TryAddScoped(typeof(IDbContext), serviceProvider => serviceProvider.GetRequiredService(typeof(TDbContext)));
 
         var configuration = App.ApplicationExternal.GetConfiguration();
         if (configuration != null)
@@ -37,10 +32,15 @@ public static class ServiceCollectionExtensions
 
         var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder(typeof(TDbContext));
         optionsAction?.Invoke(speedDbContextOptionsBuilder);
-        services.AddDbContext<TDbContext>((serviceProvider, builder) =>
+        services.TryAddScoped<TDbContext>(serviceProvider =>
         {
-            speedDbContextOptionsBuilder.OptionsAction?.Invoke(serviceProvider, builder);
+            var freeSqlBuilder = new FreeSqlBuilder();
+            speedDbContextOptionsBuilder.OptionsAction?.Invoke(serviceProvider, freeSqlBuilder);
+            var dbContext = new TDbContext();
+            SpeedDbContextHelper.SetDbContext(dbContext, freeSqlBuilder.Build());
+            return (dbContext as TDbContext)!;
         });
+
         return services;
     }
 }

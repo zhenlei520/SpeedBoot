@@ -9,3 +9,4 @@ global using Speed.Boot.Data.EFCore.Tests.Infrastructure;
 global using Microsoft.Extensions.Configuration;
 global using SpeedBoot;
 global using Speed.Boot.Data.Abstractions;
+global using System.ComponentModel.DataAnnotations;

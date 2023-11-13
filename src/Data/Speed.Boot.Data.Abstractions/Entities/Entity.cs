@@ -58,7 +58,7 @@ public abstract class Entity : IEntity, IEquatable<Entity>, IEquatable<object>
 
 public abstract class Entity<TKey> : Entity, IEntity<TKey>
 {
-    public TKey Id { get; set; } = default!;
+    public virtual TKey Id { get; set; } = default!;
 
     protected Entity()
     {

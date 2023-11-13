@@ -6,22 +6,43 @@ namespace Speed.Boot.Data.EFCore.Tests;
 [TestClass]
 public class RepositoryTest
 {
-    [TestMethod]
-    public async Task FirstOrDefaultAsync()
+    private IServiceCollection _services;
+
+    public RepositoryTest()
     {
-        var services = new ServiceCollection();
+        _services = new ServiceCollection();
         var configurationBuilder = new ConfigurationBuilder();
         configurationBuilder.AddJsonFile("appsettings.json");
         var configurationRoot = configurationBuilder.Build();
-        services.AddConfiguration(configurationRoot);
-        services.AddSpeed();
-        services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder => speedDbContextOptionsBuilder.UseSqlServer());
-        var serviceProvider = services.BuildServiceProvider();
-        using (var scope = serviceProvider.CreateScope())
-        {
-            var repository = scope.ServiceProvider.GetRequiredService<IRepository<User>>();
-            var user = await repository.FirstOrDefaultAsync(user => user.Name == "speed");
-            Assert.IsNotNull(user);
-        }
+        _services.AddConfiguration(configurationRoot);
+        _services.AddSpeed();
+        _services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder => speedDbContextOptionsBuilder.UseSqlServer());
+
+        var dbContext = _services.BuildServiceProvider().GetService<TestDbContext>();
+        SpeedArgumentException.ThrowIfNull(dbContext);
+        dbContext.Database.EnsureCreated();
+    }
+
+    [TestMethod]
+    public async Task FirstOrDefaultAsync()
+    {
+        var serviceProvider = _services.BuildServiceProvider();
+        using var scope = serviceProvider.CreateScope();
+        var repository = scope.ServiceProvider.GetRequiredService<IRepository<User>>();
+        var user = await repository.FirstOrDefaultAsync(user => user.Name == "speed");
+        Assert.IsNotNull(user);
+    }
+
+    [TestMethod]
+    public async Task FindAsync()
+    {
+        var serviceProvider = _services.BuildServiceProvider();
+        using var scope = serviceProvider.CreateScope();
+        var repository = scope.ServiceProvider.GetRequiredService<IRepository<Person>>();
+        var person = await repository.FirstOrDefaultAsync(user => user.Name == "speed");
+        SpeedArgumentException.ThrowIfNull(person);
+
+        var person2 = await repository.FindAsync(person.Id, "speed");
+        Assert.IsNotNull(person2);
     }
 }

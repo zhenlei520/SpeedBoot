@@ -1,7 +1,7 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-namespace Speed.Boot.Data.EFCore;
+namespace Speed.Boot.Data.FreeSql;
 
 public class Repository<TEntity> : Repository<TEntity, IDbContext>, IRepository<TEntity>
     where TEntity : class, IEntity
@@ -18,6 +18,9 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
     private readonly IDbContextProvider _dbContextProvider;
 
     protected DbSet<TEntity> CurrentDbSet => GetDbContext().Set<TEntity>();
+
+    protected ISelect<TEntity> GetCurrentEntity(Expression<Func<TEntity, bool>>? condition = null) =>
+        condition == null ? CurrentDbSet.Where(_ => true) : CurrentDbSet.Where(condition);
 
     public Repository(IServiceProvider serviceProvider) : base(serviceProvider)
     {
@@ -37,31 +40,31 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
     }
 
     public override async Task<IEnumerable<TEntity>> GetListAsync(CancellationToken cancellationToken = default)
-        => await CurrentDbSet.ToListAsync(cancellationToken);
+        => await GetCurrentEntity().ToListAsync(cancellationToken);
 
     public override async Task<IEnumerable<TEntity>> GetListAsync(
         string sortField,
         bool isDescending = true,
         CancellationToken cancellationToken = default)
-        => await CurrentDbSet.OrderBy(sortField, isDescending).ToListAsync(cancellationToken);
+        => await GetCurrentEntity().OrderBy(sortField, isDescending).ToListAsync(cancellationToken);
 
     public override async Task<IEnumerable<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>> condition,
         CancellationToken cancellationToken = default)
-        => await CurrentDbSet.Where(condition).ToListAsync(cancellationToken);
+        => await GetCurrentEntity(condition).ToListAsync(cancellationToken);
 
     public override async Task<IEnumerable<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>> condition,
         string sortField,
         bool isDescending = true,
         CancellationToken cancellationToken = default)
-        => await CurrentDbSet.Where(condition).OrderBy(sortField, isDescending).ToListAsync(cancellationToken);
+        => await GetCurrentEntity(condition).OrderBy(sortField, isDescending).ToListAsync(cancellationToken);
 
     public override Task<long> GetCountAsync(CancellationToken cancellationToken = default)
-        => CurrentDbSet.LongCountAsync(cancellationToken);
+        => GetCurrentEntity().CountAsync(cancellationToken);
 
     public override Task<long> GetCountAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken = default)
-        => CurrentDbSet.LongCountAsync(condition, cancellationToken);
+        => GetCurrentEntity(condition).CountAsync(cancellationToken);
 
     public override Task<List<TEntity>> GetPaginatedListAsync(
         int skip,
@@ -69,14 +72,14 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
         string sortField,
         bool isDescending = true,
         CancellationToken cancellationToken = default)
-        => CurrentDbSet.OrderBy(sortField, isDescending).Skip(skip).Take(take).ToListAsync(cancellationToken);
+        => GetCurrentEntity().OrderBy(sortField, isDescending).Skip(skip).Take(take).ToListAsync(cancellationToken);
 
     public override Task<List<TEntity>> GetPaginatedListAsync(
         int skip,
         int take,
         Dictionary<string, bool>? sorting = null,
         CancellationToken cancellationToken = default)
-        => CurrentDbSet.OrderBy(sorting).Skip(skip).Take(take).ToListAsync(cancellationToken);
+        => GetPaginatedListAsync(_ => true, skip, take, sorting, cancellationToken);
 
     public override Task<List<TEntity>> GetPaginatedListAsync(
         Expression<Func<TEntity, bool>> condition,
@@ -93,12 +96,20 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
         int take,
         Dictionary<string, bool>? sorting = null,
         CancellationToken cancellationToken = default)
-        => CurrentDbSet.Where(condition).OrderBy(sorting).Skip(skip).Take(take).ToListAsync(cancellationToken);
+    {
+        var currentEntity = GetCurrentEntity(condition);
+        if (sorting != null)
+        {
+            currentEntity = sorting.Aggregate(currentEntity, (current, item) => current.OrderByPropertyName(item.Key, !item.Value));
+        }
+
+        return currentEntity.Skip(skip).Take(take).ToListAsync(cancellationToken);
+    }
 
     public override Task<TEntity> RemoveAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
-        var entry = CurrentDbSet.Remove(entity);
-        return Task.FromResult(entry.Entity);
+        CurrentDbSet.Remove(entity);
+        return Task.FromResult(entity);
     }
 
     public override Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
@@ -113,24 +124,25 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
         CurrentDbSet.RemoveRange(entities);
     }
 
-    public override Task<TEntity?> FindAsync(params object[] keyValues)
-        => FindAsync(keyValues, CancellationToken.None);
-
     public override async Task<TEntity?> FindAsync(object keyValue, CancellationToken cancellationToken = default)
-        => await Task.Run(async () => await CurrentDbSet.FindAsync(keyValue), cancellationToken);
+    {
+        return await GetCurrentEntity().FindAsync(keyValue, cancellationToken);
+    }
 
     public override async Task<TEntity?> FindAsync(IEnumerable<object> keyValues, CancellationToken cancellationToken = default)
-        => await Task.Run(async () => await CurrentDbSet.FindAsync(keyValues.ToArray()), cancellationToken);
+        => FirstOrDefaultAsync();
 
-    public override Task<TEntity?> FirstOrDefaultAsync(
-        IEnumerable<KeyValuePair<string, object>> fields,
+    public override async Task<TEntity?> FirstOrDefaultAsync(
+        IEnumerable<KeyValuePair<string, object>> keyValues,
         CancellationToken cancellationToken = default)
     {
-        return CurrentDbSet.GetQueryable(fields.ToDictionary()).FirstOrDefaultAsync(cancellationToken);
+        var currentEntity = GetCurrentEntity();
+        currentEntity = keyValues.Aggregate(currentEntity, (current, field) => current.Where($"{field.Key} = @field", new { field = field.Value }));
+        return await currentEntity.FirstAsync(cancellationToken);
     }
 
     public override Task<TEntity?> FirstOrDefaultAsync(
         Expression<Func<TEntity, bool>> condition,
         CancellationToken cancellationToken = default)
-        => CurrentDbSet.FirstOrDefaultAsync(condition, cancellationToken);
+        => GetCurrentEntity(condition).FirstAsync(cancellationToken);
 }

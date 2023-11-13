@@ -94,6 +94,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.EFCore.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.EFCore.Pomelo.MySql", "src\Data\Speed.Boot.Data.EFCore.Pomelo.MySql\Speed.Boot.Data.EFCore.Pomelo.MySql.csproj", "{4B37AA6B-7BDE-4638-9B9A-6690E6E34BD5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.DependencyInjection.Abstractions", "src\Data\Speed.Boot.Data.DependencyInjection.Abstractions\Speed.Boot.Data.DependencyInjection.Abstractions.csproj", "{91B9AAB3-A77F-4F76-989F-434F0AD83060}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.FreeSql.Tests", "test\Data\Speed.Boot.Data.FreeSql.Tests\Speed.Boot.Data.FreeSql.Tests.csproj", "{57EB875D-F0D3-40AB-9E17-04E07E11F716}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -212,6 +216,14 @@ Global
 		{4B37AA6B-7BDE-4638-9B9A-6690E6E34BD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B37AA6B-7BDE-4638-9B9A-6690E6E34BD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B37AA6B-7BDE-4638-9B9A-6690E6E34BD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91B9AAB3-A77F-4F76-989F-434F0AD83060}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91B9AAB3-A77F-4F76-989F-434F0AD83060}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91B9AAB3-A77F-4F76-989F-434F0AD83060}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91B9AAB3-A77F-4F76-989F-434F0AD83060}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57EB875D-F0D3-40AB-9E17-04E07E11F716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57EB875D-F0D3-40AB-9E17-04E07E11F716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57EB875D-F0D3-40AB-9E17-04E07E11F716}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57EB875D-F0D3-40AB-9E17-04E07E11F716}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -255,5 +267,7 @@ Global
 		{2484DAEC-5C05-4ADC-A5AF-0967D14A1D91} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{86FAF7AF-51E9-428F-A857-02F92B4E354F} = {2484DAEC-5C05-4ADC-A5AF-0967D14A1D91}
 		{4B37AA6B-7BDE-4638-9B9A-6690E6E34BD5} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
+		{91B9AAB3-A77F-4F76-989F-434F0AD83060} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
+		{57EB875D-F0D3-40AB-9E17-04E07E11F716} = {2484DAEC-5C05-4ADC-A5AF-0967D14A1D91}
 	EndGlobalSection
 EndGlobal
