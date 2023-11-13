@@ -26,11 +26,14 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped<IDbContextProvider, DefaultDbContextProvider>();
 
         var configuration = App.ApplicationExternal.GetConfiguration();
-        services.Configure<ConnectionStrings>(Options.Options.DefaultName, connectionString =>
+        if (configuration != null)
         {
-            var configurationSection = configuration.GetSection(ConnectionStrings.DEFAULT_SECTION);
-            configurationSection.Bind(connectionString);
-        });
+            services.Configure<ConnectionStrings>(Options.Options.DefaultName, connectionString =>
+            {
+                var configurationSection = configuration.GetSection(ConnectionStrings.DEFAULT_SECTION);
+                configurationSection.Bind(connectionString);
+            });
+        }
 
         var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder(typeof(TDbContext));
         optionsAction?.Invoke(speedDbContextOptionsBuilder);

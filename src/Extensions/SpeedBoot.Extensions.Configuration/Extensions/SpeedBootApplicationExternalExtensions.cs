@@ -7,7 +7,15 @@ namespace SpeedBoot.Configuration;
 
 public static class SpeedBootApplicationExternalExtensions
 {
-    public static IConfiguration GetConfiguration(this SpeedBootApplicationExternal applicationExternal)
+    /// <summary>
+    /// 获取配置对象IConfiguration，但它可能未注册
+    /// </summary>
+    /// <param name="applicationExternal"></param>
+    /// <returns></returns>
+    public static IConfiguration? GetConfiguration(this SpeedBootApplicationExternal applicationExternal)
+        => applicationExternal.GetSingletonService<IConfiguration>();
+
+    public static IConfiguration GetRequiredConfiguration(this SpeedBootApplicationExternal applicationExternal)
         => applicationExternal.GetRequiredSingletonService<IConfiguration>();
 
     /// <summary>
@@ -19,11 +27,28 @@ public static class SpeedBootApplicationExternalExtensions
     /// <param name="sectionName"></param>
     /// <typeparam name="TOptions"></typeparam>
     /// <returns></returns>
-    public static TOptions GetOptions<TOptions>(this SpeedBootApplicationExternal applicationExternal, string? sectionName = null)
+    public static TOptions? GetOptions<TOptions>(this SpeedBootApplicationExternal applicationExternal, string? sectionName = null)
         where TOptions : class, new()
     {
         var configuration = applicationExternal.GetConfiguration();
-        var configurationSection = configuration.GetSection(sectionName ?? typeof(TOptions).Name);
-        return configurationSection.GetOptions<TOptions>();
+        var configurationSection = configuration?.GetSection(sectionName ?? typeof(TOptions).Name);
+        return configurationSection?.GetOptions<TOptions>();
+    }
+
+    /// <summary>
+    /// Get the configuration object according to the SectionName, the default SectionName is consistent with the class name
+    ///
+    /// 根据SectionName获取配置对象，默认SectionName与类名保持一致
+    /// </summary>
+    /// <param name="applicationExternal"></param>
+    /// <param name="sectionName"></param>
+    /// <typeparam name="TOptions"></typeparam>
+    /// <returns></returns>
+    public static TOptions GetRequiredOptions<TOptions>(this SpeedBootApplicationExternal applicationExternal, string? sectionName = null)
+        where TOptions : class, new()
+    {
+        var options = GetOptions<TOptions>(applicationExternal, sectionName);
+        SpeedArgumentException.ThrowIfNull(options);
+        return options;
     }
 }
