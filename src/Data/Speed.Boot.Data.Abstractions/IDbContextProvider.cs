@@ -7,4 +7,6 @@ public interface IDbContextProvider
 {
     IDbContext? GetDbContext<TDbContext>()
         where TDbContext : IDbContext;
+
+    IDbContext? GetDbContext(Type dbContextType);
 }

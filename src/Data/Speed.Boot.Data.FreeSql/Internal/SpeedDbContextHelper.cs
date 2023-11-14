@@ -11,7 +11,7 @@ internal static class SpeedDbContextHelper
 {
     private static readonly Dictionary<Type, Expression<Action<SpeedDbContext, IFreeSql>>?> _data = new();
 
-    public static void Register<TDbContext>() where TDbContext : SpeedDbContext, new()
+    public static void Register<TDbContext>() where TDbContext : SpeedDbContext
     {
         var dbContextType = typeof(TDbContext);
         if (_data.ContainsKey(dbContextType))
@@ -43,5 +43,16 @@ internal static class SpeedDbContextHelper
         SpeedArgumentException.ThrowIfNull(lambdaExpression);
         var compiledLambda = lambdaExpression.Compile();
         compiledLambda.Invoke(dbContext, freeSql);
+    }
+
+    public static TDbContext CreateInstance<TDbContext>(IFreeSql freeSql, DbContextOptions dbContextOptions) where TDbContext : SpeedDbContext
+    {
+        var ctor = typeof(TDbContext).GetConstructor(new[] { typeof(IFreeSql), typeof(DbContextOptions) });
+        var param1 = Expression.Parameter(typeof(IFreeSql));
+        var param2 = Expression.Parameter(typeof(DbContextOptions));
+
+        var newExpr = Expression.New(ctor, param1, param2);
+        var lambda = Expression.Lambda<Func<IFreeSql, DbContextOptions, TDbContext>>(newExpr, param1, param2).Compile();
+        return lambda.Invoke(freeSql, dbContextOptions);
     }
 }

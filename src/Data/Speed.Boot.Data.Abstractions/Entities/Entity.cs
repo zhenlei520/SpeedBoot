@@ -4,7 +4,7 @@ namespace Speed.Boot.Data.Abstractions;
 
 public abstract class Entity : IEntity, IEquatable<Entity>, IEquatable<object>
 {
-    public abstract IEnumerable<(string Name, object Value)> GetKeys();
+    public abstract IEnumerable<object> GetKeys();
 
     /// <inheritdoc/>
     public override string ToString()
@@ -12,7 +12,7 @@ public abstract class Entity : IEntity, IEquatable<Entity>, IEquatable<object>
         var keys = GetKeys().ToArray();
         string connector = keys.Length > 1 ? Environment.NewLine : string.Empty;
 
-        return $"{GetType().Name}:{connector}{string.Join(Environment.NewLine, keys.Select(key => $"{key.Name}={key.Value}"))}";
+        return $"{GetType().Name}:{connector}{string.Join(Environment.NewLine, string.Join(", ", GetKeys()))}";
     }
 
     public override bool Equals(object? obj)
@@ -20,21 +20,21 @@ public abstract class Entity : IEntity, IEquatable<Entity>, IEquatable<object>
         return obj switch
         {
             null => false,
-            Entity other => other.GetKeys().Select(key => key.Value).SequenceEqual(GetKeys().Select(key => key.Value)),
+            Entity other => other.GetKeys().Select(key => key).SequenceEqual(GetKeys().Select(key => key)),
             _ => false
         };
     }
 
     public bool Equals(Entity? other)
     {
-        return other is not null && other!.GetKeys().Select(key => key.Value).SequenceEqual(GetKeys().Select(key => key.Value));
+        return other is not null && other!.GetKeys().Select(key => key).SequenceEqual(GetKeys().Select(key => key));
     }
 
     public override int GetHashCode()
     {
         unchecked
         {
-            return GetKeys().Aggregate(17, (current, key) => current * 23 + (key.Value?.GetHashCode() ?? 0));
+            return GetKeys().Aggregate(17, (current, key) => current * 23 + (key?.GetHashCode() ?? 0));
         }
     }
 
@@ -43,7 +43,6 @@ public abstract class Entity : IEntity, IEquatable<Entity>, IEquatable<object>
         if (x is null ^ y is null) return false;
 
         return x is null || x.Equals(y);
-
     }
 
     public static bool operator !=(Entity? x, Entity? y)
@@ -66,7 +65,7 @@ public abstract class Entity<TKey> : Entity, IEntity<TKey>
 
     protected Entity(TKey id) : this() => Id = id;
 
-    public override IEnumerable<(string Name, object Value)> GetKeys()
+    public override IEnumerable<object> GetKeys()
     {
         yield return ("Id", Id!);
     }

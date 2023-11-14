@@ -4,7 +4,7 @@ namespace Speed.Boot.Data.Abstractions;
 
 public interface IEntity
 {
-    IEnumerable<(string Name, object Value)> GetKeys();
+    IEnumerable<object> GetKeys();
 }
 
 public interface IEntity<out TKey> : IEntity

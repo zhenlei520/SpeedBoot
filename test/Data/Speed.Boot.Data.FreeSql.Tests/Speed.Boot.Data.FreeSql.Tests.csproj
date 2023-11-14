@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.802" />
+    <PackageReference Include="FreeSql.Provider.SqlServer" Version="3.2.802" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftTeskSdkPackageVersion)"/>
     <PackageReference Include="MSTest.TestAdapter" Version="$(MSTestPackageVersion)"/>
     <PackageReference Include="MSTest.TestFramework" Version="$(MSTestPackageVersion)"/>
@@ -22,8 +23,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.FreeSql\Speed.Boot.Data.FreeSql.csproj" />
+    <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.FreeSql.SqlServer\Speed.Boot.Data.FreeSql.SqlServer.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Remove="appsettings.json" />
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 
 </Project>

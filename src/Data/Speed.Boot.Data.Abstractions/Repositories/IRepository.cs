@@ -43,25 +43,25 @@ public interface IRepository<TEntity, TDbContext>
     /// <summary>
     /// Get entity information based on primary key
     /// </summary>
-    /// <param name="keyValues">A collection of primary key Key values</param>
+    /// <param name="keys">A collection of primary key Key values</param>
     /// <returns></returns>
-    Task<TEntity?> FindAsync(params object[] keyValues);
+    Task<TEntity?> FindAsync(params object[] keys);
 
     /// <summary>
     /// Get entity information based on primary key
     /// </summary>
-    /// <param name="keyValue">A collection of primary key Key values</param>
+    /// <param name="key">A collection of primary key Key values</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<TEntity?> FindAsync(object keyValue, CancellationToken cancellationToken = default);
+    Task<TEntity?> FindAsync(object key, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Get entity information based on primary key
     /// </summary>
-    /// <param name="keyValues">A collection of primary key Key values</param>
+    /// <param name="keys">A collection of primary key Key values</param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<TEntity?> FindAsync(IEnumerable<object> keyValues, CancellationToken cancellationToken = default);
+    Task<TEntity?> FindAsync(IEnumerable<object> keys, CancellationToken cancellationToken = default);
 
     Task<TEntity?> FirstOrDefaultAsync(IEnumerable<KeyValuePair<string, object>> fields, CancellationToken cancellationToken = default);
 

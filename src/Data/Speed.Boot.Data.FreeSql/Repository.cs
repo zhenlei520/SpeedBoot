@@ -13,11 +13,22 @@ public class Repository<TEntity> : Repository<TEntity, IDbContext>, IRepository<
 
 public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContext>
     where TEntity : class, IEntity
-    where TDbContext : IDbContext
+    where TDbContext : class, IDbContext
 {
     private readonly IDbContextProvider _dbContextProvider;
+    private ITableRelationProvider? _tableRelationProvider;
 
-    protected DbSet<TEntity> CurrentDbSet => GetDbContext().Set<TEntity>();
+    ITableRelationProvider GetTableRelationProvider()
+        => _tableRelationProvider ??= ServiceProvider.GetRequiredService<ITableRelationProvider>();
+
+    protected SpeedDbContext DbContext
+        => (DbContextGenerics as SpeedDbContext)!;
+
+    private TDbContext? _dbContext;
+
+    private TDbContext DbContextGenerics => (_dbContext ??= _dbContextProvider.GetDbContext<TDbContext>() as TDbContext)!;
+
+    protected DbSet<TEntity> CurrentDbSet => this.DbContext.Set<TEntity>();
 
     protected ISelect<TEntity> GetCurrentEntity(Expression<Func<TEntity, bool>>? condition = null) =>
         condition == null ? CurrentDbSet.Where(_ => true) : CurrentDbSet.Where(condition);
@@ -26,9 +37,6 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
     {
         _dbContextProvider = serviceProvider.GetRequiredService<IDbContextProvider>();
     }
-
-    protected DbContext GetDbContext()
-        => _dbContextProvider.GetDbContext<TDbContext>() as DbContext;
 
     public override async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
         => await CurrentDbSet.AddAsync(entity, cancellationToken);
@@ -124,20 +132,26 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
         CurrentDbSet.RemoveRange(entities);
     }
 
-    public override async Task<TEntity?> FindAsync(object keyValue, CancellationToken cancellationToken = default)
+    public override Task<TEntity?> FindAsync(IEnumerable<object> keys, CancellationToken cancellationToken = default)
     {
-        return await GetCurrentEntity().FindAsync(keyValue, cancellationToken);
-    }
+        var primaryKeys = GetTableRelationProvider().GetKeys<TEntity>(DbContextGenerics.GetType());
+        var keyValues = new Dictionary<string, object>();
+        // SpeedArgumentException.ThrowIf(keys.Count() != primaryKeys.Length, "Primary key key error");
+        for (var index = 0; index < primaryKeys.Length; index++)
+        {
+            keyValues.Add(primaryKeys[index], keys.Skip(index).Take(1));
+        }
 
-    public override async Task<TEntity?> FindAsync(IEnumerable<object> keyValues, CancellationToken cancellationToken = default)
-        => FirstOrDefaultAsync();
+        return FirstOrDefaultAsync(keyValues, cancellationToken);
+    }
 
     public override async Task<TEntity?> FirstOrDefaultAsync(
         IEnumerable<KeyValuePair<string, object>> keyValues,
         CancellationToken cancellationToken = default)
     {
         var currentEntity = GetCurrentEntity();
-        currentEntity = keyValues.Aggregate(currentEntity, (current, field) => current.Where($"{field.Key} = @field", new { field = field.Value }));
+        currentEntity = keyValues.Aggregate(currentEntity,
+            (current, field) => current.Where($"{field.Key} = @field", new { field = field.Value }));
         return await currentEntity.FirstAsync(cancellationToken);
     }
 

@@ -8,3 +8,7 @@ global using Speed.Boot.Data.FreeSql.Tests.Model;
 global using Speed.Boot.Data.FreeSql.Tests.Infrastructure;
 global using DataType = FreeSql.DataType;
 global using System.Reflection;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
+global using SpeedBoot;
+global using FreeSql;

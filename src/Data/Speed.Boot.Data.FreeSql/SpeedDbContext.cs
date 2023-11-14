@@ -5,14 +5,36 @@ namespace Speed.Boot.Data.FreeSql;
 
 public abstract class SpeedDbContext : DbContext, IDbContext
 {
-    private IFreeSql _freeSql;
+    public IFreeSql FreeSql { get; private set; }
 
-    /// <summary>
-    /// 设置上下文
-    /// </summary>
-    /// <param name="freeSql"></param>
-    protected virtual void SetDbContext(IFreeSql freeSql)
+    // public SpeedDbContext()
+    // {
+    //
+    // }
+
+    public SpeedDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions) : base(freeSql, dbContextOptions)
     {
-        _freeSql = freeSql;
+        FreeSql = freeSql;
     }
+
+    // /// <summary>
+    // /// 设置上下文
+    // /// </summary>
+    // /// <param name="freeSql"></param>
+    // protected virtual void SetDbContext(IFreeSql freeSql)
+    // {
+    //     FreeSql = freeSql;
+    // }
+    //
+    // protected override void OnConfiguring(DbContextOptionsBuilder options)
+    // {
+    //     options.UseFreeSql(FreeSql);
+    //     base.OnConfiguring(options);
+    // }
+    //
+    // internal void SetOnConfiguring()
+    // {
+    //     var dbContextOptionsBuilder = new DbContextOptionsBuilder();
+    //     OnConfiguring(dbContextOptionsBuilder);
+    // }
 }

@@ -17,15 +17,17 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
 {
     private readonly IDbContextProvider _dbContextProvider;
 
-    protected DbSet<TEntity> CurrentDbSet => GetDbContext().Set<TEntity>();
+    private DbContext? _dbContext;
+
+    protected DbContext DbContext()
+        => (_dbContext ??= _dbContextProvider.GetDbContext<TDbContext>() as DbContext)!;
+
+    protected DbSet<TEntity> CurrentDbSet => DbContext().Set<TEntity>();
 
     public Repository(IServiceProvider serviceProvider) : base(serviceProvider)
     {
         _dbContextProvider = serviceProvider.GetRequiredService<IDbContextProvider>();
     }
-
-    protected DbContext GetDbContext()
-        => _dbContextProvider.GetDbContext<TDbContext>() as DbContext;
 
     public override async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
         => await CurrentDbSet.AddAsync(entity, cancellationToken);
@@ -113,14 +115,8 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
         CurrentDbSet.RemoveRange(entities);
     }
 
-    public override Task<TEntity?> FindAsync(params object[] keyValues)
-        => FindAsync(keyValues, CancellationToken.None);
-
-    public override async Task<TEntity?> FindAsync(object keyValue, CancellationToken cancellationToken = default)
-        => await Task.Run(async () => await CurrentDbSet.FindAsync(keyValue), cancellationToken);
-
-    public override async Task<TEntity?> FindAsync(IEnumerable<object> keyValues, CancellationToken cancellationToken = default)
-        => await Task.Run(async () => await CurrentDbSet.FindAsync(keyValues.ToArray()), cancellationToken);
+    public override async Task<TEntity?> FindAsync(IEnumerable<object> keys, CancellationToken cancellationToken = default)
+        => await Task.Run(async () => await CurrentDbSet.FindAsync(keys.ToArray()), cancellationToken);
 
     public override Task<TEntity?> FirstOrDefaultAsync(
         IEnumerable<KeyValuePair<string, object>> fields,

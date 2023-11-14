@@ -10,15 +10,13 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddSpeedDbContext<TDbContext>(
         this IServiceCollection services,
         Action<SpeedDbContextOptionsBuilder>? optionsAction = null)
-        where TDbContext : SpeedDbContext, IDbContext, new()
+        where TDbContext : SpeedDbContext, IDbContext//, new()
     {
         services.TryAddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.TryAddScoped(typeof(IDbContext), serviceProvider => serviceProvider.GetRequiredService(typeof(TDbContext)));
         services.TryAddScoped<IConnectionStringProvider, DefaultConnectionStringProvider>();
         services.AddSpeedDbContextCore();
-
-        services.TryAddScoped(typeof(IDbContext), serviceProvider => serviceProvider.GetRequiredService(typeof(TDbContext)));
 
         var configuration = App.ApplicationExternal.GetConfiguration();
         if (configuration != null)
@@ -30,15 +28,21 @@ public static class ServiceCollectionExtensions
             });
         }
 
+        // SpeedDbContextHelper.Register<TDbContext>();
         var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder(typeof(TDbContext));
         optionsAction?.Invoke(speedDbContextOptionsBuilder);
         services.TryAddScoped<TDbContext>(serviceProvider =>
         {
             var freeSqlBuilder = new FreeSqlBuilder();
             speedDbContextOptionsBuilder.OptionsAction?.Invoke(serviceProvider, freeSqlBuilder);
-            var dbContext = new TDbContext();
-            SpeedDbContextHelper.SetDbContext(dbContext, freeSqlBuilder.Build());
-            return (dbContext as TDbContext)!;
+            var freeSql = freeSqlBuilder.Build();
+            var speedDbContext = SpeedDbContextHelper.CreateInstance<TDbContext>(freeSql, new DbContextOptions());
+
+            // var dbContext = new TDbContext();
+            // SpeedDbContextHelper.SetDbContext(dbContext, freeSqlBuilder.Build());
+            // var speedDbContext= (dbContext as TDbContext)!;
+            // // speedDbContext.SetOnConfiguring();
+            return speedDbContext;
         });
 
         return services;

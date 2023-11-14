@@ -6,4 +6,10 @@ namespace Speed.Boot.Data.FreeSql.Tests.Infrastructure;
 public class TestDbContext : SpeedDbContext
 {
     public DbSet<User> User { get; set; }
+
+    public DbSet<Person> Person { get; set; }
+
+    public TestDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions) : base(freeSql, dbContextOptions)
+    {
+    }
 }

@@ -27,14 +27,16 @@ public abstract class RepositoryBase<TEntity, TDbContext> :
         }
     }
 
-    public abstract Task<TEntity?> FindAsync(params object[] keyValues);
+    public virtual Task<TEntity?> FindAsync(params object[] keys)
+        => FindAsync(keys, CancellationToken.None);
+
+    public virtual Task<TEntity?> FindAsync(
+        object key,
+        CancellationToken cancellationToken = default)
+        => FindAsync(new List<object>() { key }, CancellationToken.None);
 
     public abstract Task<TEntity?> FindAsync(
-        object keyValue,
-        CancellationToken cancellationToken = default);
-
-    public abstract Task<TEntity?> FindAsync(
-        IEnumerable<object> keyValues,
+        IEnumerable<object> keys,
         CancellationToken cancellationToken = default);
 
     public abstract Task<TEntity?> FirstOrDefaultAsync(

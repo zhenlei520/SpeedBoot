@@ -17,8 +17,11 @@ public class DefaultDbContextProvider : IDbContextProvider
     }
 
     public IDbContext? GetDbContext<TDbContext>() where TDbContext : IDbContext
+        => GetDbContext(typeof(TDbContext));
+
+    public IDbContext? GetDbContext(Type dbContextType)
     {
-        var dbContext = _contextDictionary.GetOrAdd(typeof(TDbContext), (type) => _serviceProvider.GetRequiredService(type));
+        var dbContext = _contextDictionary.GetOrAdd(dbContextType, (type) => _serviceProvider.GetRequiredService(type));
         return dbContext as IDbContext;
     }
 }
