@@ -7,34 +7,19 @@ public abstract class SpeedDbContext : DbContext, IDbContext
 {
     public IFreeSql FreeSql { get; private set; }
 
-    // public SpeedDbContext()
-    // {
-    //
-    // }
+    /// <summary>
+    /// 使用此构造函数，则必须重写 OnConfiguring 方法
+    /// </summary>
+    protected SpeedDbContext() : base()
+    {
+    }
 
-    public SpeedDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions) : base(freeSql, dbContextOptions)
+    protected SpeedDbContext(IFreeSql freeSql) : base(freeSql, new DbContextOptions())
+    {
+    }
+
+    protected SpeedDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions) : base(freeSql, dbContextOptions)
     {
         FreeSql = freeSql;
     }
-
-    // /// <summary>
-    // /// 设置上下文
-    // /// </summary>
-    // /// <param name="freeSql"></param>
-    // protected virtual void SetDbContext(IFreeSql freeSql)
-    // {
-    //     FreeSql = freeSql;
-    // }
-    //
-    // protected override void OnConfiguring(DbContextOptionsBuilder options)
-    // {
-    //     options.UseFreeSql(FreeSql);
-    //     base.OnConfiguring(options);
-    // }
-    //
-    // internal void SetOnConfiguring()
-    // {
-    //     var dbContextOptionsBuilder = new DbContextOptionsBuilder();
-    //     OnConfiguring(dbContextOptionsBuilder);
-    // }
 }

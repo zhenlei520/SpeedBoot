@@ -9,7 +9,7 @@ public class TestDbContext : SpeedDbContext
 
     public DbSet<Person> Person { get; set; }
 
-    public TestDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions) : base(freeSql, dbContextOptions)
+    protected TestDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions) : base(freeSql, dbContextOptions)
     {
     }
 }

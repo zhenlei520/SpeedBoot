@@ -9,6 +9,10 @@ public class SpeedDbContextOptionsBuilder
 
     public Action<IServiceProvider, FreeSqlBuilder>? OptionsAction { get; set; }
 
+    public Action<IFreeSql>? FreeSqlOptionsAction { get; set; }
+
+    public Action<DbContextOptions>? DbContextOptionsAction { get; set; }
+
     public SpeedDbContextOptionsBuilder(Type dbContextType)
     {
         DbContextType = dbContextType;
