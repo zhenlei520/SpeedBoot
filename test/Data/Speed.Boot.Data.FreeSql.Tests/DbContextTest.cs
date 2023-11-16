@@ -16,8 +16,8 @@ public class DbContextTest : TestBase
         var user = new User()
         {
             Name = "speed-freesql",
-            CreateTime = DateTime.Today,
-            UpdateTime = DateTime.Now
+            CreateTime = DateTime.Today.ToUniversalTime(),
+            UpdateTime = DateTime.Now.ToUniversalTime()
         };
         dbContext.Set<User>().Add(user);
         var effectRow = dbContext.SaveChanges();
@@ -26,8 +26,8 @@ public class DbContextTest : TestBase
         var person = new Person()
         {
             Name = "speed-freesql",
-            CreateTime = DateTime.Today,
-            UpdateTime = DateTime.Now
+            CreateTime = DateTime.Today.ToUniversalTime(),
+            UpdateTime = DateTime.Now.ToUniversalTime()
         };
         dbContext.Set<Person>().Add(person);
         effectRow = dbContext.SaveChanges();

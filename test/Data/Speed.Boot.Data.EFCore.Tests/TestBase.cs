@@ -8,8 +8,9 @@ public class TestBase
     /// <summary>
     /// SqlServer =1
     /// Mysql = 2
+    /// PostgreSQL =3
     /// </summary>
-    public const int DataBase = 2;
+    private static int DataBase;
 
     /// <summary>
     /// Service Collections
@@ -22,17 +23,22 @@ public class TestBase
         var configurationBuilder = new ConfigurationBuilder();
         configurationBuilder.AddJsonFile("appsettings.json");
         var configurationRoot = configurationBuilder.Build();
+        DataBase = int.Parse(configurationRoot["ConnectionStrings:DataBase"]);
         Services.AddConfiguration(configurationRoot);
         Services.AddSpeed();
         Services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
         {
-            if (DataBase == 1)
+            switch (DataBase)
             {
-                speedDbContextOptionsBuilder.UseSqlServer();
-            }
-            else if (DataBase == 2)
-            {
-                speedDbContextOptionsBuilder.UseMySql(new MySqlServerVersion("8.2.0"));
+                case 1:
+                    speedDbContextOptionsBuilder.UseSqlServer();
+                    break;
+                case 2:
+                    speedDbContextOptionsBuilder.UseMySql(new MySqlServerVersion("8.2.0"));
+                    break;
+                case 3:
+                    speedDbContextOptionsBuilder.UsePostgreSQL();
+                    break;
             }
         });
     }

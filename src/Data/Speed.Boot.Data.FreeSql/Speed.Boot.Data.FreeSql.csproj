@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FreeSql.DbContext" Version="3.2.800"/>
+    <PackageReference Include="FreeSql.DbContext" Version="$(FreeSqlPackageVersion)" />
   </ItemGroup>
 
 

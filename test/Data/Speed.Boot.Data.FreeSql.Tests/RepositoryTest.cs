@@ -8,24 +8,6 @@ public class RepositoryTest : TestBase
 {
     public RepositoryTest()
     {
-        Services = new ServiceCollection();
-        var configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.AddJsonFile("appsettings.json");
-        var configurationRoot = configurationBuilder.Build();
-        Services.AddConfiguration(configurationRoot);
-        Services.AddSpeed();
-        Services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
-        {
-            if (DataBase == 1)
-            {
-                speedDbContextOptionsBuilder.UseSqlServer();
-            }
-            else
-            {
-                speedDbContextOptionsBuilder.UseMySql();
-            }
-        });
-
         var dbContext = Services.BuildServiceProvider().GetService<TestDbContext>();
         SpeedArgumentException.ThrowIfNull(dbContext);
     }

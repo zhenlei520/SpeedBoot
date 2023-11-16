@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.FreeSql.MySql\Speed.Boot.Data.FreeSql.MySql.csproj" />
+    <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.FreeSql.PostgreSql\Speed.Boot.Data.FreeSql.PostgreSql.csproj" />
     <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.FreeSql.SqlServer\Speed.Boot.Data.FreeSql.SqlServer.csproj" />
   </ItemGroup>
 

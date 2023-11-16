@@ -102,6 +102,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.FreeSql.Sql
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.FreeSql.MySql", "src\Data\Speed.Boot.Data.FreeSql.MySql\Speed.Boot.Data.FreeSql.MySql.csproj", "{F67F8961-1A99-45F7-A5F8-9B0C83527F20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.FreeSql.PostgreSql", "src\Data\Speed.Boot.Data.FreeSql.PostgreSql\Speed.Boot.Data.FreeSql.PostgreSql.csproj", "{6235532F-96A1-41B0-BE54-D071D3DAFBD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.EFCore.PostgreSql", "src\Data\Speed.Boot.Data.EFCore.PostgreSql\Speed.Boot.Data.EFCore.PostgreSql.csproj", "{8C87449F-ECA7-4D59-88D8-CD5CD28D2F9E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -236,6 +240,14 @@ Global
 		{F67F8961-1A99-45F7-A5F8-9B0C83527F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F67F8961-1A99-45F7-A5F8-9B0C83527F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F67F8961-1A99-45F7-A5F8-9B0C83527F20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6235532F-96A1-41B0-BE54-D071D3DAFBD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6235532F-96A1-41B0-BE54-D071D3DAFBD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6235532F-96A1-41B0-BE54-D071D3DAFBD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6235532F-96A1-41B0-BE54-D071D3DAFBD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C87449F-ECA7-4D59-88D8-CD5CD28D2F9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C87449F-ECA7-4D59-88D8-CD5CD28D2F9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C87449F-ECA7-4D59-88D8-CD5CD28D2F9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C87449F-ECA7-4D59-88D8-CD5CD28D2F9E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -283,5 +295,7 @@ Global
 		{57EB875D-F0D3-40AB-9E17-04E07E11F716} = {2484DAEC-5C05-4ADC-A5AF-0967D14A1D91}
 		{88B2305D-2399-4389-A131-3C802E183EF4} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
 		{F67F8961-1A99-45F7-A5F8-9B0C83527F20} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
+		{6235532F-96A1-41B0-BE54-D071D3DAFBD8} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
+		{8C87449F-ECA7-4D59-88D8-CD5CD28D2F9E} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
 	EndGlobalSection
 EndGlobal
