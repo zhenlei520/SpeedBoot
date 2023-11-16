@@ -11,5 +11,10 @@ public class TestDbContext : SpeedDbContext
 
     protected TestDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions) : base(freeSql, dbContextOptions)
     {
+        base.Orm.CodeFirst.ConfigEntity<Person>(e =>
+        {
+            e.Property(p => p.Id).IsPrimary(true);
+            e.Property(p => p.Name).IsPrimary(true);
+        });
     }
 }

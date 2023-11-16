@@ -5,8 +5,6 @@ namespace Speed.Boot.Data.FreeSql;
 
 public abstract class SpeedDbContext : DbContext, IDbContext
 {
-    public IFreeSql FreeSql { get; private set; }
-
     /// <summary>
     /// 使用此构造函数，则必须重写 OnConfiguring 方法
     /// </summary>
@@ -20,6 +18,5 @@ public abstract class SpeedDbContext : DbContext, IDbContext
 
     protected SpeedDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions) : base(freeSql, dbContextOptions)
     {
-        FreeSql = freeSql;
     }
 }

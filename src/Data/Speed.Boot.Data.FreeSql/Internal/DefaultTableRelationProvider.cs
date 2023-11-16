@@ -30,7 +30,7 @@ internal class DefaultTableRelationProvider : ITableRelationProvider
     {
         return _data.GetOrAdd(typeof(TEntity), (type =>
         {
-            var codeFirst = GetDbContext(dbContextType).FreeSql.CodeFirst;
+            var codeFirst = GetDbContext(dbContextType).Orm.CodeFirst;
             return codeFirst.GetTableByEntity(type);
         }));
     }
