@@ -25,7 +25,7 @@
     <MSTestPackageVersion>2.2.3</MSTestPackageVersion>
     <MicrosoftTeskSdkPackageVersion>16.9.4</MicrosoftTeskSdkPackageVersion>
     <CoverletPackageVersion>3.0.2</CoverletPackageVersion>
-    <MoqPackageVersion>4.16.1</MoqPackageVersion>
+    <FreeSqlPackageVersion>3.2.805</FreeSqlPackageVersion>
   </PropertyGroup>
   <ItemGroup>
     <None Include="$(RepositoryRoot)packageIcon.png">

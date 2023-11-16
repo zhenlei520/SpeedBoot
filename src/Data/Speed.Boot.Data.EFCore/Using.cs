@@ -8,7 +8,6 @@ global using System.Reflection;
 global using Microsoft.EntityFrameworkCore.Infrastructure;
 global using Speed.Boot.Data.Abstractions;
 global using Microsoft.Extensions.DependencyInjection;
-global using System.Collections.Concurrent;
 global using Speed.Boot.Data.EFCore;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using Microsoft.Extensions.Options;

@@ -22,6 +22,7 @@ internal static class ConfigurationHelper
 
         var aliyunObjectStorageOptions = App.ApplicationExternal.GetOptions<Internal.Options.AliyunObjectStorageOptions>(aliyunObjectStorageSectionName);
 
+        SpeedArgumentException.ThrowIfNull(aliyunObjectStorageOptions);
         if (!aliyunObjectStorageOptions.AccessKeyId.IsNullOrWhiteSpace() &&
             !aliyunObjectStorageOptions.AccessKeySecret.IsNullOrWhiteSpace())
         {
@@ -36,6 +37,7 @@ internal static class ConfigurationHelper
         {
             var aliyunSectionName = GetAliyunSectionName();
             var aliyunOptions = App.ApplicationExternal.GetOptions<AliyunOptions>(aliyunSectionName);
+            SpeedArgumentException.ThrowIfNull(aliyunOptions);
             if (!aliyunOptions.AccessKeyId.IsNullOrWhiteSpace() && !aliyunOptions.AccessKeySecret.IsNullOrWhiteSpace())
             {
                 aliyunObjectStorageOptionsActual = new AliyunObjectStorageOptions()

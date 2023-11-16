@@ -6,7 +6,7 @@
 namespace SpeedBoot.ObjectStorage.Aliyun;
 
 /// <summary>
-/// Alibaba Cloud Object Storage Registrar
+/// aliyun Object Storage Registrar
 /// </summary>
 public class AliyunObjectStorageServiceRegister : ServiceRegisterComponentBase
 {

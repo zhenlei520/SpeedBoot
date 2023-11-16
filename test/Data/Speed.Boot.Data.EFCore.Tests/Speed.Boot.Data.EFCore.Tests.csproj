@@ -21,6 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.EFCore.Pomelo.MySql\Speed.Boot.Data.EFCore.Pomelo.MySql.csproj" />
+    <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.EFCore.PostgreSql\Speed.Boot.Data.EFCore.PostgreSql.csproj" />
     <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.EFCore.SqlServer\Speed.Boot.Data.EFCore.SqlServer.csproj" />
   </ItemGroup>
 

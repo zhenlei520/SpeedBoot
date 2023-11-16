@@ -4,19 +4,12 @@
 namespace Speed.Boot.Data.EFCore.Tests;
 
 [TestClass]
-public class DbContextTest
+public class DbContextTest : TestBase
 {
     [TestMethod]
     public void Add()
     {
-        var services = new ServiceCollection();
-        var configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.AddJsonFile("appsettings.json");
-        var configurationRoot = configurationBuilder.Build();
-        services.AddConfiguration(configurationRoot);
-        services.AddSpeed();
-        services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder => speedDbContextOptionsBuilder.UseSqlServer());
-        var serviceProvider = services.BuildServiceProvider();
+        var serviceProvider = Services.BuildServiceProvider();
         using (var scope = serviceProvider.CreateScope())
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<TestDbContext>();
@@ -24,11 +17,21 @@ public class DbContextTest
             var user = new User()
             {
                 Name = "speed",
-                CreateTime = DateTime.Today,
-                UpdateTime = DateTime.Now
+                CreateTime = DateTime.Today.ToUniversalTime(),
+                UpdateTime = DateTime.Now.ToUniversalTime()
             };
             dbContext.User.Add(user);
             var effectRow = dbContext.SaveChanges();
+            Assert.AreEqual(1, effectRow);
+
+            var person = new Person()
+            {
+                Name = "speed",
+                CreateTime = DateTime.Today.ToUniversalTime(),
+                UpdateTime = DateTime.Now.ToUniversalTime()
+            };
+            dbContext.Person.Add(person);
+            effectRow = dbContext.SaveChanges();
             Assert.AreEqual(1, effectRow);
         }
     }
