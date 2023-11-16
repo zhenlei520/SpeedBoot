@@ -4,21 +4,11 @@
 namespace Speed.Boot.Data.EFCore.Tests;
 
 [TestClass]
-public class RepositoryTest
+public class RepositoryTest: TestBase
 {
-    private IServiceCollection _services;
-
     public RepositoryTest()
     {
-        _services = new ServiceCollection();
-        var configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.AddJsonFile("appsettings.json");
-        var configurationRoot = configurationBuilder.Build();
-        _services.AddConfiguration(configurationRoot);
-        _services.AddSpeed();
-        _services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder => speedDbContextOptionsBuilder.UseSqlServer());
-
-        var dbContext = _services.BuildServiceProvider().GetService<TestDbContext>();
+        var dbContext = Services.BuildServiceProvider().GetService<TestDbContext>();
         SpeedArgumentException.ThrowIfNull(dbContext);
         dbContext.Database.EnsureCreated();
     }
@@ -26,7 +16,7 @@ public class RepositoryTest
     [TestMethod]
     public async Task FirstOrDefaultAsync()
     {
-        var serviceProvider = _services.BuildServiceProvider();
+        var serviceProvider = Services.BuildServiceProvider();
         using var scope = serviceProvider.CreateScope();
         var repository = scope.ServiceProvider.GetRequiredService<IRepository<User>>();
         var user = await repository.FirstOrDefaultAsync(user => user.Name == "speed");
@@ -36,7 +26,7 @@ public class RepositoryTest
     [TestMethod]
     public async Task FindAsync()
     {
-        var serviceProvider = _services.BuildServiceProvider();
+        var serviceProvider = Services.BuildServiceProvider();
         using var scope = serviceProvider.CreateScope();
         var repository = scope.ServiceProvider.GetRequiredService<IRepository<Person>>();
         var person = await repository.FirstOrDefaultAsync(user => user.Name == "speed");

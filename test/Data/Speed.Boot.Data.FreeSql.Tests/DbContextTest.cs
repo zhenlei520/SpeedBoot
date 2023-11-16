@@ -9,14 +9,7 @@ public class DbContextTest : TestBase
     [TestMethod]
     public void Add()
     {
-        var services = new ServiceCollection();
-        var configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.AddJsonFile("appsettings.json");
-        var configurationRoot = configurationBuilder.Build();
-        services.AddConfiguration(configurationRoot);
-        services.AddSpeed();
-        services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder => speedDbContextOptionsBuilder.UseSqlServer());
-        var serviceProvider = services.BuildServiceProvider();
+        var serviceProvider = Services.BuildServiceProvider();
         using var scope = serviceProvider.CreateScope();
         var dbContext = scope.ServiceProvider.GetRequiredService<TestDbContext>();
 
@@ -28,6 +21,16 @@ public class DbContextTest : TestBase
         };
         dbContext.Set<User>().Add(user);
         var effectRow = dbContext.SaveChanges();
+        Assert.AreEqual(1, effectRow);
+
+        var person = new Person()
+        {
+            Name = "speed-freesql",
+            CreateTime = DateTime.Today,
+            UpdateTime = DateTime.Now
+        };
+        dbContext.Set<Person>().Add(person);
+        effectRow = dbContext.SaveChanges();
         Assert.AreEqual(1, effectRow);
     }
 }

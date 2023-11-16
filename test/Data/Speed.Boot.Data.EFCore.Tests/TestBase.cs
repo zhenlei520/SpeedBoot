@@ -1,9 +1,9 @@
 // Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-namespace Speed.Boot.Data.FreeSql.Tests;
+namespace Speed.Boot.Data.EFCore.Tests;
 
-public abstract class TestBase
+public class TestBase
 {
     /// <summary>
     /// SqlServer =1
@@ -30,13 +30,10 @@ public abstract class TestBase
             {
                 speedDbContextOptionsBuilder.UseSqlServer();
             }
-            else
+            else if (DataBase == 2)
             {
-                speedDbContextOptionsBuilder.UseMySql();
+                speedDbContextOptionsBuilder.UseMySql(new MySqlServerVersion("8.2.0"));
             }
         });
-
-        var dbContext = Services.BuildServiceProvider().GetService<TestDbContext>();
-        SpeedArgumentException.ThrowIfNull(dbContext);
     }
 }

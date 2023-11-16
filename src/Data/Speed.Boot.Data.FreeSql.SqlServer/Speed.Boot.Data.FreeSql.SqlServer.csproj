@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Speed.Boot.Data.FreeSql\Speed.Boot.Data.FreeSql.csproj" />
+    <PackageReference Include="FreeSql.Provider.SqlServer" Version="3.2.802"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Speed.Boot.Data.FreeSql\Speed.Boot.Data.FreeSql.csproj"/>
   </ItemGroup>
 
 </Project>
