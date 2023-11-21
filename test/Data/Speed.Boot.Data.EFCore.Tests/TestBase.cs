@@ -6,9 +6,10 @@ namespace Speed.Boot.Data.EFCore.Tests;
 public class TestBase
 {
     /// <summary>
-    /// SqlServer =1
+    /// SqlServer = 1
     /// Mysql = 2
-    /// PostgreSQL =3
+    /// PostgreSQL = 3
+    /// Sqlite = 4
     /// </summary>
     private static int DataBase;
 
@@ -38,6 +39,9 @@ public class TestBase
                     break;
                 case 3:
                     speedDbContextOptionsBuilder.UsePostgreSQL();
+                    break;
+                case 4:
+                    speedDbContextOptionsBuilder.UseSqlite();
                     break;
             }
         });

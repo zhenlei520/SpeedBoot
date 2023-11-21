@@ -6,9 +6,10 @@ namespace Speed.Boot.Data.FreeSql.Tests;
 public abstract class TestBase
 {
     /// <summary>
-    /// SqlServer =1
+    /// SqlServer = 1
     /// Mysql = 2
-    /// PostgreSQL =3
+    /// PostgreSQL = 3
+    /// Sqlite = 4
     /// </summary>
     protected static int DataBase;
 
@@ -38,6 +39,9 @@ public abstract class TestBase
                     break;
                 case 3:
                     speedDbContextOptionsBuilder.UsePostgreSQL();
+                    break;
+                case 4:
+                    speedDbContextOptionsBuilder.UseSqlite(freeSqlBuilder => freeSqlBuilder.UseAutoSyncStructure(true));
                     break;
             }
         });

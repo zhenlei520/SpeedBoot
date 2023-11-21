@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.802" />
+    <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.805" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftTeskSdkPackageVersion)"/>
     <PackageReference Include="MSTest.TestAdapter" Version="$(MSTestPackageVersion)"/>
     <PackageReference Include="MSTest.TestFramework" Version="$(MSTestPackageVersion)"/>
@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.FreeSql.MySql\Speed.Boot.Data.FreeSql.MySql.csproj" />
     <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.FreeSql.PostgreSql\Speed.Boot.Data.FreeSql.PostgreSql.csproj" />
+    <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.FreeSql.Sqlite\Speed.Boot.Data.FreeSql.Sqlite.csproj" />
     <ProjectReference Include="..\..\..\src\Data\Speed.Boot.Data.FreeSql.SqlServer\Speed.Boot.Data.FreeSql.SqlServer.csproj" />
   </ItemGroup>
 
