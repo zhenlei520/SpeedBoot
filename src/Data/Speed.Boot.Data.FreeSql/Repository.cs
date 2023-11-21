@@ -150,7 +150,7 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
         CancellationToken cancellationToken = default)
     {
         var currentEntity = GetCurrentEntity();
-        return await currentEntity.WhereDynamic(keyValues.ToDictionary()).FirstAsync(cancellationToken);
+        return await currentEntity.WhereDynamic(EnumerableExtensions.ToDictionary(keyValues)).FirstAsync(cancellationToken);
     }
 
     public override Task<TEntity?> FirstOrDefaultAsync(

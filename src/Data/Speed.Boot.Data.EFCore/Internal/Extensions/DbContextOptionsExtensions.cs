@@ -7,7 +7,6 @@ namespace Microsoft.EntityFrameworkCore;
 
 internal static class DbContextOptionsExtensions
 {
-
     #region private methods
 
     private static readonly Func<DbContextOptions, ImmutableSortedDictionary<Type, (IDbContextOptionsExtension Extension, int Ordinal)>>

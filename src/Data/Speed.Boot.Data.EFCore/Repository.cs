@@ -122,7 +122,7 @@ public class Repository<TEntity, TDbContext> : RepositoryBase<TEntity, TDbContex
         IEnumerable<KeyValuePair<string, object>> fields,
         CancellationToken cancellationToken = default)
     {
-        return CurrentDbSet.GetQueryable(fields.ToDictionary()).FirstOrDefaultAsync(cancellationToken);
+        return CurrentDbSet.GetQueryable(SpeedBoot.System.EnumerableExtensions.ToDictionary(fields)).FirstOrDefaultAsync(cancellationToken);
     }
 
     public override Task<TEntity?> FirstOrDefaultAsync(

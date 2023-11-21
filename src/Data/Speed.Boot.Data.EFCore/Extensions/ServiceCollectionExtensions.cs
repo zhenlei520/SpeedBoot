@@ -19,10 +19,13 @@ public static class ServiceCollectionExtensions
         Action<SpeedDbContextOptionsBuilder>? optionsAction = null)
         where TDbContext : DbContext, IDbContext
     {
+        GlobalDataConfig.RegisterDbContext<TDbContext>();
+        services.TryAddScoped<IUnitOfWork, DefaultUnitOfWork>();
         services.TryAddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.TryAddScoped(typeof(IDbContext), serviceProvider => serviceProvider.GetRequiredService(typeof(TDbContext)));
         services.TryAddScoped<IConnectionStringProvider, DefaultConnectionStringProvider>();
+        services.TryAddScoped<UnitOfWorkWrapper>();
         services.AddSpeedDbContextCore();
 
         var configuration = App.ApplicationExternal.GetConfiguration();

@@ -19,7 +19,7 @@ public class ConnectionStrings: Dictionary<string, string>
     public ConnectionStrings() { }
 
     public ConnectionStrings(IEnumerable<KeyValuePair<string, string>> connectionStrings)
-        : base(connectionStrings.ToDictionary()) { }
+        : base(EnumerableExtensions.ToDictionary(connectionStrings)) { }
 
     protected ConnectionStrings(SerializationInfo info, StreamingContext context)
         : base(info, context)
