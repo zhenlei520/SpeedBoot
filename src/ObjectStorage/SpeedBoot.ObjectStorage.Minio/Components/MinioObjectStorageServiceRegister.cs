@@ -6,7 +6,7 @@
 namespace SpeedBoot.ObjectStorage.Minio;
 
 /// <summary>
-/// Alibaba Cloud Object Storage Registrar
+/// Aliyun Object Storage Registrar
 /// </summary>
 public class MinioObjectStorageServiceRegister : ServiceRegisterComponentBase
 {

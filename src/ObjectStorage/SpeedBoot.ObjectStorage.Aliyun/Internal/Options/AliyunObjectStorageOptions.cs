@@ -81,7 +81,7 @@ internal class AliyunObjectStorageOptions : Aliyun.AliyunOptions
     public bool Quiet { get; set; } = true;
 
     /// <summary>
-    /// Alibaba Cloud Sts configuration
+    /// Aliyun Sts configuration
     /// Used when using sub-users
     ///
     /// 阿里云 Sts 配置
