@@ -7,10 +7,10 @@ namespace SpeedBoot;
 
 public static class ServiceCollectionExtensions
 {
-    public static SpeedBootApplicationExternal AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure = null)
+    public static SpeedBootApplicationBuilder AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure = null)
     {
         if (!ServiceCollectionUtils.TryAdd<SpeedProvider>(services))
-            return services.GetRequiredSingletonInstance<SpeedBootApplicationExternal>();
+            return services.GetRequiredSingletonInstance<SpeedBootApplicationBuilder>();
 
         var speedOptions = new SpeedOptions();
         configure?.Invoke(speedOptions);
@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
             speedBootApplication.AddServiceRegisterComponents(speedOptions.Assemblies);
         }
 
-        var speedBootApplicationExternal = new SpeedBootApplicationExternal(speedBootApplication, speedOptions.Environment);
+        var speedBootApplicationExternal = new SpeedBootApplicationBuilder(speedBootApplication, speedOptions.Environment);
         services.AddSingleton(speedBootApplicationExternal);
         services.AddSingleton(speedBootApplication);
         services.AddSingleton<ISpeedBootApplication>(_ => speedBootApplication);

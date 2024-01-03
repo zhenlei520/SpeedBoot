@@ -5,7 +5,7 @@
 
 namespace SpeedBoot;
 
-public class SpeedBootApplicationExternal
+public class SpeedBootApplicationBuilder
 {
     private List<Assembly> _assemblies;
     public IReadOnlyList<Assembly> Assemblies => _assemblies;
@@ -15,7 +15,7 @@ public class SpeedBootApplicationExternal
     public IServiceProvider? RootServiceProvider => _speedBootApplication.RootServiceProvider;
     public string? Environment { get; private set; }
 
-    public SpeedBootApplicationExternal(SpeedBootApplication speedBootApplication, string? environment)
+    internal SpeedBootApplicationBuilder(SpeedBootApplication speedBootApplication, string? environment)
     {
         _assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
         _speedBootApplication = speedBootApplication;

@@ -7,10 +7,10 @@ namespace SpeedBoot;
 
 public static partial class App
 {
-    public static SpeedBootApplicationExternal ApplicationExternal { get; private set; } = default!;
+    public static SpeedBootApplicationBuilder ApplicationBuilder { get; private set; } = default!;
 
-    internal static void SetApplicationExternal(SpeedBootApplicationExternal applicationExternal)
+    internal static void SetApplicationExternal(SpeedBootApplicationBuilder applicationBuilder)
     {
-        ApplicationExternal = applicationExternal;
+        ApplicationBuilder = applicationBuilder;
     }
 }

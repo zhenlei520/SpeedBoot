@@ -12,7 +12,7 @@ internal static class MinioObjectStorageOptionsUtils
         var services = new ServiceCollection();
         services.AddJsonConfiguration(jsonFile);
         services.AddSpeed(options => options.EnabledServiceRegisterComponent = false);
-        App.ApplicationExternal.SetServiceProvider(services.BuildServiceProvider());
+        App.ApplicationBuilder.SetServiceProvider(services.BuildServiceProvider());
         return ConfigurationHelper.GetMinioObjectStorageOptions();
     }
 }

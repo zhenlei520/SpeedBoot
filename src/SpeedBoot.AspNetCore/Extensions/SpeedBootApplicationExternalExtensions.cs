@@ -11,8 +11,8 @@ public static class SpeedBootApplicationExternalExtensions
     /// Http context
     /// It can be used to obtain request information and response information
     /// </summary>
-    public static HttpContext? GetHttpContext(this SpeedBootApplicationExternal applicationExternal)
-        => applicationExternal.GetRequiredRootServiceProvider().GetRequiredService<IHttpContextAccessor>().HttpContext;
+    public static HttpContext? GetHttpContext(this SpeedBootApplicationBuilder applicationBuilder)
+        => applicationBuilder.GetRequiredRootServiceProvider().GetRequiredService<IHttpContextAccessor>().HttpContext;
 
     /// <summary>
     /// Get the <typeparamref name="TService"/> service (may be empty，Only API requests are supported)
@@ -20,9 +20,9 @@ public static class SpeedBootApplicationExternalExtensions
     /// </summary>
     /// <typeparam name="TService"></typeparam>
     /// <returns></returns>
-    public static TService? GetService<TService>(this SpeedBootApplicationExternal applicationExternal) where TService : notnull
+    public static TService? GetService<TService>(this SpeedBootApplicationBuilder applicationBuilder) where TService : notnull
     {
-        var httpContext = applicationExternal.GetHttpContext();
+        var httpContext = applicationBuilder.GetHttpContext();
         return httpContext == null ? default : httpContext.RequestServices.GetService<TService>();
     }
 
@@ -32,9 +32,9 @@ public static class SpeedBootApplicationExternalExtensions
     /// </summary>
     /// <typeparam name="TService"></typeparam>
     /// <returns></returns>
-    public static TService GetRequiredService<TService>(this SpeedBootApplicationExternal applicationExternal) where TService : notnull
+    public static TService GetRequiredService<TService>(this SpeedBootApplicationBuilder applicationBuilder) where TService : notnull
     {
-        var httpContext = applicationExternal.GetHttpContext();
+        var httpContext = applicationBuilder.GetHttpContext();
         SpeedArgumentException.ThrowIfNull(httpContext);
         return httpContext!.RequestServices.GetRequiredService<TService>();
     }
@@ -45,10 +45,10 @@ public static class SpeedBootApplicationExternalExtensions
     /// </summary>
     /// <typeparam name="TService"></typeparam>
     /// <returns></returns>
-    public static IEnumerable<TService> GetServices<TService>(this SpeedBootApplicationExternal applicationExternal)
+    public static IEnumerable<TService> GetServices<TService>(this SpeedBootApplicationBuilder applicationBuilder)
         where TService : notnull
     {
-        var httpContext = applicationExternal.GetHttpContext();
+        var httpContext = applicationBuilder.GetHttpContext();
         SpeedArgumentException.ThrowIfNull(httpContext);
         return httpContext!.RequestServices.GetServices<TService>();
     }

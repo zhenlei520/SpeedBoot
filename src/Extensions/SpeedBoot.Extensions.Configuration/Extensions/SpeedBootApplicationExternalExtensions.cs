@@ -10,27 +10,27 @@ public static class SpeedBootApplicationExternalExtensions
     /// <summary>
     /// 获取配置对象IConfiguration，但它可能未注册
     /// </summary>
-    /// <param name="applicationExternal"></param>
+    /// <param name="applicationBuilder"></param>
     /// <returns></returns>
-    public static IConfiguration? GetConfiguration(this SpeedBootApplicationExternal applicationExternal)
-        => applicationExternal.GetSingletonService<IConfiguration>();
+    public static IConfiguration? GetConfiguration(this SpeedBootApplicationBuilder applicationBuilder)
+        => applicationBuilder.GetSingletonService<IConfiguration>();
 
-    public static IConfiguration GetRequiredConfiguration(this SpeedBootApplicationExternal applicationExternal)
-        => applicationExternal.GetRequiredSingletonService<IConfiguration>();
+    public static IConfiguration GetRequiredConfiguration(this SpeedBootApplicationBuilder applicationBuilder)
+        => applicationBuilder.GetRequiredSingletonService<IConfiguration>();
 
     /// <summary>
     /// Get the configuration object according to the SectionName, the default SectionName is consistent with the class name
     ///
     /// 根据SectionName获取配置对象，默认SectionName与类名保持一致
     /// </summary>
-    /// <param name="applicationExternal"></param>
+    /// <param name="applicationBuilder"></param>
     /// <param name="sectionName"></param>
     /// <typeparam name="TOptions"></typeparam>
     /// <returns></returns>
-    public static TOptions? GetOptions<TOptions>(this SpeedBootApplicationExternal applicationExternal, string? sectionName = null)
+    public static TOptions? GetOptions<TOptions>(this SpeedBootApplicationBuilder applicationBuilder, string? sectionName = null)
         where TOptions : class, new()
     {
-        var configuration = applicationExternal.GetConfiguration();
+        var configuration = applicationBuilder.GetConfiguration();
         var configurationSection = configuration?.GetSection(sectionName ?? typeof(TOptions).Name);
         return configurationSection?.GetOptions<TOptions>();
     }
@@ -40,14 +40,14 @@ public static class SpeedBootApplicationExternalExtensions
     ///
     /// 根据SectionName获取配置对象，默认SectionName与类名保持一致
     /// </summary>
-    /// <param name="applicationExternal"></param>
+    /// <param name="applicationBuilder"></param>
     /// <param name="sectionName"></param>
     /// <typeparam name="TOptions"></typeparam>
     /// <returns></returns>
-    public static TOptions GetRequiredOptions<TOptions>(this SpeedBootApplicationExternal applicationExternal, string? sectionName = null)
+    public static TOptions GetRequiredOptions<TOptions>(this SpeedBootApplicationBuilder applicationBuilder, string? sectionName = null)
         where TOptions : class, new()
     {
-        var options = GetOptions<TOptions>(applicationExternal, sectionName);
+        var options = GetOptions<TOptions>(applicationBuilder, sectionName);
         SpeedArgumentException.ThrowIfNull(options);
         return options;
     }

@@ -20,6 +20,6 @@ public static class IpUtils
         {
             keys = new[] { "HTTP_X_ForWARDED_For", "REMOTE_ADDR" };
         }
-        return keys.Select(key => App.ApplicationExternal.GetHttpContext().GetHeader(key)).FirstOrDefault(ip => !ip.IsNullOrWhiteSpace());
+        return keys.Select(key => App.ApplicationBuilder.GetHttpContext().GetHeader(key)).FirstOrDefault(ip => !ip.IsNullOrWhiteSpace());
     }
 }

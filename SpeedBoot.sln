@@ -113,8 +113,24 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{7120E109-21F0-4279-9631-DC59B751B826}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "zh-cn", "zh-cn", "{57BE6CB1-C051-4D12-ACF0-0358EF51084F}"
+	ProjectSection(SolutionItems) = preProject
+		docs\zh-cn\AspNetCore.md = docs\zh-cn\AspNetCore.md
+		docs\zh-cn\DataEFCore.md = docs\zh-cn\DataEFCore.md
+		docs\zh-cn\DataFreeSql.md = docs\zh-cn\DataFreeSql.md
+		docs\zh-cn\ObjectStorageAliyun.md = docs\zh-cn\ObjectStorageAliyun.md
+		docs\zh-cn\ObjectStorageMinio.md = docs\zh-cn\ObjectStorageMinio.md
+		docs\zh-cn\README.md = docs\zh-cn\README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "en", "en", "{7897FA0C-6D6B-4F7F-95EB-1A7510506603}"
+	ProjectSection(SolutionItems) = preProject
+		docs\en\AspNetCore.md = docs\en\AspNetCore.md
+		docs\en\DataEFCore.md = docs\en\DataEFCore.md
+		docs\en\DataFreeSql.md = docs\en\DataFreeSql.md
+		docs\en\ObjectStorageAliyun.md = docs\en\ObjectStorageAliyun.md
+		docs\en\ObjectStorageMinio.md = docs\en\ObjectStorageMinio.md
+		docs\en\README.md = docs\en\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

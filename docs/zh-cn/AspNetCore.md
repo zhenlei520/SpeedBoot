@@ -1,6 +1,6 @@
 # AspNetCore
 
-**SpeedBoot.AspNetCore**类库是一个支持**netcore2.1**以上版本的类库，通过它可以无侵入性的使用各模块
+**SpeedBoot.AspNetCore** 类库是一个支持 **netcore2.1** 以上版本的类库，通过它可以无侵入性的使用各模块
 
 ## 如何使用
 

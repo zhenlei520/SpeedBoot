@@ -28,7 +28,7 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped<UnitOfWorkWrapper>();
         services.AddSpeedDbContextCore();
 
-        var configuration = App.ApplicationExternal.GetConfiguration();
+        var configuration = App.ApplicationBuilder.GetConfiguration();
         if (configuration != null)
         {
             services.Configure<ConnectionStrings>(Options.Options.DefaultName, connectionString =>
