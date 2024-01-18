@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
     public static SpeedBootApplicationBuilder AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure = null)
     {
         if (!ServiceCollectionUtils.TryAdd<SpeedProvider>(services))
-            return services.GetRequiredSingletonInstance<SpeedBootApplicationBuilder>();
+            throw new Exception("SpeedBoot has been registered");
 
         var speedOptions = new SpeedOptions();
         configure?.Invoke(speedOptions);
@@ -21,13 +21,12 @@ public static class ServiceCollectionExtensions
             speedBootApplication.AddServiceRegisterComponents(speedOptions.Assemblies);
         }
 
-        var speedBootApplicationExternal = new SpeedBootApplicationBuilder(speedBootApplication, speedOptions.Environment);
-        services.AddSingleton(speedBootApplicationExternal);
+        var speedBootApplicationBuilder = new SpeedBootApplicationBuilder(speedBootApplication);
         services.AddSingleton(speedBootApplication);
         services.AddSingleton<ISpeedBootApplication>(_ => speedBootApplication);
-
-        App.SetApplicationExternal(speedBootApplicationExternal);
-        return speedBootApplicationExternal;
+        services.AddSingleton(speedOptions);
+        App.Instance.SetSpeedBootApplication(speedBootApplication);
+        return speedBootApplicationBuilder;
     }
 
     public static TInstance? GetSingletonInstance<TInstance>(this IServiceCollection services) where TInstance : class

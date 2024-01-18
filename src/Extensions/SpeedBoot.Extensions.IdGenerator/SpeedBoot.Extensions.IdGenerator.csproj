@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\SpeedBoot.AspNetCore\Internal\Extensions\SpeedBootApplicationExternalExtensions.cs">
-      <Link>Internal\SpeedBootApplicationExternalExtensions.cs</Link>
+    <Compile Include="..\..\SpeedBoot.Core\Internal\Extensions\AppExtensions.cs">
+      <Link>Internal\AppExtensions.cs</Link>
     </Compile>
   </ItemGroup>
 

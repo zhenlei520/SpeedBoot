@@ -9,6 +9,19 @@
     <ProjectReference Include="..\SpeedBoot.System\SpeedBoot.System.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Internal\Extensions\AppExtensions.cs" />
+    <Compile Remove="Internal\Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Internal\Extensions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Internal\Extensions\**" />
+  </ItemGroup>
+
   <Choose>
     <When Condition="'$(TargetFramework)' == 'netcoreapp2.1' or '$(TargetFramework)' == 'netcoreapp2.2' or '$(TargetFramework)' == 'netcoreapp3.0' or '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0'">
       <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">

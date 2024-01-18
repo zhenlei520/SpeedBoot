@@ -21,7 +21,7 @@ public class SpeedHostingStartup : IHostingStartup
 
                 speedOptions.Environment = webHostBuilderContext.HostingEnvironment.EnvironmentName;
             });
-            speedBootApplicationExternal.Initialize();
+            speedBootApplicationExternal.Build();
         });
     }
 }

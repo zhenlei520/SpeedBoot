@@ -5,12 +5,27 @@
 
 namespace SpeedBoot;
 
-public static partial class App
+public class App
 {
-    public static SpeedBootApplicationBuilder ApplicationBuilder { get; private set; } = default!;
+    public static App Instance = new();
 
-    internal static void SetApplicationExternal(SpeedBootApplicationBuilder applicationBuilder)
+    private SpeedBootApplication _speedBootApplication;
+
+    public IServiceProvider? RootServiceProvider => _speedBootApplication.RootServiceProvider;
+
+    public IServiceCollection Services => _speedBootApplication.Services;
+
+    public IReadOnlyList<Assembly> Assemblies => _speedBootApplication.Assemblies;
+
+    public void SetSpeedBootApplication(SpeedBootApplication speedBootApplication)
     {
-        ApplicationBuilder = applicationBuilder;
+        _speedBootApplication = speedBootApplication;
     }
+
+    public void SetRootServiceProvider(IServiceProvider rootServiceProvider)
+    {
+        _speedBootApplication.SetServiceProvider(rootServiceProvider);
+    }
+
+    public SpeedBootApplication GetSpeedBootApplication() => _speedBootApplication;
 }

@@ -7,7 +7,7 @@ namespace SpeedBoot.AspNetCore;
 
 public class GenericHostedService : IHostedService
 {
-    public GenericHostedService(IHost host) => host.Services.GetRequiredService<SpeedBootApplicationBuilder>().SetServiceProvider(host.Services);
+    public GenericHostedService(IHost host) => App.Instance.GetSpeedBootApplication().SetServiceProvider(host.Services);
 
     public Task StartAsync(CancellationToken cancellationToken)
         => Task.CompletedTask;
