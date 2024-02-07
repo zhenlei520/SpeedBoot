@@ -6,7 +6,15 @@ public class SequentialIdGenerator : IIdGenerator
 
     private readonly SequentialGuidType _guidType;
 
-    public SequentialIdGenerator(SequentialGuidType guidType) => _guidType = guidType;
+    public string Key { get; private set; }
+
+    protected SequentialIdGenerator(string? key = null)
+    {
+        Key = key ?? nameof(SequentialIdGenerator);
+    }
+
+    public SequentialIdGenerator(SequentialGuidType guidType, string? key) : this(key)
+        => _guidType = guidType;
 
     public Guid Create()
     {
@@ -24,6 +32,7 @@ public class SequentialIdGenerator : IIdGenerator
         {
             Array.Reverse(timestampBytes);
         }
+
         return timestampBytes;
     }
 
@@ -56,11 +65,13 @@ public class SequentialIdGenerator : IIdGenerator
                     Array.Reverse(guidBytes, 0, 4);
                     Array.Reverse(guidBytes, 4, 2);
                 }
+
                 break;
 
             default:
                 throw new NotSupportedException($"unsupported {sequentialGuidType}");
         }
+
         return guidBytes;
     }
 }

@@ -25,8 +25,7 @@ public class ServiceRegisterStartup : AppStartupBase
     protected override void Load()
     {
         var componentTypes = ServiceComponentStartupHelp.GetComponentTypesByOrdered(_allServiceComponentTypes);
-        foreach (var componentInstance in componentTypes.Select(componentType
-                     => Activator.CreateInstance(componentType) as IServiceComponent))
+        foreach (var componentInstance in componentTypes.Select(componentType => Activator.CreateInstance(componentType) as IServiceComponent))
         {
             SpeedArgumentException.ThrowIfNull(componentInstance);
             componentInstance!.ConfigureServices(_services);

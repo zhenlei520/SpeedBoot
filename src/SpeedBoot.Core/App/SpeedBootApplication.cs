@@ -11,8 +11,6 @@ public class SpeedBootApplication : ISpeedBootApplication
 
     public IServiceProvider? RootServiceProvider { get; private set; }
 
-    public Assembly[] Assemblies { get; private set; }
-
     public IList<IAppStartup> Startups { get; }
 
     public SpeedBootApplication(IServiceCollection services)
@@ -29,11 +27,6 @@ public class SpeedBootApplication : ISpeedBootApplication
     public void SetServiceProvider(IServiceProvider rootServiceProvider)
     {
         RootServiceProvider = rootServiceProvider;
-    }
-
-    public void SetAssemblies(Assembly[] assemblies)
-    {
-        Assemblies = assemblies;
     }
 
     public void InitializeComponents()

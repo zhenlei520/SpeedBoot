@@ -15,7 +15,7 @@ public class App
 
     public IServiceCollection Services => _speedBootApplication.Services;
 
-    public IReadOnlyList<Assembly> Assemblies => _speedBootApplication.Assemblies;
+    public Func<IServiceCollection, IServiceProvider>? RebuildRootServiceProvider { get; set; }
 
     public void SetSpeedBootApplication(SpeedBootApplication speedBootApplication)
     {

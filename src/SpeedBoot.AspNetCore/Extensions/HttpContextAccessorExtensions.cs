@@ -8,5 +8,5 @@ namespace Microsoft.AspNetCore.Http;
 public static class HttpContextAccessorExtensions
 {
     public static string? GetHeader(this IHttpContextAccessor? httpContextAccessor, string key)
-        => httpContextAccessor?.HttpContext.GetHeader(key);
+        => httpContextAccessor?.HttpContext.GetRequestHeader(key);
 }

@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.Extensions.IdGenerator;
 
-public interface IIdGenerator
+public interface IIdGenerator : IService
 {
     Guid Create();
 }

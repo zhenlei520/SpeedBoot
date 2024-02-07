@@ -14,3 +14,4 @@ global using Microsoft.Extensions.Options;
 global using Microsoft.Extensions.Configuration;
 global using SpeedBoot;
 global using SpeedBoot.Configuration;
+global using SpeedBoot.System;

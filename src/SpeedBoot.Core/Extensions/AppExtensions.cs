@@ -1,9 +1,9 @@
-﻿// Copyright (c) zhenlei520 All rights reserved.
+// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-namespace SpeedBoot.Extensions.DependencyInjection.Internal;
+namespace SpeedBoot;
 
-internal static class AppExtensions
+public static class AppExtensions
 {
     public static IServiceProvider GetRequiredRootServiceProvider(this App app)
     {
@@ -11,7 +11,8 @@ internal static class AppExtensions
         if (rootServiceProvider != null)
             return rootServiceProvider;
 
-        rootServiceProvider = app.Services.BuildServiceProvider();
+        SpeedArgumentException.ThrowIfNull(app.RebuildRootServiceProvider);
+        rootServiceProvider =  app.RebuildRootServiceProvider.Invoke(app.Services);
         app.SetRootServiceProvider(rootServiceProvider);
         return rootServiceProvider;
     }
@@ -40,6 +41,17 @@ internal static class AppExtensions
         => app.GetRequiredRootServiceProvider().GetRequiredService<TService>();
 
     /// <summary>
+    /// Get the <typeparamref name="TService"/> service (not empty，Only API requests are supported)
+    ///
+    /// 得到<typeparamref name="TService"/>服务（不为空，仅支持API的请求）
+    /// </summary>
+    /// <typeparam name="TService"></typeparam>
+    /// <returns></returns>
+    public static IEnumerable<TService> GetRequiredSingletonServices<TService>(this App app)
+        where TService : notnull
+        => app.GetRequiredRootServiceProvider().GetServices<TService>();
+
+    /// <summary>
     /// Get the service set of <typeparamref name="TService"/>
     ///
     /// 得到<typeparamref name="TService"/>服务集合
@@ -49,4 +61,10 @@ internal static class AppExtensions
     public static IEnumerable<TService> GetSingletonServices<TService>(this App app)
         where TService : notnull
         => app.GetRequiredRootServiceProvider().GetServices<TService>();
+
+    public static TService? GetSingletonService<TService>(this App app, string key) where TService : IService
+        => app.GetRequiredSingletonServices<TService>().Where(item => item.Key == key).FirstOrDefault();
+
+    public static TService GetRequiredSingletonService<TService>(this App app, string key) where TService : IService
+        => app.GetSingletonService<TService>(key) ?? throw new SpeedException($"Unregistered service: {typeof(TService).FullName}, key: {key}");
 }

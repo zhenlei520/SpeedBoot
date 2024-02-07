@@ -7,8 +7,14 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public class DependencyInjectionServiceRegister : ServiceRegisterComponentBase
 {
+    private readonly SpeedOptions _speedOptions;
+    public DependencyInjectionServiceRegister(SpeedOptions speedOptions)
+    {
+        _speedOptions = speedOptions;
+    }
+
     public override void ConfigureServices(IServiceCollection services)
     {
-        services.AddAutoInject(App.Instance.Assemblies);
+        services.AddAutoInject(_speedOptions.GetValidAssemblies());
     }
 }

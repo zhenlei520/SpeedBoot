@@ -7,17 +7,16 @@ namespace SpeedBoot.Extensions.IdGenerator;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddNormalIdGenerator(this IServiceCollection services)
+    public static IServiceCollection AddNormalIdGenerator(this IServiceCollection services, string? key = null)
     {
         if (!ServiceCollectionUtils.TryAdd<NormalIdGeneratorProvider>(services))
             return services;
 
-        services.AddSingleton<IIdGenerator>(_ => new NormalIdGenerator());
+        services.AddSingleton<IIdGenerator>(_ => new NormalIdGenerator(key));
         return services;
     }
 
     private sealed class NormalIdGeneratorProvider
     {
-
     }
 }
