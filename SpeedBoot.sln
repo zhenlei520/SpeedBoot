@@ -80,35 +80,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{34594FCE-6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.System.Net", "src\SpeedBoot.System.Net\SpeedBoot.System.Net.csproj", "{7CDCDF0A-EF0B-4393-8F79-10F30A3C202C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.Abstractions", "src\Data\Speed.Boot.Data.Abstractions\Speed.Boot.Data.Abstractions.csproj", "{875316B4-23E2-4FFD-BDCD-27E2B65129B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.Abstractions", "src\Data\SpeedBoot.Data.Abstractions\SpeedBoot.Data.Abstractions.csproj", "{875316B4-23E2-4FFD-BDCD-27E2B65129B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.FreeSql", "src\Data\Speed.Boot.Data.FreeSql\Speed.Boot.Data.FreeSql.csproj", "{B82C060B-8B03-4B6D-8697-91B1E7C51CA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.EFCore", "src\Data\SpeedBoot.Data.EFCore\SpeedBoot.Data.EFCore.csproj", "{26E1ABBD-04D8-410C-A7F7-7992E5489DA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.EFCore", "src\Data\Speed.Boot.Data.EFCore\Speed.Boot.Data.EFCore.csproj", "{26E1ABBD-04D8-410C-A7F7-7992E5489DA9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.EFCore.SqlServer", "src\Data\Speed.Boot.Data.EFCore.SqlServer\Speed.Boot.Data.EFCore.SqlServer.csproj", "{04716B4F-3EF4-48DD-B613-F473455BA8F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.EFCore.SqlServer", "src\Data\SpeedBoot.Data.EFCore.SqlServer\SpeedBoot.Data.EFCore.SqlServer.csproj", "{04716B4F-3EF4-48DD-B613-F473455BA8F3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{2484DAEC-5C05-4ADC-A5AF-0967D14A1D91}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.EFCore.Tests", "test\Data\Speed.Boot.Data.EFCore.Tests\Speed.Boot.Data.EFCore.Tests.csproj", "{86FAF7AF-51E9-428F-A857-02F92B4E354F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.EFCore.Tests", "test\Data\SpeedBoot.Data.EFCore.Tests\SpeedBoot.Data.EFCore.Tests.csproj", "{86FAF7AF-51E9-428F-A857-02F92B4E354F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.EFCore.Pomelo.MySql", "src\Data\Speed.Boot.Data.EFCore.Pomelo.MySql\Speed.Boot.Data.EFCore.Pomelo.MySql.csproj", "{4B37AA6B-7BDE-4638-9B9A-6690E6E34BD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.EFCore.Pomelo.MySql", "src\Data\SpeedBoot.Data.EFCore.Pomelo.MySql\SpeedBoot.Data.EFCore.Pomelo.MySql.csproj", "{4B37AA6B-7BDE-4638-9B9A-6690E6E34BD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.DependencyInjection.Abstractions", "src\Data\Speed.Boot.Data.DependencyInjection.Abstractions\Speed.Boot.Data.DependencyInjection.Abstractions.csproj", "{91B9AAB3-A77F-4F76-989F-434F0AD83060}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.DependencyInjection.Abstractions", "src\Data\SpeedBoot.Data.DependencyInjection.Abstractions\SpeedBoot.Data.DependencyInjection.Abstractions.csproj", "{91B9AAB3-A77F-4F76-989F-434F0AD83060}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.FreeSql.Tests", "test\Data\Speed.Boot.Data.FreeSql.Tests\Speed.Boot.Data.FreeSql.Tests.csproj", "{57EB875D-F0D3-40AB-9E17-04E07E11F716}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.FreeSql.Tests", "test\Data\SpeedBoot.Data.FreeSql.Tests\SpeedBoot.Data.FreeSql.Tests.csproj", "{57EB875D-F0D3-40AB-9E17-04E07E11F716}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.FreeSql.SqlServer", "src\Data\Speed.Boot.Data.FreeSql.SqlServer\Speed.Boot.Data.FreeSql.SqlServer.csproj", "{88B2305D-2399-4389-A131-3C802E183EF4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.FreeSql.SqlServer", "src\Data\SpeedBoot.Data.FreeSql.SqlServer\SpeedBoot.Data.FreeSql.SqlServer.csproj", "{88B2305D-2399-4389-A131-3C802E183EF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.FreeSql.MySql", "src\Data\Speed.Boot.Data.FreeSql.MySql\Speed.Boot.Data.FreeSql.MySql.csproj", "{F67F8961-1A99-45F7-A5F8-9B0C83527F20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.FreeSql.MySql", "src\Data\SpeedBoot.Data.FreeSql.MySql\SpeedBoot.Data.FreeSql.MySql.csproj", "{F67F8961-1A99-45F7-A5F8-9B0C83527F20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.FreeSql.PostgreSql", "src\Data\Speed.Boot.Data.FreeSql.PostgreSql\Speed.Boot.Data.FreeSql.PostgreSql.csproj", "{6235532F-96A1-41B0-BE54-D071D3DAFBD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.FreeSql.PostgreSql", "src\Data\SpeedBoot.Data.FreeSql.PostgreSql\SpeedBoot.Data.FreeSql.PostgreSql.csproj", "{6235532F-96A1-41B0-BE54-D071D3DAFBD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.EFCore.PostgreSql", "src\Data\Speed.Boot.Data.EFCore.PostgreSql\Speed.Boot.Data.EFCore.PostgreSql.csproj", "{8C87449F-ECA7-4D59-88D8-CD5CD28D2F9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.EFCore.PostgreSql", "src\Data\SpeedBoot.Data.EFCore.PostgreSql\SpeedBoot.Data.EFCore.PostgreSql.csproj", "{8C87449F-ECA7-4D59-88D8-CD5CD28D2F9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.FreeSql.Sqlite", "src\Data\Speed.Boot.Data.FreeSql.Sqlite\Speed.Boot.Data.FreeSql.Sqlite.csproj", "{595F1E04-9A34-45D3-8EE1-4A3C6EE189F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.FreeSql.Sqlite", "src\Data\SpeedBoot.Data.FreeSql.Sqlite\SpeedBoot.Data.FreeSql.Sqlite.csproj", "{595F1E04-9A34-45D3-8EE1-4A3C6EE189F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Speed.Boot.Data.EFCore.Sqlite", "src\Data\Speed.Boot.Data.EFCore.Sqlite\Speed.Boot.Data.EFCore.Sqlite.csproj", "{21E683D6-BB65-4AF9-8C33-DA48C7932518}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.EFCore.Sqlite", "src\Data\SpeedBoot.Data.EFCore.Sqlite\SpeedBoot.Data.EFCore.Sqlite.csproj", "{21E683D6-BB65-4AF9-8C33-DA48C7932518}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{7120E109-21F0-4279-9631-DC59B751B826}"
 EndProject
@@ -131,6 +129,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "en", "en", "{7897FA0C-6D6B-
 		docs\en\ObjectStorageMinio.md = docs\en\ObjectStorageMinio.md
 		docs\en\README.md = docs\en\README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.FreeSql", "src\Data\SpeedBoot.Data.FreeSql\SpeedBoot.Data.FreeSql.csproj", "{AF53B194-2C4C-4AA2-982D-0EAD040BA307}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -222,10 +222,6 @@ Global
 		{875316B4-23E2-4FFD-BDCD-27E2B65129B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{875316B4-23E2-4FFD-BDCD-27E2B65129B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{875316B4-23E2-4FFD-BDCD-27E2B65129B6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B82C060B-8B03-4B6D-8697-91B1E7C51CA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B82C060B-8B03-4B6D-8697-91B1E7C51CA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B82C060B-8B03-4B6D-8697-91B1E7C51CA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B82C060B-8B03-4B6D-8697-91B1E7C51CA4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{817C804E-A234-4B8D-8218-E63DD3073EC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{817C804E-A234-4B8D-8218-E63DD3073EC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{817C804E-A234-4B8D-8218-E63DD3073EC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -282,6 +278,10 @@ Global
 		{21E683D6-BB65-4AF9-8C33-DA48C7932518}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21E683D6-BB65-4AF9-8C33-DA48C7932518}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21E683D6-BB65-4AF9-8C33-DA48C7932518}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF53B194-2C4C-4AA2-982D-0EAD040BA307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF53B194-2C4C-4AA2-982D-0EAD040BA307}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF53B194-2C4C-4AA2-982D-0EAD040BA307}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF53B194-2C4C-4AA2-982D-0EAD040BA307}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -319,7 +319,6 @@ Global
 		{817C804E-A234-4B8D-8218-E63DD3073EC8} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{7CDCDF0A-EF0B-4393-8F79-10F30A3C202C} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 		{875316B4-23E2-4FFD-BDCD-27E2B65129B6} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
-		{B82C060B-8B03-4B6D-8697-91B1E7C51CA4} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
 		{26E1ABBD-04D8-410C-A7F7-7992E5489DA9} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
 		{04716B4F-3EF4-48DD-B613-F473455BA8F3} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
 		{2484DAEC-5C05-4ADC-A5AF-0967D14A1D91} = {216801A8-02DC-4AF4-9448-E13902585583}
@@ -335,5 +334,6 @@ Global
 		{21E683D6-BB65-4AF9-8C33-DA48C7932518} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
 		{57BE6CB1-C051-4D12-ACF0-0358EF51084F} = {7120E109-21F0-4279-9631-DC59B751B826}
 		{7897FA0C-6D6B-4F7F-95EB-1A7510506603} = {7120E109-21F0-4279-9631-DC59B751B826}
+		{AF53B194-2C4C-4AA2-982D-0EAD040BA307} = {34594FCE-6AD5-4FEA-AD11-3E1F35EC7D74}
 	EndGlobalSection
 EndGlobal

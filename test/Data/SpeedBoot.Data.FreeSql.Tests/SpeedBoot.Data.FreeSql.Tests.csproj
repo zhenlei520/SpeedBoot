@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FreeSql.Provider.Sqlite" Version="3.2.805" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="$(MicrosoftTeskSdkPackageVersion)"/>
+    <PackageReference Include="MSTest.TestAdapter" Version="$(MSTestPackageVersion)"/>
+    <PackageReference Include="MSTest.TestFramework" Version="$(MSTestPackageVersion)"/>
+    <PackageReference Include="coverlet.collector" Version="$(CoverletPackageVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.msbuild" Version="$(CoverletPackageVersion)">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\src\Data\SpeedBoot.Data.FreeSql.MySql\SpeedBoot.Data.FreeSql.MySql.csproj" />
+    <ProjectReference Include="..\..\..\src\Data\SpeedBoot.Data.FreeSql.PostgreSql\SpeedBoot.Data.FreeSql.PostgreSql.csproj" />
+    <ProjectReference Include="..\..\..\src\Data\SpeedBoot.Data.FreeSql.Sqlite\SpeedBoot.Data.FreeSql.Sqlite.csproj" />
+    <ProjectReference Include="..\..\..\src\Data\SpeedBoot.Data.FreeSql.SqlServer\SpeedBoot.Data.FreeSql.SqlServer.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Remove="appsettings.json" />
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

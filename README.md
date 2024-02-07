@@ -8,36 +8,36 @@
 
 ````
 ├── docs 文档
-├── src                                                        
-│   ├── Data								                   
-│   │   ├── Speed.Boot.Data.Abstractions                         Data Abstraction Class Library
-│   │   ├── Speed.Boot.Data.DependencyInjection.Abstractions     Data abstraction class library that supports DI
-│   │   ├── Speed.Boot.Data.EFCore                               is implemented based on EFCore
-│   │   ├── Speed.Boot.Data.EFCore.Pomelo.MySql                  MySql database implementation based on EFCore
-│   │   ├── Speed.Boot.Data.EFCore.PostgreSql                    database implementation based on EFCore
-│   │   ├── Speed.Boot.Data.EFCore.Sqlite                        Sqlite database implementation based on EFCore
-│   │   ├── Speed.Boot.Data.EFCore.SqlServer                     SqlServer database implementation based on EFCore
-│   │   ├── Speed.Boot.Data.FreeSql                              is implemented based on FreeSql
-│   │   ├── Speed.Boot.Data.FreeSql.MySql                        MySql database implementation based on FreeSql
-│   │   ├── Speed.Boot.Data.FreeSql.PostgreSql                   PostgreSql database implementation based on FreeSql
-│   │   ├── Speed.Boot.Data.FreeSql.Sqlite                       database implementation based on FreeSql
-│   │   └── Speed.Boot.Data.FreeSql.SqlServer                    SqlServer database implementation based on FreeSql
-│   ├── Extensions                            				   
-│   │   ├── Configuration                                      
+├── src
+│   ├── Data
+│   │   ├── SpeedBoot.Data.Abstractions                         Data Abstraction Class Library
+│   │   ├── SpeedBoot.Data.DependencyInjection.Abstractions     Data abstraction class library that supports DI
+│   │   ├── SpeedBoot.Data.EFCore                               is implemented based on EFCore
+│   │   ├── SpeedBoot.Data.EFCore.Pomelo.MySql                  MySql database implementation based on EFCore
+│   │   ├── SpeedBoot.Data.EFCore.PostgreSql                    database implementation based on EFCore
+│   │   ├── SpeedBoot.Data.EFCore.Sqlite                        Sqlite database implementation based on EFCore
+│   │   ├── SpeedBoot.Data.EFCore.SqlServer                     SqlServer database implementation based on EFCore
+│   │   ├── SpeedBoot.Data.FreeSql                              is implemented based on FreeSql
+│   │   ├── SpeedBoot.Data.FreeSql.MySql                        MySql database implementation based on FreeSql
+│   │   ├── SpeedBoot.Data.FreeSql.PostgreSql                   PostgreSql database implementation based on FreeSql
+│   │   ├── SpeedBoot.Data.FreeSql.Sqlite                       database implementation based on FreeSql
+│   │   └── SpeedBoot.Data.FreeSql.SqlServer                    SqlServer database implementation based on FreeSql
+│   ├── Extensions
+│   │   ├── Configuration
 │   │   │   ├── SpeedBoot.Extensions.Configuration               Extension class library based on configuration
 │   │   │   └── SpeedBoot.Extensions.Configuration.Json          Extension class library based on Json configuration file
-│   │   ├── DependencyInjection                                
+│   │   ├── DependencyInjection
 │   │   │   ├── SpeedBoot.Extensions.DependencyInjection.Abstractions  DI-based abstraction
 │   │   │   └── SpeedBoot.Extensions.DependencyInjection         DI implementation based on Microsoft.Extensions.DependencyInjection
-│   ├── IdGenerator                            				   
-│   │   │   ├── SpeedBoot.Extensions.IdGenerator        
+│   ├── IdGenerator
+│   │   │   ├── SpeedBoot.Extensions.IdGenerator
 │   │   │   ├── SpeedBoot.Extensions.IdGenerator.Normal          Default Guid Generator
 │   │   │   └── SpeedBoot.Extensions.IdGenerator.Sequential      Ordered Guid Generator
-│   ├── ObjectStorage                                          
+│   ├── ObjectStorage
 │   │   │   ├── SpeedBoot.ObjectStorage.Abstractions            object storage abstract class library
 │   │   │   ├── SpeedBoot.ObjectStorage.Aliyun                  based on Aliyun Oss
 │   │   │   └── SpeedBoot.ObjectStorage.Minio                   Implementation based on Minio Oss
-│   ├── Security                                               
+│   ├── Security
 │   │   │   └── SpeedBoot.Security.Cryptography                 password-related help library
 │   ├── SpeedBoot.AspNetCore                                    implementation of SpeetBoot helps to use various implementations without any sense.
 │   ├── SpeedBoot.Core                                          provides an implementation based on NetCore and provides module registration function
