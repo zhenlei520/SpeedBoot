@@ -15,17 +15,28 @@ public class ServiceRegisterStartup : AppStartupBase
     public ServiceRegisterStartup(
         IServiceCollection services,
         IEnumerable<Assembly> assemblies,
-        ILogger? logger = null,
-        LogLevel? logLevel = null) : base(logger, logLevel)
+        Lazy<ILogger?> loggerLazy,
+        LogLevel? logLevel = null) : base(loggerLazy, logLevel)
     {
         _services = services;
-        _allServiceComponentTypes = assemblies.GetTypes(type => type is { IsClass: true, IsGenericType: false, IsAbstract: false } && typeof(IServiceComponent).IsAssignableFrom(type));
+        _allServiceComponentTypes = assemblies.GetTypes(type
+            => type is { IsClass: true, IsGenericType: false, IsAbstract: false } && typeof(IServiceComponent).IsAssignableFrom(type));
     }
 
     protected override void Load()
     {
         var componentTypes = ServiceComponentStartupHelp.GetComponentTypesByOrdered(_allServiceComponentTypes);
-        foreach (var componentInstance in componentTypes.Select(componentType => Activator.CreateInstance(componentType) as IServiceComponent))
+        foreach (var componentInstance in componentTypes.Select(componentType =>
+        {
+            var constructorInfo = componentType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
+            SpeedArgumentException.ThrowIfNull(constructorInfo);
+            var parameters = constructorInfo!.GetParameters().Select(parameter => App.Instance.GetRequiredRootServiceProvider().GetService(parameter.ParameterType)).ToArray();
+            if (parameters.Length > 0)
+            {
+                return Activator.CreateInstance(componentType, parameters) as IServiceComponent;
+            }
+            return Activator.CreateInstance(componentType) as IServiceComponent;
+        }))
         {
             SpeedArgumentException.ThrowIfNull(componentInstance);
             componentInstance!.ConfigureServices(_services);

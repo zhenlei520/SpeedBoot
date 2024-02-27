@@ -7,15 +7,15 @@ namespace SpeedBoot;
 
 public class SpeedBootApplicationBuilder
 {
-    private readonly SpeedBootApplication _speedBootApplication;
+    public readonly SpeedBootApplication SpeedBootApplication;
 
     internal SpeedBootApplicationBuilder(SpeedBootApplication speedBootApplication)
     {
-        _speedBootApplication = speedBootApplication;
+        SpeedBootApplication = speedBootApplication;
     }
 
     /// <summary>
     /// Initialization module
     /// </summary>
-    public void Build() => _speedBootApplication.InitializeComponents();
+    public void Build() => SpeedBootApplication.InitializeComponents();
 }

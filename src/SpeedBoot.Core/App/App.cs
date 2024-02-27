@@ -11,7 +11,16 @@ public class App
 
     private SpeedBootApplication _speedBootApplication;
 
-    public IServiceProvider? RootServiceProvider => _speedBootApplication.RootServiceProvider;
+    public IServiceProvider? RootServiceProvider
+    {
+        get
+        {
+            if (_speedBootApplication == null)
+                throw new SpeedException("请确保使用了AddSpeed方法注册SpeedBoot");
+
+            return _speedBootApplication.RootServiceProvider;
+        }
+    }
 
     public IServiceCollection Services => _speedBootApplication.Services;
 

@@ -10,36 +10,68 @@ namespace SpeedBoot.AspNetCore;
 
 public static class ServiceCollectionExtensions
 {
+    private static List<string> exceptNames = new List<string>()
+    {
+        "Microsoft.",
+        "System."
+    };
+
     public static WebApplication AddMinimalAPIs(
-        this SpeedBootApplication application,
+        this IServiceCollection services,
+        WebApplicationBuilder builder,
+        Assembly[]? assemblies = null)
+    {
+        return services.AddMinimalAPIs(builder, options =>
+        {
+            options.AdditionalAssemblies = assemblies;
+        });
+    }
+
+    public static WebApplication AddMinimalAPIs(
+        this IServiceCollection services,
         WebApplicationBuilder builder,
         Action<GlobalServiceRouteOptions> action)
     {
-        if (!ServiceCollectionUtils.TryAdd<ConfigurationProvider>(application.Services))
+        if (!ServiceCollectionUtils.TryAdd<MinimalAPIsProvider>(services))
             return App.Instance.GetRequiredSingletonService<WebApplication>();
 
-        application.Services
+        services
             .AddHttpContextAccessor()
             .AddSingleton(new Lazy<WebApplication>(builder.Build, LazyThreadSafetyMode.ExecutionAndPublication))
             .AddSingleton(serviceProvider => serviceProvider.GetRequiredService<Lazy<WebApplication>>().Value);
 
         var globalServiceRouteOptions = new GlobalServiceRouteOptions();
         action.Invoke(globalServiceRouteOptions);
-        var assemblies = globalServiceRouteOptions.AdditionalAssemblies?.ToList() ?? new List<Assembly>();
+        var assemblies = globalServiceRouteOptions.AdditionalAssemblies?.ToList() ?? GlobalConfig.DefaultAssemblies.ToList();
         if (!globalServiceRouteOptions.DisableContainsAppDomainAssemblies)
         {
             assemblies = assemblies.Union(AppDomain.CurrentDomain.GetAssemblies()).ToList();
         }
 
-        application.AddMinimalRegisterComponents(assemblies);
+        services.RegisterServices(assemblies, globalServiceRouteOptions);
         return App.Instance.GetRequiredSingletonService<WebApplication>();
     }
 
-    private static SpeedBootApplication AddMinimalRegisterComponents(this SpeedBootApplication application, IEnumerable<Assembly>? assemblies)
+    private static void RegisterServices(
+        this IServiceCollection services,
+        IEnumerable<Assembly> assemblies,
+        GlobalServiceRouteOptions globalServiceRouteOptions)
     {
-        var serviceRegisterStartup = new ServiceRegisterStartup(application.Services, assemblies ?? GlobalConfig.DefaultAssemblies, null);
-        application.Startups.Add(serviceRegisterStartup);
-        return application;
+        var serviceTypes = AssemblyHelper.GetServiceTypes(assemblies).ToList();
+        foreach (var serviceType in serviceTypes)
+        {
+            services.AddSingleton(serviceType);
+        }
+        foreach (var serviceType in serviceTypes)
+        {
+            var service = services.BuildServiceProvider().GetRequiredService(serviceType);
+
+            var serviceBase = (ServiceBase)service;
+            if (serviceBase.RouteOptions.DisableAutoMapRoute ?? globalServiceRouteOptions.DisableAutoMapRoute ?? false)
+                continue;
+
+            serviceBase.AutoMapRoute(globalServiceRouteOptions);
+        }
     }
 
     private sealed class MinimalAPIsProvider

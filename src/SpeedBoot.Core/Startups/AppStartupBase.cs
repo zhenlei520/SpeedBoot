@@ -7,16 +7,33 @@ namespace SpeedBoot;
 
 public abstract class AppStartupBase : IAppStartup
 {
-    private readonly ILogger? _logger;
+    private bool _isInitialized;
+
+    private ILogger? _logger;
+
+    private ILogger? Logger
+    {
+        get
+        {
+            if (!_isInitialized)
+            {
+                _isInitialized = true;
+                _logger = _loggerLazy.Value;
+            }
+            return _logger;
+        }
+    }
+
+    private readonly Lazy<ILogger?> _loggerLazy;
     private readonly LogLevel? _logLevel;
 
     public virtual int Order => 999;
 
     public abstract string Name { get; }
 
-    protected AppStartupBase(ILogger? logger = null, LogLevel? logLevel = null)
+    protected AppStartupBase(Lazy<ILogger?> loggerLazy, LogLevel? logLevel = null)
     {
-        _logger = logger;
+        _loggerLazy = loggerLazy;
         _logLevel = logLevel;
     }
 

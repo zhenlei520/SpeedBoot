@@ -15,10 +15,10 @@ public static class ServiceCollectionExtensions
         var speedOptions = new SpeedOptions();
         configure?.Invoke(speedOptions);
 
-        var speedBootApplication = new SpeedBootApplication(services);
+        var speedBootApplication = new SpeedBootApplication(services, speedOptions.Assemblies ?? GlobalConfig.DefaultAssemblies);
         if (speedOptions.EnabledServiceRegisterComponent)
         {
-            speedBootApplication.AddServiceRegisterComponents(speedOptions.Assemblies);
+            speedBootApplication.AddServiceRegisterComponents();
         }
 
         var speedBootApplicationBuilder = new SpeedBootApplicationBuilder(speedBootApplication);

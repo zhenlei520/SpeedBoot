@@ -13,10 +13,13 @@ public class SpeedBootApplication : ISpeedBootApplication
 
     public IList<IAppStartup> Startups { get; }
 
-    public SpeedBootApplication(IServiceCollection services)
+    public Assembly[] Assemblies { get; }
+
+    public SpeedBootApplication(IServiceCollection services, Assembly[] assemblies)
     {
         Services = services;
         Startups = new List<IAppStartup>();
+        Assemblies = assemblies;
     }
 
     public void Shutdown()
