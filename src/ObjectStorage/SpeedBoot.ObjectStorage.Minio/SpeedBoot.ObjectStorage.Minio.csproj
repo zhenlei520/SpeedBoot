@@ -13,11 +13,4 @@
     <ProjectReference Include="..\SpeedBoot.ObjectStorage.Abstractions\SpeedBoot.ObjectStorage.Abstractions.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\SpeedBoot.Core\Extensions\Internal\ServiceCollectionUtils.cs">
-      <Link>Internal\ServiceCollectionUtils.cs</Link>
-    </Compile>
-  </ItemGroup>
-
-
 </Project>

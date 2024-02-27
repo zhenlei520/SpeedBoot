@@ -3,16 +3,16 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System;
+namespace SpeedBoot.Core;
 
-internal static class ServiceCollectionUtils
+public static class ServiceCollectionUtils
 {
-    public static bool TryAdd<TService>(IServiceCollection services) where TService : class
+    public static bool TryAdd<TService>(IServiceCollection services, ServiceLifetime lifetime = ServiceLifetime.Singleton) where TService : class
     {
         if (services.Any(service => service.ImplementationType == typeof(TService)))
             return false;
 
-        services.AddSingleton<TService>();
+        services.Add(ServiceDescriptor.Describe(typeof(TService),typeof(TService),lifetime));
         return true;
     }
 }

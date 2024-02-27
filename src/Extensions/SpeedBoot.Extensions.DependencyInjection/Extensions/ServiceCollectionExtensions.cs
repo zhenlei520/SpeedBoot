@@ -2,6 +2,7 @@
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
 // ReSharper disable once CheckNamespace
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -30,6 +31,9 @@ public static class ServiceCollectionExtensions
                 serviceDescriptor.Lifetime));
         }
 
+        services.TryAddSingleton(typeof(IKeydSingletonService<>), typeof(KeydSingletonService<>));
+        services.TryAddTransient(typeof(IKeydScopedService<>), typeof(KeydScopedService<>));
+        services.TryAddTransient(typeof(IKeydService<>), typeof(KeydService<>));
         return services;
     }
 

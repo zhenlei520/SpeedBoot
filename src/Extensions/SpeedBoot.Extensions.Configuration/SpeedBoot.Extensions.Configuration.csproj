@@ -10,9 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\SpeedBoot.Core\Extensions\Internal\ServiceCollectionUtils.cs">
-      <Link>Internal\ServiceCollectionUtils.cs</Link>
-    </Compile>
+    <Folder Include="..\..\SpeedBoot.Core\Extensions\Internal\">
+      <Link>Internal</Link>
+    </Folder>
   </ItemGroup>
 
   <Choose>

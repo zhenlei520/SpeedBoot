@@ -14,9 +14,6 @@
       <Compile Include="..\..\SpeedBoot.AspNetCore\Internal\Extensions\SpeedBootApplicationExternalExtensions.cs">
         <Link>Internal\SpeedBootApplicationExternalExtensions.cs</Link>
       </Compile>
-      <Compile Include="..\..\SpeedBoot.Core\Extensions\Internal\ServiceCollectionUtils.cs">
-        <Link>Internal\ServiceCollectionUtils.cs</Link>
-      </Compile>
     </ItemGroup>
 
 </Project>

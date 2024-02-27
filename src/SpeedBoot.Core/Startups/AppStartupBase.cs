@@ -14,7 +14,7 @@ public abstract class AppStartupBase : IAppStartup
 
     public abstract string Name { get; }
 
-    protected AppStartupBase(ILogger? logger, LogLevel? logLevel = null)
+    protected AppStartupBase(ILogger? logger = null, LogLevel? logLevel = null)
     {
         _logger = logger;
         _logLevel = logLevel;

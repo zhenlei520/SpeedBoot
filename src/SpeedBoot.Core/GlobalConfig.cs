@@ -5,7 +5,7 @@
 
 namespace SpeedBoot;
 
-internal static class GlobalConfig
+public static class GlobalConfig
 {
     /// <summary>
     /// Default Assemblies Collection

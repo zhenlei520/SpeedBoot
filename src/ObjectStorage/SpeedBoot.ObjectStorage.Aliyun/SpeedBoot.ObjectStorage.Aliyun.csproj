@@ -14,12 +14,6 @@
     <PackageReference Include="Aliyun.OSS.SDK.NetCore" Version="2.13.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\..\SpeedBoot.Core\Extensions\Internal\ServiceCollectionUtils.cs">
-      <Link>Internal\ServiceCollectionUtils.cs</Link>
-    </Compile>
-  </ItemGroup>
-
   <Choose>
     <When Condition="'$(TargetFramework)' == 'netcoreapp2.2' or '$(TargetFramework)' == 'netcoreapp3.0' or '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0'">
       <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">

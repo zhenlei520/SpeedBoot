@@ -6,3 +6,4 @@ global using System.Reflection;
 global using System.Runtime.CompilerServices;
 global using SpeedBoot.Extensions.DependencyInjection;
 global using SpeedBoot;
+global using SpeedBoot.Core;

@@ -37,12 +37,6 @@
   </Choose>
 
   <ItemGroup>
-    <Compile Include="..\..\SpeedBoot.Core\Extensions\Internal\ServiceCollectionUtils.cs">
-      <Link>Internal\ServiceCollectionUtils.cs</Link>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\SpeedBoot.Core\SpeedBoot.Core.csproj"/>
     <ProjectReference Include="..\SpeedBoot.Extensions.DependencyInjection.Abstractions\SpeedBoot.Extensions.DependencyInjection.Abstractions.csproj"/>
   </ItemGroup>

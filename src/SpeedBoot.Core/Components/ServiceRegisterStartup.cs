@@ -15,7 +15,7 @@ public class ServiceRegisterStartup : AppStartupBase
     public ServiceRegisterStartup(
         IServiceCollection services,
         IEnumerable<Assembly> assemblies,
-        ILogger? logger,
+        ILogger? logger = null,
         LogLevel? logLevel = null) : base(logger, logLevel)
     {
         _services = services;

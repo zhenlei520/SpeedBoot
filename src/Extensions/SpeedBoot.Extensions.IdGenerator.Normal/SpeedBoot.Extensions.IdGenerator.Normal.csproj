@@ -9,9 +9,4 @@
       <ProjectReference Include="..\SpeedBoot.Extensions.IdGenerator\SpeedBoot.Extensions.IdGenerator.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Compile Include="..\..\SpeedBoot.Core\Extensions\Internal\ServiceCollectionUtils.cs">
-        <Link>Internal\ServiceCollectionUtils.cs</Link>
-      </Compile>
-    </ItemGroup>
 </Project>
