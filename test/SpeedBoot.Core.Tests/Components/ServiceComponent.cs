@@ -3,9 +3,9 @@
 
 namespace SpeedBoot.Core.Tests.Components;
 
-public class ServiceComponent: IServiceComponent
+public class ServiceComponent: ServiceRegisterComponentBase
 {
-    public void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<AppOptions>();
     }

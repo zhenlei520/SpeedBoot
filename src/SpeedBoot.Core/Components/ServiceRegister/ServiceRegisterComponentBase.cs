@@ -5,7 +5,7 @@
 
 namespace SpeedBoot;
 
-public interface IServiceComponent
+public abstract class ServiceRegisterComponentBase : OrderBase, IServiceComponent
 {
-    void ConfigureServices(IServiceCollection services);
+    public abstract void ConfigureServices(IServiceCollection services);
 }

@@ -7,7 +7,15 @@ namespace SpeedBoot;
 
 internal static class SpeedBootApplicationExtensions
 {
-    public static SpeedBootApplication AddServiceRegisterComponents(
+    public static SpeedBootApplication AddCompletionAppStartup(
+        this SpeedBootApplication application)
+    {
+        var serviceRegisterStartup = new CompletionAppStartup( application.Assemblies, new Lazy<ILogger?>(() => App.Instance.GetSingletonService<ILogger>(), LazyThreadSafetyMode.ExecutionAndPublication));
+        application.Startups.Add(serviceRegisterStartup);
+        return application;
+    }
+
+    public static SpeedBootApplication AddServiceRegisterStartup(
         this SpeedBootApplication application)
     {
         var serviceRegisterStartup = new ServiceRegisterStartup(

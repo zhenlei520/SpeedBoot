@@ -16,15 +16,17 @@ public static class ServiceCollectionExtensions
         configure?.Invoke(speedOptions);
 
         var speedBootApplication = new SpeedBootApplication(services, speedOptions.Assemblies ?? GlobalConfig.DefaultAssemblies);
+        speedBootApplication.AddCompletionAppStartup();
         if (speedOptions.EnabledServiceRegisterComponent)
         {
-            speedBootApplication.AddServiceRegisterComponents();
+            speedBootApplication.AddCompletionAppStartup();
         }
 
         var speedBootApplicationBuilder = new SpeedBootApplicationBuilder(speedBootApplication);
         services.AddSingleton(speedBootApplication);
         services.AddSingleton<ISpeedBootApplication>(_ => speedBootApplication);
         services.AddSingleton(speedOptions);
+        services.AddLazySingletonService(speedOptions);
         App.Instance.SetSpeedBootApplication(speedBootApplication);
         return speedBootApplicationBuilder;
     }

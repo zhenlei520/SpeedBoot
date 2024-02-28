@@ -10,7 +10,7 @@ public class ServiceRegisterStartup : AppStartupBase
     private readonly IServiceCollection _services;
     private readonly List<Type> _allServiceComponentTypes;
 
-    public override string Name => "ServiceRegisterComponent";
+    public override string Name { get; } = nameof(ServiceRegisterStartup);
 
     public ServiceRegisterStartup(
         IServiceCollection services,
@@ -19,8 +19,7 @@ public class ServiceRegisterStartup : AppStartupBase
         LogLevel? logLevel = null) : base(loggerLazy, logLevel)
     {
         _services = services;
-        _allServiceComponentTypes = assemblies.GetTypes(type
-            => type is { IsClass: true, IsGenericType: false, IsAbstract: false } && typeof(IServiceComponent).IsAssignableFrom(type));
+        _allServiceComponentTypes = GetDerivedClassTypes<IServiceComponent>(assemblies);
     }
 
     protected override void Load()
@@ -30,13 +29,13 @@ public class ServiceRegisterStartup : AppStartupBase
         {
             var constructorInfo = componentType.GetConstructors().OrderByDescending(c => c.GetParameters().Length).FirstOrDefault();
             SpeedArgumentException.ThrowIfNull(constructorInfo);
-            var parameters = constructorInfo!.GetParameters().Select(parameter => App.Instance.GetRequiredRootServiceProvider().GetService(parameter.ParameterType)).ToArray();
-            if (parameters.Length > 0)
+            var parameterTypes = constructorInfo!.GetParameters().Select(parameter => parameter.ParameterType).ToArray();
+            if (parameterTypes.Length > 0)
             {
-                return Activator.CreateInstance(componentType, parameters) as IServiceComponent;
+                return Activator.CreateInstance(componentType, parameterTypes.Select(type => App.Instance.GetRequiredSingletonService(type, true)).ToArray()) as IServiceComponent;
             }
             return Activator.CreateInstance(componentType) as IServiceComponent;
-        }))
+        }).OrderBy(component => component!.Order))
         {
             SpeedArgumentException.ThrowIfNull(componentInstance);
             componentInstance!.ConfigureServices(_services);

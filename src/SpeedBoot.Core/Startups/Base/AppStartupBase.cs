@@ -5,9 +5,9 @@
 
 namespace SpeedBoot;
 
-public abstract class AppStartupBase : IAppStartup
+public abstract class AppStartupBase : OrderBase, IAppStartup
 {
-    private bool _isInitialized;
+    private bool _initialized;
 
     private ILogger? _logger;
 
@@ -15,19 +15,18 @@ public abstract class AppStartupBase : IAppStartup
     {
         get
         {
-            if (!_isInitialized)
+            if (!_initialized)
             {
-                _isInitialized = true;
+                _initialized = true;
                 _logger = _loggerLazy.Value;
             }
+
             return _logger;
         }
     }
 
     private readonly Lazy<ILogger?> _loggerLazy;
     private readonly LogLevel? _logLevel;
-
-    public virtual int Order => 999;
 
     public abstract string Name { get; }
 
@@ -37,9 +36,14 @@ public abstract class AppStartupBase : IAppStartup
         _logLevel = logLevel;
     }
 
+    protected List<Type> GetDerivedClassTypes<TService>(IEnumerable<Assembly> assemblies)
+    {
+        return assemblies.GetTypes(type => type is { IsClass: true, IsGenericType: false, IsAbstract: false } && typeof(TService).IsAssignableFrom(type));
+    }
+
     protected virtual void PreInitialized()
     {
-        _logger?.Log(_logLevel ?? LogLevel.Debug, messageTemplate: "AppStartup：【{0}】，before initialization", propertyValues: Name);
+        Logger?.Log(_logLevel ?? LogLevel.Debug, messageTemplate: "AppStartup：【{0}】，before initialization", propertyValues: Name);
     }
 
     public virtual void Initialize()
@@ -55,6 +59,6 @@ public abstract class AppStartupBase : IAppStartup
 
     protected virtual void PostInitialized()
     {
-        _logger?.Log(_logLevel ?? LogLevel.Debug, messageTemplate: "AppStartup：【{0}】，after initialization", propertyValues: Name);
+        Logger?.Log(_logLevel ?? LogLevel.Debug, messageTemplate: "AppStartup：【{0}】，after initialization", propertyValues: Name);
     }
 }
