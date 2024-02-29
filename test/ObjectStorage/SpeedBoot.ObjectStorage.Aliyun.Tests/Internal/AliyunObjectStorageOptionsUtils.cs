@@ -12,7 +12,7 @@ internal static class AliyunObjectStorageOptionsUtils
         var services = new ServiceCollection();
         services.AddJsonConfiguration(jsonFile);
         services.AddSpeed(options => options.EnabledServiceRegisterComponent = false);
-        App.ApplicationExternal.SetServiceProvider(services.BuildServiceProvider());
+        App.Instance.SetRootServiceProvider(services.BuildServiceProvider());
         return ConfigurationHelper.GetAliyunObjectStorageOptions();
     }
 }

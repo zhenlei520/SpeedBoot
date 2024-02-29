@@ -7,9 +7,12 @@ namespace SpeedBoot.Extensions.IdGenerator;
 
 public static class SpeedBootApplicationExternalExtensions
 {
-    public static IIdGenerator GetIdGenerator(this SpeedBootApplicationExternal speedBootApplicationExternal)
-        => speedBootApplicationExternal.GetRequiredRootServiceProvider().GetRequiredService<IIdGenerator>();
+    public static IIdGenerator? GetIdGenerator(this App app)
+        => app.GetSingletonService<IIdGenerator>();
 
-    public static Guid GeneratorId(this SpeedBootApplicationExternal speedBootApplicationExternal)
-        => speedBootApplicationExternal.GetIdGenerator().Create();
+    public static IIdGenerator GetRequiredIdGenerator(this App app)
+        => app.GetRequiredSingletonService<IIdGenerator>();
+
+    public static Guid GeneratorGuid(this App app)
+        => app.GetRequiredIdGenerator().Create();
 }

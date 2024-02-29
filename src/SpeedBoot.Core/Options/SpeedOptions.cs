@@ -20,4 +20,9 @@ public class SpeedOptions
     /// current environment information
     /// </summary>
     public string? Environment { get; set; }
+
+    public Assembly[] GetValidAssemblies()
+    {
+        return Assemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+    }
 }

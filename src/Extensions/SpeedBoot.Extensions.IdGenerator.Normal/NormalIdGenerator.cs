@@ -7,5 +7,12 @@ namespace SpeedBoot.Extensions.IdGenerator;
 
 public class NormalIdGenerator : IIdGenerator
 {
+    public string Key { get; private set; }
+
     public Guid Create() => Guid.NewGuid();
+
+    public NormalIdGenerator(string? key = null)
+    {
+        Key = key ?? nameof(NormalIdGenerator);
+    }
 }

@@ -5,12 +5,36 @@
 
 namespace SpeedBoot;
 
-public static partial class App
+public class App
 {
-    public static SpeedBootApplicationExternal ApplicationExternal { get; private set; } = default!;
+    public static App Instance = new();
 
-    internal static void SetApplicationExternal(SpeedBootApplicationExternal applicationExternal)
+    private SpeedBootApplication _speedBootApplication;
+
+    public IServiceProvider? RootServiceProvider
     {
-        ApplicationExternal = applicationExternal;
+        get
+        {
+            if (_speedBootApplication == null)
+                throw new SpeedException("请确保使用了AddSpeed方法注册SpeedBoot");
+
+            return _speedBootApplication.RootServiceProvider;
+        }
     }
+
+    public IServiceCollection Services => _speedBootApplication.Services;
+
+    public Func<IServiceCollection, IServiceProvider>? RebuildRootServiceProvider { get; set; }
+
+    public void SetSpeedBootApplication(SpeedBootApplication speedBootApplication)
+    {
+        _speedBootApplication = speedBootApplication;
+    }
+
+    public void SetRootServiceProvider(IServiceProvider rootServiceProvider)
+    {
+        _speedBootApplication.SetServiceProvider(rootServiceProvider);
+    }
+
+    public SpeedBootApplication GetSpeedBootApplication() => _speedBootApplication;
 }

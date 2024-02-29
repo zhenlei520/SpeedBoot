@@ -10,18 +10,18 @@
 ├── docs 文档
 ├── src                                                        源文件目录
 │   ├── Data								                   数据相关
-│   │   ├── Speed.Boot.Data.Abstractions                       数据抽象类库
-│   │   ├── Speed.Boot.Data.DependencyInjection.Abstractions   支持DI的数据抽象类库
-│   │   ├── Speed.Boot.Data.EFCore                             基于EFCore实现
-│   │   ├── Speed.Boot.Data.EFCore.Pomelo.MySql                基于EFCore的MySql数据库实现
-│   │   ├── Speed.Boot.Data.EFCore.PostgreSql                  基于EFCore的PostgreSql数据库实现
-│   │   ├── Speed.Boot.Data.EFCore.Sqlite                      基于EFCore的Sqlite数据库实现
-│   │   ├── Speed.Boot.Data.EFCore.SqlServer                   基于EFCore的SqlServer数据库实现
-│   │   ├── Speed.Boot.Data.FreeSql                            基于FreeSql实现
-│   │   ├── Speed.Boot.Data.FreeSql.MySql                      基于FreeSql的MySql数据库实现
-│   │   ├── Speed.Boot.Data.FreeSql.PostgreSql                 基于FreeSql的PostgreSql数据库实现
-│   │   ├── Speed.Boot.Data.FreeSql.Sqlite                     基于FreeSql的Sqlite数据库实现
-│   │   └── Speed.Boot.Data.FreeSql.SqlServer                  基于FreeSql的SqlServer数据库实现
+│   │   ├── SpeedBoot.Data.Abstractions                       数据抽象类库
+│   │   ├── SpeedBoot.Data.DependencyInjection.Abstractions   支持DI的数据抽象类库
+│   │   ├── SpeedBoot.Data.EFCore                             基于EFCore实现
+│   │   ├── SpeedBoot.Data.EFCore.Pomelo.MySql                基于EFCore的MySql数据库实现
+│   │   ├── SpeedBoot.Data.EFCore.PostgreSql                  基于EFCore的PostgreSql数据库实现
+│   │   ├── SpeedBoot.Data.EFCore.Sqlite                      基于EFCore的Sqlite数据库实现
+│   │   ├── SpeedBoot.Data.EFCore.SqlServer                   基于EFCore的SqlServer数据库实现
+│   │   ├── SpeedBoot.Data.FreeSql                            基于FreeSql实现
+│   │   ├── SpeedBoot.Data.FreeSql.MySql                      基于FreeSql的MySql数据库实现
+│   │   ├── SpeedBoot.Data.FreeSql.PostgreSql                 基于FreeSql的PostgreSql数据库实现
+│   │   ├── SpeedBoot.Data.FreeSql.Sqlite                     基于FreeSql的Sqlite数据库实现
+│   │   └── SpeedBoot.Data.FreeSql.SqlServer                  基于FreeSql的SqlServer数据库实现
 │   ├── Extensions                            				   扩展类库
 │   │   ├── Configuration                                      配置
 │   │   │   ├── SpeedBoot.Extensions.Configuration             基于 配置的扩展类库
@@ -30,7 +30,7 @@
 │   │   │   ├── SpeedBoot.Extensions.DependencyInjection.Abstractions        基于DI的抽象
 │   │   │   └── SpeedBoot.Extensions.DependencyInjection       基于 Microsoft.Extensions.DependencyInjection 的DI实现
 │   ├── IdGenerator                            				   Id生成器
-│   │   │   ├── SpeedBoot.Extensions.IdGenerator        
+│   │   │   ├── SpeedBoot.Extensions.IdGenerator
 │   │   │   ├── SpeedBoot.Extensions.IdGenerator.Normal        默认Guid生成器
 │   │   │   └── SpeedBoot.Extensions.IdGenerator.Sequential    有序的Guid生成器
 │   ├── ObjectStorage                                          对象存储

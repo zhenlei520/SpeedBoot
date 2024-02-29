@@ -11,4 +11,5 @@ global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using Microsoft.Extensions.Hosting;
 global using System.Linq.Expressions;
 global using System.Text.RegularExpressions;
+global using SpeedBoot.Core;
 global using SpeedBoot.System;

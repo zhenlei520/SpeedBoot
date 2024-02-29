@@ -7,13 +7,18 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddAutoInject(this IServiceCollection services, IEnumerable<Assembly> assemblies)
-        => services.AddAutoInjectCore(assemblies);
+    public static IServiceCollection AddAutoInject(
+        this IServiceCollection services,
+        IEnumerable<Assembly> assemblies,
+        LazyThreadSafetyMode mode = LazyThreadSafetyMode.ExecutionAndPublication)
+        => services.AddAutoInjectCore(assemblies, mode);
 
     public static IServiceCollection AddAutoInject(this IServiceCollection services, params Assembly[] assemblies)
-        => services.AddAutoInjectCore(assemblies);
+        => services.AddAutoInjectCore(assemblies, LazyThreadSafetyMode.ExecutionAndPublication);
 
-    private static IServiceCollection AddAutoInjectCore(this IServiceCollection services, IEnumerable<Assembly> assemblies)
+    private static IServiceCollection AddAutoInjectCore(this IServiceCollection services,
+        IEnumerable<Assembly> assemblies,
+        LazyThreadSafetyMode mode)
     {
         if (!ServiceCollectionUtils.TryAdd<DependencyInjectionService>(services))
             return services;
@@ -22,12 +27,16 @@ public static class ServiceCollectionExtensions
         var serviceDescriptors = autoInjectProvider.GetServiceDescriptors();
         foreach (var serviceDescriptor in serviceDescriptors)
         {
+            services.AddLazyService(serviceDescriptor.ServiceType, serviceDescriptor.ImplementationType, serviceDescriptor.Lifetime, mode);
             services.Add(new ServiceDescriptor(
                 serviceDescriptor.ServiceType,
                 serviceDescriptor.ImplementationType,
                 serviceDescriptor.Lifetime));
         }
 
+        services.TryAddSingleton(typeof(IKeydSingletonService<>), typeof(KeydSingletonService<>));
+        services.TryAddTransient(typeof(IKeydScopedService<>), typeof(KeydScopedService<>));
+        services.TryAddTransient(typeof(IKeydService<>), typeof(KeydService<>));
         return services;
     }
 

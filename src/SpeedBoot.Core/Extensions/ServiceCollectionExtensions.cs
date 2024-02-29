@@ -7,27 +7,28 @@ namespace SpeedBoot;
 
 public static class ServiceCollectionExtensions
 {
-    public static SpeedBootApplicationExternal AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure = null)
+    public static SpeedBootApplicationBuilder AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure = null)
     {
         if (!ServiceCollectionUtils.TryAdd<SpeedProvider>(services))
-            return services.GetRequiredSingletonInstance<SpeedBootApplicationExternal>();
+            throw new Exception("SpeedBoot has been registered");
 
         var speedOptions = new SpeedOptions();
         configure?.Invoke(speedOptions);
 
-        var speedBootApplication = new SpeedBootApplication(services);
+        var speedBootApplication = new SpeedBootApplication(services, speedOptions.Assemblies ?? GlobalConfig.DefaultAssemblies);
+        speedBootApplication.AddCompletionAppStartup();
         if (speedOptions.EnabledServiceRegisterComponent)
         {
-            speedBootApplication.AddServiceRegisterComponents(speedOptions.Assemblies);
+            speedBootApplication.AddCompletionAppStartup();
         }
 
-        var speedBootApplicationExternal = new SpeedBootApplicationExternal(speedBootApplication, speedOptions.Environment);
-        services.AddSingleton(speedBootApplicationExternal);
+        var speedBootApplicationBuilder = new SpeedBootApplicationBuilder(speedBootApplication);
         services.AddSingleton(speedBootApplication);
         services.AddSingleton<ISpeedBootApplication>(_ => speedBootApplication);
-
-        App.SetApplicationExternal(speedBootApplicationExternal);
-        return speedBootApplicationExternal;
+        services.AddSingleton(speedOptions);
+        services.AddLazySingletonService(speedOptions);
+        App.Instance.SetSpeedBootApplication(speedBootApplication);
+        return speedBootApplicationBuilder;
     }
 
     public static TInstance? GetSingletonInstance<TInstance>(this IServiceCollection services) where TInstance : class

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0;net7.0;</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net6.0;net7.0;net8.0;</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,15 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Extensions\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj" />
-    <ProjectReference Include="..\..\SpeedBoot.Core\SpeedBoot.Core.csproj" />
     <ProjectReference Include="..\SpeedBoot.ObjectStorage.Abstractions\SpeedBoot.ObjectStorage.Abstractions.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="..\..\SpeedBoot.Core\Extensions\Internal\ServiceCollectionUtils.cs">
-      <Link>Internal\ServiceCollectionUtils.cs</Link>
-    </Compile>
-  </ItemGroup>
-
 
 </Project>
