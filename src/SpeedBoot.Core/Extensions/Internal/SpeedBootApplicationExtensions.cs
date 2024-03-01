@@ -10,7 +10,7 @@ internal static class SpeedBootApplicationExtensions
     public static SpeedBootApplication AddCompletionAppStartup(
         this SpeedBootApplication application)
     {
-        var serviceRegisterStartup = new CompletionAppStartup( application.Assemblies, new Lazy<ILogger?>(() => App.Instance.GetSingletonService<ILogger>(), LazyThreadSafetyMode.ExecutionAndPublication));
+        var serviceRegisterStartup = new CompletionAppStartup(application.Assemblies, new Lazy<ILogger?>(() => App.Instance.GetSingletonService<ILogger>(true), LazyThreadSafetyMode.ExecutionAndPublication));
         application.Startups.Add(serviceRegisterStartup);
         return application;
     }
@@ -21,7 +21,7 @@ internal static class SpeedBootApplicationExtensions
         var serviceRegisterStartup = new ServiceRegisterStartup(
             application.Services,
             application.Assemblies,
-            new Lazy<ILogger?>(() => App.Instance.GetSingletonService<ILogger>(), LazyThreadSafetyMode.ExecutionAndPublication));
+            new Lazy<ILogger?>(() => App.Instance.GetSingletonService<ILogger>(true), LazyThreadSafetyMode.ExecutionAndPublication));
         application.Startups.Add(serviceRegisterStartup);
         return application;
     }

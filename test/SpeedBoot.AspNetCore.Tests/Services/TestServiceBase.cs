@@ -3,13 +3,9 @@
 
 namespace SpeedBoot.AspNetCore.Tests.Services;
 
-[Internal]
-public class TestService : TestServiceBase
+[RequestLog]
+[Internal(98)]
+public abstract class TestServiceBase : ServiceBase
 {
-    [Internal(1)]
-    [RoutePattern(HttpMethod = "Get")]
-    public string Ping()
-    {
-        return "Healthy";
-    }
+
 }

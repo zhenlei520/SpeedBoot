@@ -27,6 +27,7 @@ public static class AppExtensions
     /// 得到<typeparamref name="TService"/>服务（可能为空，仅支持API的请求）
     /// </summary>
     /// <param name="app"></param>
+    /// <param name="isTemporary"></param>
     /// <typeparam name="TService"></typeparam>
     /// <returns></returns>
     public static TService? GetSingletonService<TService>(this App app, bool isTemporary = false)

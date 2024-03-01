@@ -25,11 +25,18 @@ public abstract class ServiceBase
 
     public ServiceRouteOptions RouteOptions { get; set; } = new ServiceRouteOptions();
 
+#if NET7_0_OR_GREATER
+    protected List<ActionFilterBaseAttribute> ActionFilters;
+#endif
+
     protected ServiceBase()
     {
+#if NET7_0_OR_GREATER
+        ActionFilters = GetType().GetCustomAttributes<ActionFilterBaseAttribute>(true).ToList();
+#endif
     }
 
-    protected ServiceBase(string prefix)
+    protected ServiceBase(string prefix) : this()
     {
         RouteOptions.Prefix = prefix;
     }
@@ -44,11 +51,14 @@ public abstract class ServiceBase
 
             var routeHandlerBuilder = MapMethods(pattern, httpMethod, CreateDelegate(methodInfo, this));
 
-            var actions =(RouteOptions.RouteHandlerBuilders ?? globalServiceRouteOptions.RouteHandlerBuilders) ?? new List<Action<RouteHandlerBuilder>>();
+            var actions = (RouteOptions.RouteHandlerBuilders ?? globalServiceRouteOptions.RouteHandlerBuilders) ??
+                new List<Action<RouteHandlerBuilder>>();
             foreach (var action in actions)
             {
                 action.Invoke(routeHandlerBuilder);
             }
+
+            TryRegisterActionFilter(routeHandlerBuilder, methodInfo);
         }
     }
 
@@ -220,6 +230,38 @@ public abstract class ServiceBase
 
         return methodName.Substring(httpMethodPrefix.Length);
     }
+
+    protected virtual void TryRegisterActionFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
+    {
+#if NET7_0_OR_GREATER
+        RegisterActionFilter(routeHandlerBuilder, methodInfo);
+#endif
+    }
+
+#if NET7_0_OR_GREATER
+    private void RegisterActionFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
+    {
+        var customFilterAttributes = GetAllActionFilterAttributes(methodInfo);
+        foreach (var customFilterAttribute in customFilterAttributes)
+        {
+            routeHandlerBuilder.AddEndpointFilter((invocationContext, next) =>
+            {
+                var actionFilterProvider =
+                    invocationContext.HttpContext.RequestServices.GetService(customFilterAttribute.ServiceType) as IActionFilterProvider;
+                SpeedArgumentException.ThrowIfNull(actionFilterProvider);
+                return actionFilterProvider.HandlerAsync(invocationContext, next);
+            });
+        }
+    }
+
+    private IEnumerable<ActionFilterBaseAttribute> GetAllActionFilterAttributes(MethodInfo methodInfo)
+    {
+        var actionFiltersByMethod = methodInfo.GetCustomAttributes<ActionFilterBaseAttribute>(true).OrderBy(attribute => attribute.Order)
+            .ToList();
+
+        return actionFiltersByMethod.UnionBy(ActionFilters, attribute => attribute.ServiceType);
+    }
+#endif
 }
 
 #endif

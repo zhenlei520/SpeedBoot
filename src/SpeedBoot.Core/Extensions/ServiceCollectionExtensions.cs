@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
         speedBootApplication.AddCompletionAppStartup();
         if (speedOptions.EnabledServiceRegisterComponent)
         {
-            speedBootApplication.AddCompletionAppStartup();
+            speedBootApplication.AddServiceRegisterStartup();
         }
 
         var speedBootApplicationBuilder = new SpeedBootApplicationBuilder(speedBootApplication);

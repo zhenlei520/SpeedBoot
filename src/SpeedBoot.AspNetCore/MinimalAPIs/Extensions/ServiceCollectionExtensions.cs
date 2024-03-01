@@ -47,10 +47,30 @@ public static class ServiceCollectionExtensions
         {
             assemblies = assemblies.Union(AppDomain.CurrentDomain.GetAssemblies()).ToList();
         }
-
+        services.TryRegisterActionFilters(assemblies);
         services.RegisterServices(assemblies, globalServiceRouteOptions);
         return App.Instance.GetRequiredSingletonService<WebApplication>();
     }
+
+    private static void TryRegisterActionFilters(this IServiceCollection services, IEnumerable<Assembly> assemblies)
+    {
+#if NET7_0_OR_GREATER
+        services.RegisterActionFilters(assemblies);
+#endif
+    }
+
+#if NET7_0_OR_GREATER
+    private static void RegisterActionFilters(
+        this IServiceCollection services,
+        IEnumerable<Assembly> assemblies)
+    {
+        var actionFilterProviderTypes = AssemblyHelper.GetActionFilterProviders(assemblies).ToList();
+        foreach (var providerType in actionFilterProviderTypes)
+        {
+            services.AddSingleton(providerType);
+        }
+    }
+#endif
 
     private static void RegisterServices(
         this IServiceCollection services,
@@ -58,6 +78,7 @@ public static class ServiceCollectionExtensions
         GlobalServiceRouteOptions globalServiceRouteOptions)
     {
         var serviceTypes = AssemblyHelper.GetServiceTypes(assemblies).ToList();
+
         foreach (var serviceType in serviceTypes)
         {
             services.AddSingleton(serviceType);
