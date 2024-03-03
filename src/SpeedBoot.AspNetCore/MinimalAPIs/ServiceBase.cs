@@ -5,7 +5,6 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using SpeedBoot.AspNetCore.Options;
 
 namespace SpeedBoot.AspNetCore;
 
@@ -25,146 +24,120 @@ public abstract class ServiceBase
 
     public ServiceRouteOptions RouteOptions { get; set; } = new ServiceRouteOptions();
 
+    private IEnglishPluralizationService? _englishPluralizationService;
+
+    protected IEnglishPluralizationService EnglishPluralizationService
+        => _englishPluralizationService ??= App.Services.GetRequiredService<IEnglishPluralizationService>();
+
+    protected List<RouteAttribute> RouteAttributes;
+#if NET7_0_OR_GREATER
+    protected List<ActionFilterBaseAttribute> ActionFilters;
+#endif
+
     protected ServiceBase()
     {
-    }
-
-    protected ServiceBase(string prefix)
-    {
-        RouteOptions.Prefix = prefix;
+        RouteAttributes = GetType().GetCustomAttributes<RouteAttribute>(true).ToList();
+#if NET7_0_OR_GREATER
+        ActionFilters = GetType().GetCustomAttributes<ActionFilterBaseAttribute>(true).ToList();
+#endif
     }
 
     internal void AutoMapRoute(GlobalServiceRouteOptions globalServiceRouteOptions)
     {
-        foreach (var methodInfo in GetMethodInfos())
+        var methodInfos = MethodHelper.GetMethodInfos(GetType());
+        var templatesByClass = RouteAttributes.Any() ? RouteAttributes.Select(attribute => attribute.Template).ToList() : new List<string>() { globalServiceRouteOptions.RouteTemplate };
+        string? serviceName = null;
+        foreach (var methodInfo in methodInfos)
         {
-            (string? httpMethod, string httpMethodPrefix) = ParseMethod(globalServiceRouteOptions, methodInfo.Name);
-
-            (httpMethod, string pattern) = GetMapMetadata(methodInfo, httpMethodPrefix, httpMethod, globalServiceRouteOptions);
-
-            var routeHandlerBuilder = MapMethods(pattern, httpMethod, CreateDelegate(methodInfo, this));
-
-            var actions =(RouteOptions.RouteHandlerBuilders ?? globalServiceRouteOptions.RouteHandlerBuilders) ?? new List<Action<RouteHandlerBuilder>>();
-            foreach (var action in actions)
+            var metadata = GetMapMetadata(globalServiceRouteOptions, methodInfo,templatesByClass, GetServiceName);
+            foreach (var (pattern, httpMethods) in metadata)
             {
-                action.Invoke(routeHandlerBuilder);
+                var routeHandlerBuilder = MapMethods(pattern, httpMethods,CreateDelegate(methodInfo, this));
+                var actions = RouteHandlerBuilderHelper.GetRouteHandlerBuilderActions(globalServiceRouteOptions, RouteOptions);
+                foreach (var action in actions)
+                {
+                    action.Invoke(methodInfo, routeHandlerBuilder);
+                }
+                TryRegisterActionFilter(routeHandlerBuilder, methodInfo);
             }
+        }
+
+        string GetServiceName()
+        {
+            return serviceName ??= this.GetServiceName(RouteOptions.DisablePluralizeServiceName ?? globalServiceRouteOptions.DisablePluralizeServiceName ?? false);
         }
     }
 
-    private IEnumerable<MethodInfo> GetMethodInfos()
+    /// <summary>
+    /// key: pattern
+    /// value: httpMethods
+    /// </summary>
+    /// <param name="globalServiceRouteOptions"></param>
+    /// <param name="methodInfo"></param>
+    /// <param name="templatesByClass"></param>
+    /// <param name="serviceNameFunc"></param>
+    /// <returns></returns>
+    protected virtual List<(string Pattern, string[]? HttpMethods)> GetMapMetadata(
+        GlobalServiceRouteOptions globalServiceRouteOptions,
+        MethodInfo methodInfo,
+        List<string> templatesByClass,
+        Func<string> serviceNameFunc)
     {
-        var bindingFlags = BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly;
-        var routeIgnoreAttribute = typeof(RouteIgnoreAttribute);
+        string? actionName = null;
+        SpeculateMethod? speculateMethod = null;
+        var routeTemplates = MethodHelper.GetRouteTemplate(methodInfo, templatesByClass);
 
-        return GetType()
-            .GetMethods(bindingFlags)
-            .Where(methodInfo =>
-                (!methodInfo.IsSpecialName || (methodInfo.IsSpecialName && methodInfo.Name.StartsWith("get_"))) &&
-                methodInfo.CustomAttributes.All(attr => attr.AttributeType != routeIgnoreAttribute));
+        var patterns = new List<(string Pattern, string[]? HttpMethods)>();
+        foreach (var routeTemplate in routeTemplates)
+        {
+            var httpMethods = routeTemplate.SpeculateHttpMethods ? GetSpeculateMethod().HttpMethods : routeTemplate.HttpMethods;
+            var actionNameFunc = () => routeTemplate.SpeculateHttpMethods ? GetSpeculateMethod().ActionNameFunc.Invoke() : GetActionName();
+
+            var newTemplate = routeTemplate.Template;
+            if (newTemplate.Contains("[service]"))
+            {
+                newTemplate = newTemplate.Replace("[service]", serviceNameFunc.Invoke());
+            }
+            if (newTemplate.Contains("[action]"))
+            {
+                newTemplate = newTemplate.Replace("[action]", actionNameFunc.Invoke());
+            }
+            patterns.Add((newTemplate, httpMethods));
+        }
+        return patterns;
+
+        string GetActionName()
+        {
+            return actionName ??= MethodHelper.ActionNameFunc(globalServiceRouteOptions, RouteOptions, methodInfo).Invoke();
+        }
+
+        SpeculateMethod GetSpeculateMethod()
+        {
+            return speculateMethod ??= MethodHelper.SpeculateMethodsAndActionNameFunc(globalServiceRouteOptions, RouteOptions, methodInfo);
+        }
     }
 
     Delegate CreateDelegate(MethodInfo methodInfo, object targetInstance)
     {
-        var type = Expression.GetDelegateType(
-            methodInfo.GetParameters().Select(parameterInfo => parameterInfo.ParameterType)
-                .Concat(new List<Type>
-                {
-                    methodInfo.ReturnType
-                }).ToArray()
-        );
+        var types = methodInfo.GetParameters()
+            .Select(parameterInfo => parameterInfo.ParameterType)
+            .Concat(new List<Type>
+            {
+                methodInfo.ReturnType
+            }).ToArray();
+        var type = Expression.GetDelegateType(types);
         return Delegate.CreateDelegate(type, targetInstance, methodInfo);
     }
 
-    (string? HttpMethod, string Prefix) ParseMethod(GlobalServiceRouteOptions globalServiceRouteOptions, string methodName)
+    RouteHandlerBuilder MapMethods(string pattern, string[]? httpMethods, Delegate handler)
     {
-        var prefix = ParseMethodPrefix(RouteOptions.GetPrefixes ?? globalServiceRouteOptions.GetPrefixes!, methodName);
-        if (!string.IsNullOrEmpty(prefix))
-            return ("GET", prefix);
+        if (httpMethods == null || !httpMethods.Any())
+            return App.Map(pattern, handler);
 
-        prefix = ParseMethodPrefix(RouteOptions.PostPrefixes ?? globalServiceRouteOptions.PostPrefixes!, methodName);
-        if (!string.IsNullOrEmpty(prefix))
-            return ("POST", prefix);
-
-        prefix = ParseMethodPrefix(RouteOptions.PutPrefixes ?? globalServiceRouteOptions.PutPrefixes!, methodName);
-        if (!string.IsNullOrEmpty(prefix))
-            return ("PUT", prefix);
-
-        prefix = ParseMethodPrefix(RouteOptions.DeletePrefixes ?? globalServiceRouteOptions.DeletePrefixes!, methodName);
-        if (!string.IsNullOrEmpty(prefix))
-            return ("DELETE", prefix);
-
-        return (null, string.Empty);
+        return App.MapMethods(pattern, httpMethods, handler);
     }
 
-    RouteHandlerBuilder MapMethods(string pattern, string? httpMethod, Delegate handler)
-    {
-        if (!string.IsNullOrWhiteSpace(httpMethod))
-        {
-            return App.MapMethods(pattern, new[] { httpMethod }, handler);
-        }
-
-        return App.Map(pattern, handler);
-    }
-
-    string ParseMethodPrefix(IEnumerable<string> prefixes, string methodName)
-    {
-        return prefixes.FirstOrDefault(prefix => methodName.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) ?? string.Empty;
-    }
-
-    (string? HttpMethod, string Pattern) GetMapMetadata(MethodInfo methodInfo, string httpMethodPrefix, string? httpMethod,
-        GlobalServiceRouteOptions globalServiceRouteOptions)
-    {
-        var routePatternAttribute = methodInfo.GetCustomAttribute<RoutePatternAttribute>();
-        string pattern;
-
-        if (routePatternAttribute is not null)
-        {
-            if (routePatternAttribute.HttpMethod is not null)
-            {
-                httpMethod = routePatternAttribute.HttpMethod;
-            }
-
-            if (routePatternAttribute.IgnorePrefix)
-            {
-#if NET6_0
-                ArgumentNullException.ThrowIfNull(routePatternAttribute.Pattern, nameof(routePatternAttribute.Pattern));
-#else
-                ArgumentException.ThrowIfNullOrEmpty(routePatternAttribute.Pattern, nameof(routePatternAttribute.Pattern));
-#endif
-                pattern = routePatternAttribute.Pattern;
-            }
-            else
-            {
-                pattern = string.Join('/', GetBaseUri(globalServiceRouteOptions).Trim('/'), routePatternAttribute.Pattern?.Trim('/'))
-                    .ToString();
-            }
-        }
-        else
-        {
-            pattern = string.Join('/', GetBaseUri(globalServiceRouteOptions).Trim('/'),
-                GetMethodName(methodInfo, httpMethodPrefix, globalServiceRouteOptions).Trim('/')).ToString();
-        }
-
-        return (httpMethod, pattern);
-    }
-
-    string GetBaseUri(GlobalServiceRouteOptions globalServiceRouteOptions)
-    {
-        var list = new List<string>()
-        {
-            RouteOptions.Prefix ?? globalServiceRouteOptions.Prefix ?? string.Empty,
-            RouteOptions.Version ?? globalServiceRouteOptions.Version ?? string.Empty,
-            ServiceName ??
-            GetServiceName(RouteOptions.DisablePluralizeServiceName ?? globalServiceRouteOptions.DisablePluralizeServiceName ?? false
-                ? null
-                : globalServiceRouteOptions)
-        };
-
-        return string.Join('/', list.Where(x => !string.IsNullOrWhiteSpace(x)).Select(u => u.Trim('/')));
-    }
-
-    string GetServiceName(GlobalServiceRouteOptions? globalServiceRouteOptions)
+    protected virtual string GetServiceName(bool disablePluralizeServiceName)
     {
         var serviceName = GetType().Name;
         var suffix = "Service";
@@ -173,53 +146,43 @@ public abstract class ServiceBase
             ? serviceName.Substring(0, serviceName.Length - suffix.Length)
             : serviceName;
 
-        return serviceName;
+        if (disablePluralizeServiceName)
+            return serviceName;
+
+        return EnglishPluralizationService.Pluralize(serviceName);
     }
 
-    string GetMethodName(MethodInfo methodInfo, string httpMethodPrefix, GlobalServiceRouteOptions globalServiceRouteOptions)
+    protected virtual void TryRegisterActionFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
     {
-        var methodName = TrimMethodName(methodInfo.Name, httpMethodPrefix, globalServiceRouteOptions);
-
-        if (RouteOptions.DisableAutoAppendId ?? globalServiceRouteOptions.DisableAutoAppendId ?? false)
-        {
-            return methodName;
-        }
-
-        var idParameter = methodInfo.GetParameters().FirstOrDefault(p =>
-            p.Name!.Equals("id", StringComparison.OrdinalIgnoreCase) &&
-            p.GetCustomAttributes().All(attr => attr is not IBindingSourceMetadata)
-        );
-
-        if (idParameter is not null)
-        {
-            var id =
-                (idParameter.ParameterType.IsGenericType && idParameter.ParameterType.GetGenericTypeDefinition() == typeof(Nullable<>)) ||
-                idParameter.HasDefaultValue
-                    ? "{id?}"
-                    : "{id}";
-            return $"{methodName}/{id}";
-        }
-
-        return methodName;
+#if NET7_0_OR_GREATER
+        RegisterActionFilter(routeHandlerBuilder, methodInfo);
+#endif
     }
 
-    string TrimMethodName(string methodName, string httpMethodPrefix, GlobalServiceRouteOptions globalServiceRouteOptions)
+#if NET7_0_OR_GREATER
+    private void RegisterActionFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
     {
-        methodName = methodName.StartsWith("get_") ? methodName.Substring(4) : methodName;
-
-        if (!(RouteOptions.DisableTrimMethodSuffix ?? globalServiceRouteOptions.DisableTrimMethodSuffix ?? false))
+        var customFilterAttributes = GetAllActionFilterAttributes(methodInfo);
+        foreach (var customFilterAttribute in customFilterAttributes)
         {
-            var suffix = "Async";
-            methodName = methodName.EndsWith(suffix, StringComparison.OrdinalIgnoreCase)
-                ? methodName.Substring(0, methodName.Length - suffix.Length)
-                : methodName;
+            routeHandlerBuilder.AddEndpointFilter((invocationContext, next) =>
+            {
+                var actionFilterProvider =
+                    invocationContext.HttpContext.RequestServices.GetService(customFilterAttribute.ServiceType) as IActionFilterProvider;
+                SpeedArgumentException.ThrowIfNull(actionFilterProvider);
+                return actionFilterProvider.HandlerAsync(invocationContext, next);
+            });
         }
-
-        if (RouteOptions.DisableTrimMethodPrefix ?? globalServiceRouteOptions.DisableTrimMethodPrefix ?? false)
-            return methodName;
-
-        return methodName.Substring(httpMethodPrefix.Length);
     }
+
+    private IEnumerable<ActionFilterBaseAttribute> GetAllActionFilterAttributes(MethodInfo methodInfo)
+    {
+        var actionFiltersByMethod = methodInfo.GetCustomAttributes<ActionFilterBaseAttribute>(true).OrderBy(attribute => attribute.Order)
+            .ToList();
+
+        return actionFiltersByMethod.UnionBy(ActionFilters, attribute => attribute.ServiceType);
+    }
+#endif
 }
 
 #endif

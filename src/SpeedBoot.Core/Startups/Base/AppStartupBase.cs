@@ -46,7 +46,7 @@ public abstract class AppStartupBase : OrderBase, IAppStartup
         Logger?.Log(_logLevel ?? LogLevel.Debug, messageTemplate: "AppStartup：【{0}】，before initialization", propertyValues: Name);
     }
 
-    public virtual void Initialize()
+    public void Initialize()
     {
         PreInitialized();
 

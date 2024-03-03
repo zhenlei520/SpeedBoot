@@ -18,6 +18,11 @@ public class CompletionAppStartup: AppStartupBase
     {
         _allComponentTypes = GetDerivedClassTypes<ICompletionAppComponent>(assemblies);
     }
+
+    protected override void PreInitialized()
+    {
+    }
+
     protected override void Load()
     {
         var componentTypes = ServiceComponentStartupHelp.GetComponentTypesByOrdered(_allComponentTypes);
@@ -26,5 +31,9 @@ public class CompletionAppStartup: AppStartupBase
             SpeedArgumentException.ThrowIfNull(componentInstance);
             componentInstance!.Configure();
         }
+    }
+
+    protected override void PostInitialized()
+    {
     }
 }

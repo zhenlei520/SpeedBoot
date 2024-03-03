@@ -4,14 +4,10 @@
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Builder;
 
-namespace SpeedBoot.AspNetCore.Options;
+namespace SpeedBoot.AspNetCore;
 
 public class ServiceRouteOptions
 {
-    public string? Prefix { get; set; }
-
-    public string? Version { get; set; }
-
     public bool? DisablePluralizeServiceName { get; set; }
 
     public bool? DisableAutoMapRoute { get; set; }
@@ -30,6 +26,15 @@ public class ServiceRouteOptions
 
     public bool? DisableAutoAppendId { get; set; }
 
-    public IList<Action<RouteHandlerBuilder>>? RouteHandlerBuilders { get; set; }
+    public Action<RouteHandlerBuilder>? RouteHandlerBuilderAction { get; set; }
+
+    public List<(Func<MethodInfo, bool>, Action<RouteHandlerBuilder>)>? WhereIfRouteHandlerBuilderActions { get; set; }
+
+    public ServiceRouteOptions AddWhereIfRouteHandlerBuilderAction((Func<MethodInfo, bool>, Action<RouteHandlerBuilder>) whereIfRouteHandlerBuilderAction)
+    {
+        WhereIfRouteHandlerBuilderActions??= new List<(Func<MethodInfo, bool>, Action<RouteHandlerBuilder>)>();
+        WhereIfRouteHandlerBuilderActions.Add(whereIfRouteHandlerBuilderAction);
+        return this;
+    }
 }
 #endif
