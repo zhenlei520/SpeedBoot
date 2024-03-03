@@ -4,7 +4,6 @@
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Builder;
 using SpeedBoot.AspNetCore.Internal;
-using SpeedBoot.AspNetCore.Options;
 
 namespace SpeedBoot.AspNetCore;
 
@@ -77,6 +76,7 @@ public static class ServiceCollectionExtensions
         IEnumerable<Assembly> assemblies,
         GlobalServiceRouteOptions globalServiceRouteOptions)
     {
+        services.TryAdd(ServiceDescriptor.Singleton<IEnglishPluralizationService, EnglishPluralizationService>());
         var serviceTypes = AssemblyHelper.GetServiceTypes(assemblies).ToList();
 
         foreach (var serviceType in serviceTypes)

@@ -6,10 +6,26 @@ namespace SpeedBoot.AspNetCore.Tests.Services;
 [Internal]
 public class TestService : TestServiceBase
 {
+    public TestService()
+    {
+        RouteOptions.WhereIfRouteHandlerBuilderAction = (method =>
+        {
+            return method.Name == "GetPing";
+        }, builder =>
+        {
+            builder.WithDescription("ping");
+        });
+    }
+
     [Internal(1)]
-    [RoutePattern(HttpMethod = "Get")]
-    public string Ping()
+    public string GetPing()
     {
         return "Healthy";
+    }
+
+    [HttpGet]
+    public string Test()
+    {
+        return "test";
     }
 }

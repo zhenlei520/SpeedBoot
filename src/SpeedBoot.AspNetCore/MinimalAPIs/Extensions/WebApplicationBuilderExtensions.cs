@@ -3,7 +3,6 @@
 
 #if NET6_0_OR_GREATER
 using Microsoft.AspNetCore.Builder;
-using SpeedBoot.AspNetCore.Options;
 
 namespace SpeedBoot.AspNetCore;
 

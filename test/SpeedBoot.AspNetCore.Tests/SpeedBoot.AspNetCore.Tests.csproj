@@ -10,4 +10,8 @@
       <ProjectReference Include="..\..\src\SpeedBoot.AspNetCore\SpeedBoot.AspNetCore.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    </ItemGroup>
+
 </Project>
