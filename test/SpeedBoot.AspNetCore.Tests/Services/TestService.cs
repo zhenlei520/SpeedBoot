@@ -8,13 +8,10 @@ public class TestService : TestServiceBase
 {
     public TestService()
     {
-        RouteOptions.WhereIfRouteHandlerBuilderAction = (method =>
-        {
-            return method.Name == "GetPing";
-        }, builder =>
+        RouteOptions.AddWhereIfRouteHandlerBuilderAction((method => method.Name == "GetPing", builder =>
         {
             builder.WithDescription("ping");
-        });
+        }));
     }
 
     [Internal(1)]

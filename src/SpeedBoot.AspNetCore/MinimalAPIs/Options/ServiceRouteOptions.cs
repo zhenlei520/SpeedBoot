@@ -28,6 +28,13 @@ public class ServiceRouteOptions
 
     public Action<RouteHandlerBuilder>? RouteHandlerBuilderAction { get; set; }
 
-    public (Func<MethodInfo, bool>, Action<RouteHandlerBuilder>)? WhereIfRouteHandlerBuilderAction { get; set; }
+    public List<(Func<MethodInfo, bool>, Action<RouteHandlerBuilder>)>? WhereIfRouteHandlerBuilderActions { get; set; }
+
+    public ServiceRouteOptions AddWhereIfRouteHandlerBuilderAction((Func<MethodInfo, bool>, Action<RouteHandlerBuilder>) whereIfRouteHandlerBuilderAction)
+    {
+        WhereIfRouteHandlerBuilderActions??= new List<(Func<MethodInfo, bool>, Action<RouteHandlerBuilder>)>();
+        WhereIfRouteHandlerBuilderActions.Add(whereIfRouteHandlerBuilderAction);
+        return this;
+    }
 }
 #endif

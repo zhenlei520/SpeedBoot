@@ -14,19 +14,24 @@ internal static class RouteHandlerBuilderHelper
         ServiceRouteOptions serviceRouteOptions)
     {
         List<Action<MethodInfo, RouteHandlerBuilder>> routeHandlerBuilderActions = new();
-        var routeHandlerBuilderAction = serviceRouteOptions.RouteHandlerBuilderAction ?? globalServiceRouteOptions.RouteHandlerBuilderAction;
-        var whereIfRouteHandlerBuilderAction = serviceRouteOptions.WhereIfRouteHandlerBuilderAction ?? globalServiceRouteOptions.WhereIfRouteHandlerBuilderAction;
-        if(routeHandlerBuilderAction != null)
+        var routeHandlerBuilderAction =
+            serviceRouteOptions.RouteHandlerBuilderAction ?? globalServiceRouteOptions.RouteHandlerBuilderAction;
+        var whereIfRouteHandlerBuilderActions = serviceRouteOptions.WhereIfRouteHandlerBuilderActions ??
+            globalServiceRouteOptions.WhereIfRouteHandlerBuilderActions;
+        if (routeHandlerBuilderAction != null)
         {
             routeHandlerBuilderActions.Add((_, routeHandlerBuilder) => routeHandlerBuilderAction.Invoke(routeHandlerBuilder));
         }
-        if (whereIfRouteHandlerBuilderAction != null)
+        if (whereIfRouteHandlerBuilderActions == null)
+            return routeHandlerBuilderActions;
+
+        foreach (var whereIfRouteHandlerBuilderAction in whereIfRouteHandlerBuilderActions)
         {
             routeHandlerBuilderActions.Add((methodInfo, routeHandlerBuilder) =>
             {
-                if (whereIfRouteHandlerBuilderAction.Value.Item1.Invoke(methodInfo))
+                if (whereIfRouteHandlerBuilderAction.Item1.Invoke(methodInfo))
                 {
-                    whereIfRouteHandlerBuilderAction.Value.Item2.Invoke(routeHandlerBuilder);
+                    whereIfRouteHandlerBuilderAction.Item2.Invoke(routeHandlerBuilder);
                 }
             });
         }
