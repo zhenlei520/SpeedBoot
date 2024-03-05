@@ -162,8 +162,14 @@ public abstract class ServiceBase
 #if NET7_0_OR_GREATER
     private void RegisterActionFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
     {
-        var customFilterAttributes = GetAllActionFilterAttributes(methodInfo);
-        foreach (var customFilterAttribute in customFilterAttributes)
+        var actionFilterAttributes = GetActionFilterAttributes(methodInfo);
+        var tempActionFilters = ActionFilters.Where(attribute => !actionFilterAttributes.Any(a => a.GetType() == attribute.GetType())).ToList();
+        foreach (var attribute in tempActionFilters)
+        {
+            routeHandlerBuilder.WithMetadata(attribute);
+        }
+        var allActionFilters = actionFilterAttributes.Union(tempActionFilters).OrderBy(attribute => attribute.Order).ToList();
+        foreach (var customFilterAttribute in allActionFilters)
         {
             routeHandlerBuilder.AddEndpointFilter((invocationContext, next) =>
             {
@@ -175,12 +181,9 @@ public abstract class ServiceBase
         }
     }
 
-    private IEnumerable<ActionFilterBaseAttribute> GetAllActionFilterAttributes(MethodInfo methodInfo)
+    private List<ActionFilterBaseAttribute> GetActionFilterAttributes(MethodInfo methodInfo)
     {
-        var actionFiltersByMethod = methodInfo.GetCustomAttributes<ActionFilterBaseAttribute>(true).OrderBy(attribute => attribute.Order)
-            .ToList();
-
-        return actionFiltersByMethod.UnionBy(ActionFilters, attribute => attribute.ServiceType);
+        return methodInfo.GetCustomAttributes<ActionFilterBaseAttribute>(true).ToList();
     }
 #endif
 }
