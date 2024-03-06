@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.AspNetCore.Tests.Attributes;
 
-public class InternalAttribute : ActionFilterBaseAttribute<InternalActionFilterProvider>
+public class InternalAttribute : EndpointFilterBaseAttribute<InternalEndpointFilterProvider>
 {
     public InternalAttribute() : base()
     {

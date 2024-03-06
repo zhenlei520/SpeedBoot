@@ -5,7 +5,7 @@
 
 namespace SpeedBoot.AspNetCore;
 
-public interface IActionFilterProvider
+public interface IEndpointFilterProvider
 {
     int Order { get; }
 
