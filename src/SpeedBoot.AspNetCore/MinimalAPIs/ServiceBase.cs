@@ -31,14 +31,14 @@ public abstract class ServiceBase
 
     protected List<RouteAttribute> RouteAttributes;
 #if NET7_0_OR_GREATER
-    protected List<ActionFilterBaseAttribute> ActionFilters;
+    protected List<EndpointFilterBaseAttribute> EndpointFilters;
 #endif
 
     protected ServiceBase()
     {
         RouteAttributes = GetType().GetCustomAttributes<RouteAttribute>(true).ToList();
 #if NET7_0_OR_GREATER
-        ActionFilters = GetType().GetCustomAttributes<ActionFilterBaseAttribute>(true).ToList();
+        EndpointFilters = GetType().GetCustomAttributes<EndpointFilterBaseAttribute>(true).ToList();
 #endif
     }
 
@@ -58,7 +58,7 @@ public abstract class ServiceBase
                 {
                     action.Invoke(methodInfo, routeHandlerBuilder);
                 }
-                TryRegisterActionFilter(routeHandlerBuilder, methodInfo);
+                TryRegisterEndpointFilter(routeHandlerBuilder, methodInfo);
             }
         }
 
@@ -152,38 +152,38 @@ public abstract class ServiceBase
         return EnglishPluralizationService.Pluralize(serviceName);
     }
 
-    protected virtual void TryRegisterActionFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
+    protected virtual void TryRegisterEndpointFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
     {
 #if NET7_0_OR_GREATER
-        RegisterActionFilter(routeHandlerBuilder, methodInfo);
+        RegisterEndpointFilter(routeHandlerBuilder, methodInfo);
 #endif
     }
 
 #if NET7_0_OR_GREATER
-    private void RegisterActionFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
+    private void RegisterEndpointFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
     {
-        var actionFilterAttributes = GetActionFilterAttributes(methodInfo);
-        var tempActionFilters = ActionFilters.Where(attribute => !actionFilterAttributes.Any(a => a.GetType() == attribute.GetType())).ToList();
-        foreach (var attribute in tempActionFilters)
+        var endpointFilterAttributes = GetMethodEndpointFilterAttributes(methodInfo);
+        var tempEndpointFilters = EndpointFilters.Where(attribute => !endpointFilterAttributes.Any(a => a.GetType() == attribute.GetType())).ToList();
+        foreach (var attribute in tempEndpointFilters)
         {
             routeHandlerBuilder.WithMetadata(attribute);
         }
-        var allActionFilters = actionFilterAttributes.Union(tempActionFilters).OrderBy(attribute => attribute.Order).ToList();
+        var allActionFilters = endpointFilterAttributes.Union(tempEndpointFilters).OrderBy(attribute => attribute.Order).ToList();
         foreach (var customFilterAttribute in allActionFilters)
         {
             routeHandlerBuilder.AddEndpointFilter((invocationContext, next) =>
             {
                 var actionFilterProvider =
-                    invocationContext.HttpContext.RequestServices.GetService(customFilterAttribute.ServiceType) as IActionFilterProvider;
+                    invocationContext.HttpContext.RequestServices.GetService(customFilterAttribute.ServiceType) as IEndpointFilterProvider;
                 SpeedArgumentException.ThrowIfNull(actionFilterProvider);
                 return actionFilterProvider.HandlerAsync(invocationContext, next);
             });
         }
     }
 
-    private List<ActionFilterBaseAttribute> GetActionFilterAttributes(MethodInfo methodInfo)
+    private IEnumerable<EndpointFilterBaseAttribute> GetMethodEndpointFilterAttributes(MethodInfo methodInfo)
     {
-        return methodInfo.GetCustomAttributes<ActionFilterBaseAttribute>(true).ToList();
+        return methodInfo.GetCustomAttributes<EndpointFilterBaseAttribute>(true).ToList();
     }
 #endif
 }

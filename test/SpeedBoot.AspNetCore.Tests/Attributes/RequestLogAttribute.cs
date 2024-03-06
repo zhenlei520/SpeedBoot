@@ -3,6 +3,6 @@
 
 namespace SpeedBoot.AspNetCore.Tests.Attributes;
 
-public class RequestLogAttribute: ActionFilterBaseAttribute<RequestLogActionFilterProvider>
+public class RequestLogAttribute: EndpointFilterBaseAttribute<RequestLogEndpointFilterProvider>
 {
 }

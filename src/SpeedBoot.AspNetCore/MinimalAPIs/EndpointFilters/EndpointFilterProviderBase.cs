@@ -5,7 +5,7 @@
 
 namespace SpeedBoot.AspNetCore;
 
-public abstract class ActionFilterProviderBase : IActionFilterProvider
+public abstract class EndpointFilterProviderBase : IEndpointFilterProvider
 {
     public int Order { get; } = 999;
 

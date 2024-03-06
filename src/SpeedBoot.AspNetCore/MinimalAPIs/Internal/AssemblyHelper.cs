@@ -2,14 +2,14 @@
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
 #if NET6_0_OR_GREATER
-namespace SpeedBoot.AspNetCore.Internal;
+namespace SpeedBoot.AspNetCore;
 
 internal static class AssemblyHelper
 {
 #if NET7_0_OR_GREATER
-    public static IEnumerable<Type> GetActionFilterProviders(IEnumerable<Assembly> assemblies)
+    public static IEnumerable<Type> GetEndpointFilterProviderTypes(IEnumerable<Assembly> assemblies)
         => from type in assemblies.SelectMany(assembly => assembly.GetTypes())
-            where type.IsClass && !type.IsAbstract && typeof(IActionFilterProvider).IsAssignableFrom(type)
+            where type.IsClass && !type.IsAbstract && typeof(IEndpointFilterProvider).IsAssignableFrom(type)
             select type;
 #endif
 

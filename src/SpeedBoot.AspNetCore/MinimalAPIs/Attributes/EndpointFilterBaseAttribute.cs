@@ -6,13 +6,13 @@
 namespace SpeedBoot.AspNetCore;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public abstract class ActionFilterBaseAttribute : Attribute
+public abstract class EndpointFilterBaseAttribute : Attribute
 {
     public Type ServiceType { get; }
 
     public int Order { get; }
 
-    protected ActionFilterBaseAttribute(Type serviceType, int order)
+    protected EndpointFilterBaseAttribute(Type serviceType, int order)
     {
         ServiceType = serviceType;
         Order = order;
@@ -20,16 +20,16 @@ public abstract class ActionFilterBaseAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public abstract class ActionFilterBaseAttribute<TActionFilterProvider> : ActionFilterBaseAttribute
-    where TActionFilterProvider : IActionFilterProvider
+public abstract class EndpointFilterBaseAttribute<TEndpointFilterProvider> : EndpointFilterBaseAttribute
+    where TEndpointFilterProvider : IEndpointFilterProvider
 {
-    public ActionFilterBaseAttribute() : this(999)
+    public EndpointFilterBaseAttribute() : this(999)
     {
 
     }
 
-    public ActionFilterBaseAttribute(int order)
-        : base(typeof(TActionFilterProvider), order)
+    public EndpointFilterBaseAttribute(int order)
+        : base(typeof(TEndpointFilterProvider), order)
     {
     }
 }
