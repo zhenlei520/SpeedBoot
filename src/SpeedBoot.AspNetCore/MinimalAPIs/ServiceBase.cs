@@ -162,27 +162,28 @@ public abstract class ServiceBase
 #if NET7_0_OR_GREATER
     private void RegisterEndpointFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
     {
-        var customFilterAttributes = GetAllEndpointFilterAttributes(methodInfo);
-        foreach (var customFilterAttribute in customFilterAttributes)
+        var endpointFilterAttributes = GetMethodEndpointFilterAttributes(methodInfo);
+        var tempEndpointFilters = EndpointFilters.Where(attribute => !endpointFilterAttributes.Any(a => a.GetType() == attribute.GetType())).ToList();
+        foreach (var attribute in tempEndpointFilters)
+        {
+            routeHandlerBuilder.WithMetadata(attribute);
+        }
+        var allActionFilters = endpointFilterAttributes.Union(tempEndpointFilters).OrderBy(attribute => attribute.Order).ToList();
+        foreach (var customFilterAttribute in allActionFilters)
         {
             routeHandlerBuilder.AddEndpointFilter((invocationContext, next) =>
             {
-                var endpointFilterProvider =
+                var actionFilterProvider =
                     invocationContext.HttpContext.RequestServices.GetService(customFilterAttribute.ServiceType) as IEndpointFilterProvider;
-                SpeedArgumentException.ThrowIfNull(endpointFilterProvider);
-                return endpointFilterProvider.HandlerAsync(invocationContext, next);
+                SpeedArgumentException.ThrowIfNull(actionFilterProvider);
+                return actionFilterProvider.HandlerAsync(invocationContext, next);
             });
         }
     }
 
-    private IEnumerable<EndpointFilterBaseAttribute> GetAllEndpointFilterAttributes(MethodInfo methodInfo)
+    private IEnumerable<EndpointFilterBaseAttribute> GetMethodEndpointFilterAttributes(MethodInfo methodInfo)
     {
-        var endpointFiltersByMethod = methodInfo
-            .GetCustomAttributes<EndpointFilterBaseAttribute>(true)
-            .OrderBy(attribute => attribute.Order)
-            .ToList();
-
-        return endpointFiltersByMethod.UnionBy(EndpointFilters, attribute => attribute.ServiceType);
+        return methodInfo.GetCustomAttributes<EndpointFilterBaseAttribute>(true).ToList();
     }
 #endif
 }
