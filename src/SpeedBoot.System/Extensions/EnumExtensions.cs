@@ -29,4 +29,11 @@ public static class EnumExtensions
         var attributes = fieldInfo.GetCustomAttribute(typeof(TAttribute), inherit);
         return attributes as TAttribute;
     }
+
+    public static TAttribute[] GetCustomAttributes<TAttribute>(this Enum value, bool inherit = false) where TAttribute : Attribute
+    {
+        var fieldInfo = value.GetType().GetField(value.ToString());
+        var attributes = fieldInfo.GetCustomAttributes(typeof(TAttribute), inherit);
+        return attributes.Select(attribute => (attribute as TAttribute)!).ToArray();
+    }
 }
