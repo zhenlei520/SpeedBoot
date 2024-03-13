@@ -8,10 +8,10 @@ namespace SpeedBoot.Extensions.IdGenerator;
 public static class SpeedBootApplicationExternalExtensions
 {
     public static IIdGenerator? GetIdGenerator(this App app)
-        => app.GetSingletonService<IIdGenerator>();
+        => app.GetSingletonService<IIdGenerator>(true);
 
     public static IIdGenerator GetRequiredIdGenerator(this App app)
-        => app.GetRequiredSingletonService<IIdGenerator>();
+        => app.GetRequiredSingletonService<IIdGenerator>(true);
 
     public static Guid GeneratorGuid(this App app)
         => app.GetRequiredIdGenerator().Create();

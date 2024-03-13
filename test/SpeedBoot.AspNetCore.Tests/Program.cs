@@ -6,11 +6,6 @@ builder.Services
     .AddEndpointsApiExplorer()
     .AddSwaggerGen(options =>
     {
-        // options.SwaggerDoc(builder.Options.GlobalServiceRouteOptions.Version, builder.Options.OpenApiInfo ?? new OpenApiInfo()
-        // {
-        //     Title = $"{builder.Options.ProjectName}",
-        //     Version = builder.Options.GlobalServiceRouteOptions.Version
-        // });
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
         {
             Name = "Authorization",
