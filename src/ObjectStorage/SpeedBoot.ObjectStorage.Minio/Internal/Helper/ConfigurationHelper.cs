@@ -19,7 +19,8 @@ internal static class ConfigurationHelper
     {
         var minioObjectStorageSectionName = GetMinioObjectStorageSectionName();
 
-        var minioObjectStorageOptions = App.Instance.GetOptions<SpeedBoot.ObjectStorage.Minio.Internal.Options.MinioObjectStorageOptions>(minioObjectStorageSectionName);
+        var minioObjectStorageOptions =
+            App.Instance.GetOptions<SpeedBoot.ObjectStorage.Minio.Internal.Options.MinioObjectStorageOptions>(minioObjectStorageSectionName, true);
         SpeedArgumentException.ThrowIfNull(minioObjectStorageOptions);
         return new MinioObjectStorageOptions()
         {
@@ -30,7 +31,7 @@ internal static class ConfigurationHelper
             Timeout = minioObjectStorageOptions.Timeout,
             Region = minioObjectStorageOptions.Region,
             BucketName = minioObjectStorageOptions.BucketName,
-            EnableOverwrite=minioObjectStorageOptions.EnableOverwrite
+            EnableOverwrite = minioObjectStorageOptions.EnableOverwrite
         };
     }
 
