@@ -20,9 +20,7 @@ public abstract class ServiceBase
 
     public IServiceCollection ServiceCollection => SpeedBoot.App.Instance.GetRequiredSingletonService<IServiceCollection>();
 
-    public string? ServiceName { get; init; }
-
-    public ServiceRouteOptions RouteOptions { get; set; } = new ServiceRouteOptions();
+    public ServiceRouteOptions RouteOptions { get; set; } = new();
 
     private IEnglishPluralizationService? _englishPluralizationService;
 
