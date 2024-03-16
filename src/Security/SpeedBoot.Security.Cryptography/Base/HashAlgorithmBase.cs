@@ -21,7 +21,7 @@ public abstract class HashAlgorithmBase : EncryptBase
         if (hashAlgorithm == null)
             throw new NotSupportedException("Unsupported encryptType");
 
-        var buffer = GetSafeEncoding(encoding).GetBytes(content);
+        var buffer = encoding.GetSafeEncoding().GetBytes(content);
         buffer = hashAlgorithm.ComputeHash(buffer);
         return Encrypt(encryptType, buffer, hashAlgorithm, isToLower);
     }

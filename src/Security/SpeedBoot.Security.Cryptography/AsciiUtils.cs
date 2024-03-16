@@ -4,25 +4,39 @@
 namespace SpeedBoot.Security.Cryptography;
 
 /// <summary>
-/// Base64 Encode and Decode
+/// Ascii Encode and Decode
 /// </summary>
-public class Base64Utils
+public class AsciiUtils
 {
     /// <summary>
-    /// Base64 Encode
+    /// Ascii Encode
     /// </summary>
     /// <param name="content">String to be encrypted</param>
     /// <param name="encoding">Encoding format, default UTF-8</param>
     /// <returns>encrypted data</returns>
     public static string Encode(string content, Encoding? encoding = null)
-        => Convert.ToBase64String(content.ToBytes(encoding.GetSafeEncoding()));
+    {
+        var stringBuilder = new StringBuilder();
+        foreach (var c in content)
+        {
+            stringBuilder.Append((int)c);
+            stringBuilder.Append(' ');
+        }
+        return stringBuilder.ToString().Trim();
+    }
 
     /// <summary>
-    /// Base64 Decode
+    /// Ascii Decode
     /// </summary>
     /// <param name="content">String to decrypt</param>
-    /// <param name="encoding">Encoding format, default UTF-8</param>
     /// <returns>decrypted data</returns>
-    public static string Decode(string content, Encoding? encoding = null)
-        => encoding.GetSafeEncoding().GetString(content.FromBase64String());
+    public static string Decode(string content)
+    {
+        var asciiValues = content.Split(' ');
+        var stringBuilder = new StringBuilder();
+        foreach (var ascii in asciiValues)
+            stringBuilder.Append((char)int.Parse(ascii));
+
+        return stringBuilder.ToString();
+    }
 }

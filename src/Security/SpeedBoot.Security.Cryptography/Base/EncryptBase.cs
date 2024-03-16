@@ -21,7 +21,7 @@ public abstract class EncryptBase
             fillPattern,
             fillCharacter,
             errorFunc);
-        return result.ToGetBytes(encoding);
+        return result.ToBytes(encoding);
     }
 
     protected static void EncryptOrDecryptFile(
@@ -51,7 +51,4 @@ public abstract class EncryptBase
         => isEncrypt ?
             symmetricAlgorithm.CreateEncryptor(keyBuffer, ivBuffer) :
             symmetricAlgorithm.CreateDecryptor(keyBuffer, ivBuffer);
-
-    protected static Encoding GetSafeEncoding(Encoding? encoding = null)
-        => encoding ?? GlobalCryptographyConfig.DefaultEncoding;
 }

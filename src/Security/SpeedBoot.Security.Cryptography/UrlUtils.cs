@@ -4,9 +4,9 @@
 namespace SpeedBoot.Security.Cryptography;
 
 /// <summary>
-/// Base64 Encode and Decode
+/// Url Encode and Decode
 /// </summary>
-public class Base64Utils
+public class UrlUtils
 {
     /// <summary>
     /// Base64 Encode
@@ -15,7 +15,7 @@ public class Base64Utils
     /// <param name="encoding">Encoding format, default UTF-8</param>
     /// <returns>encrypted data</returns>
     public static string Encode(string content, Encoding? encoding = null)
-        => Convert.ToBase64String(content.ToBytes(encoding.GetSafeEncoding()));
+        => HttpUtility.UrlEncode(content, encoding.GetSafeEncoding());
 
     /// <summary>
     /// Base64 Decode
@@ -24,5 +24,5 @@ public class Base64Utils
     /// <param name="encoding">Encoding format, default UTF-8</param>
     /// <returns>decrypted data</returns>
     public static string Decode(string content, Encoding? encoding = null)
-        => encoding.GetSafeEncoding().GetString(content.FromBase64String());
+        => HttpUtility.UrlDecode(content, encoding.GetSafeEncoding());
 }

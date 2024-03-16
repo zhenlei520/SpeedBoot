@@ -59,7 +59,7 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         var byteBuffer = EncryptToBytes(
             currentEncoding.GetBytes(content),
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength),
@@ -88,7 +88,7 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         var byteBuffer = EncryptToBytes(
             currentEncoding.GetBytes(content),
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength),
@@ -148,7 +148,7 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
 
         return EncryptToBytes(stream,
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength),
@@ -175,10 +175,9 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
         return EncryptToBytes(
             stream,
-            GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength),
+            GetKeyBuffer(key, encoding.GetSafeEncoding(), fillPattern, fillCharacter, aesLength),
             ivBuffer);
     }
 
@@ -251,7 +250,7 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         EncryptOrDecryptFile(
             stream,
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength),
@@ -281,7 +280,7 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         EncryptOrDecryptFile(
             stream,
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength),
@@ -338,12 +337,12 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         var decryptBuffer = DecryptToBytes(
             content.FromBase64String(),
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength),
             GetIvBuffer(iv, currentEncoding, fillPattern, fillCharacter));
-        return decryptBuffer.ToString(currentEncoding);
+        return currentEncoding.GetString(decryptBuffer);
     }
 
     /// <summary>
@@ -366,13 +365,13 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         var decryptBuffer = DecryptToBytes(
             content.FromBase64String(),
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength),
             ivBuffer
         );
-        return decryptBuffer.ToString(currentEncoding);
+        return currentEncoding.GetString(decryptBuffer);
     }
 
     /// <summary>
@@ -431,7 +430,7 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         return DecryptToBytes(
             stream,
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength),
@@ -458,7 +457,7 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         return DecryptToBytes(stream,
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength),
             ivBuffer);
@@ -534,7 +533,7 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         EncryptOrDecryptFile(stream, GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength), ivBuffer, false,
             outputPath);
     }
@@ -560,7 +559,7 @@ public class AESUtils : EncryptBase
         Encoding? encoding = null,
         int? aesLength = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         EncryptOrDecryptFile(
             stream,
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter, aesLength),

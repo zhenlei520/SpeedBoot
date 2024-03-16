@@ -68,7 +68,7 @@ public class DESUtils : EncryptBase
         char fillCharacter = ' ',
         Encoding? encoding = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         using var memoryStream = new MemoryStream();
         var buffer = currentEncoding.GetBytes(content);
         var des = DES.Create();
@@ -128,7 +128,7 @@ public class DESUtils : EncryptBase
         char fillCharacter = ' ',
         Encoding? encoding = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         using var ms = new MemoryStream();
         var buffers = content.FromBase64String();
 
@@ -201,7 +201,7 @@ public class DESUtils : EncryptBase
         char fillCharacter = ' ',
         Encoding? encoding = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         EncryptOrDecryptFile(
             fileStream,
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter),
@@ -267,7 +267,7 @@ public class DESUtils : EncryptBase
         char fillCharacter = ' ',
         Encoding? encoding = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         EncryptOrDecryptFile(
             fileStream,
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter),
@@ -296,7 +296,7 @@ public class DESUtils : EncryptBase
         char fillCharacter = ' ',
         Encoding? encoding = null)
     {
-        var currentEncoding = GetSafeEncoding(encoding);
+        var currentEncoding = encoding.GetSafeEncoding();
         EncryptOrDecryptFile(
             fileStream,
             GetKeyBuffer(key, currentEncoding, fillPattern, fillCharacter),
