@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\SpeedBoot.AspNetCore.Authentication\SpeedBoot.AspNetCore.Authentication.csproj" />
       <ProjectReference Include="..\..\src\SpeedBoot.AspNetCore\SpeedBoot.AspNetCore.csproj" />
     </ItemGroup>
 

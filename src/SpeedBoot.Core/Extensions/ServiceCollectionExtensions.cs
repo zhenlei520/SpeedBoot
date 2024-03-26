@@ -7,7 +7,11 @@ namespace SpeedBoot;
 
 public static class ServiceCollectionExtensions
 {
+    [Obsolete("Use AddSpeedBoot instead")]
     public static SpeedBootApplicationBuilder AddSpeed(this IServiceCollection services, Action<SpeedOptions>? configure = null)
+        => services.AddSpeedBoot(configure);
+
+    public static SpeedBootApplicationBuilder AddSpeedBoot(this IServiceCollection services, Action<SpeedOptions>? configure = null)
     {
         if (!ServiceCollectionUtils.TryAdd<SpeedProvider>(services))
             throw new Exception("SpeedBoot has been registered");

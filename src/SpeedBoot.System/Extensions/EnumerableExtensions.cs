@@ -57,4 +57,21 @@ public static class EnumerableExtensions
         return dictionary;
     }
 #endif
+
+    public static bool TryGet<TSource>(
+        this IEnumerable<TSource>? sources,
+#if NETCOREAPP3_0_OR_GREATER
+                [NotNullWhen(true)]
+#endif
+        Expression<Func<TSource, bool>> condition,
+        out TSource? result)
+    {
+        result = default;
+        if (sources == null)
+            return false;
+
+        var predicate = condition.Compile();
+        result = sources.Where(predicate).FirstOrDefault();
+        return result != null;
+    }
 }

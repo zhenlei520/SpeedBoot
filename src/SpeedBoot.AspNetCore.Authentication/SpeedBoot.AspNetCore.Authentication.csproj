@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworkNetVersion)</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'netcoreapp2.1' or '$(TargetFramework)' == 'netcoreapp2.2'">
+      <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.0"/>
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2"/>
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0"/>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <ProjectReference Include="..\Authentication\SpeedBoot.Authentication.Abstractions\SpeedBoot.Authentication.Abstractions.csproj" />
+    <ProjectReference Include="..\SpeedBoot.Core\SpeedBoot.Core.csproj" />
+  </ItemGroup>
+
+</Project>
