@@ -15,9 +15,15 @@ public class AuthenticationServiceRegister : ServiceRegisterComponentBase
         var identityUserType = typeof(IdentityUser<Guid>);
         var identityUserKeyType = typeof(Guid);
         if (!identityUserFullName.IsNullOrWhiteSpace())
+        {
             identityUserType = Type.GetType(identityUserFullName);
+            SpeedArgumentException.ThrowIfNull(identityUserType);
+        }
         if (!identityUserKeyFullName.IsNullOrWhiteSpace())
+        {
             identityUserKeyType = Type.GetType(identityUserKeyFullName);
+            SpeedArgumentException.ThrowIfNull(identityUserKeyType);
+        }
 
         var methodInfo = typeof(SpeedBootIdentity_ServiceCollectionExtensions)
             .GetMethods()
