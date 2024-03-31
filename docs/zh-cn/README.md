@@ -1,6 +1,7 @@
 # 功能
 
 * [AspNetCore](./AspNetCore.md)：无侵入性的注册服务
+* [AspNetCore.Authentication](./AspNetCore.Authentication.md)：支持无侵入性的注册 用户身份
 * 数据
   * [SpeedBoot.Data.EFCore](./DataEFCore.md)：基于 EFCore 的数据实现
   * [SpeedBoot.Data.FreeSql](./DataFreeSql.md)：基于 FreeSql 的数据实现

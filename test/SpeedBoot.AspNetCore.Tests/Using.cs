@@ -3,3 +3,12 @@
 
 global using SpeedBoot.AspNetCore.Tests.Attributes;
 global using SpeedBoot.AspNetCore.Tests.EndpointFilters;
+global using SpeedBoot.Authentication.Abstractions;
+global using System.Text;
+global using Microsoft.AspNetCore.Authentication.JwtBearer;
+global using Microsoft.IdentityModel.Tokens;
+global using Microsoft.OpenApi.Models;
+global using SpeedBoot.AspNetCore;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using SpeedBoot.AspNetCore.Tests.Infrastructure;

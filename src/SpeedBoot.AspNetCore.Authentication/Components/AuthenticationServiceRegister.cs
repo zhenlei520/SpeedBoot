@@ -21,7 +21,9 @@ public class AuthenticationServiceRegister : ServiceRegisterComponentBase
 
         var methodInfo = typeof(SpeedBootIdentity_ServiceCollectionExtensions)
             .GetMethods()
-            .FirstOrDefault(m => m.Name == nameof(SpeedBootIdentity_ServiceCollectionExtensions.AddSpeedBootIdentity) && m.IsGenericMethod && m.GetGenericArguments().Length == 2 && m.GetParameters().Length == 2);
+            .FirstOrDefault(m
+                => m.Name == nameof(SpeedBootIdentity_ServiceCollectionExtensions.AddSpeedBootIdentity) && m.IsGenericMethod &&
+                m.GetGenericArguments().Length == 2 && m.GetParameters().Length == 2);
         SpeedArgumentException.ThrowIfNull(methodInfo);
         methodInfo!.MakeGenericMethod(identityUserType, identityUserKeyType).Invoke(null, new object[] { services, Action });
 
