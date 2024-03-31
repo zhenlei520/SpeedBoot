@@ -1,9 +1,24 @@
-using Microsoft.OpenApi.Models;
-using SpeedBoot.AspNetCore;
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddEndpointsApiExplorer()
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "SpeedBoot",
+            ValidAudience = "SpeedBoot",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("12345678912345678912345678912345"))
+        };
+    });
+builder.Services
     .AddSwaggerGen(options =>
     {
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -34,6 +49,10 @@ builder.Services
         options.UseOneOfForPolymorphism();
     });
 var app = builder.AddMinimalAPIs();
+
+app.UseAuthentication();
+
+app.UseRouting();
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

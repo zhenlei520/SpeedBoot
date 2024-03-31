@@ -11,7 +11,7 @@ public class SpeedHostingStartup : IHostingStartup
     {
         builder.ConfigureServices((webHostBuilderContext, services) =>
         {
-            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpContextAccessor();
             services.AddHostedService<GenericHostedService>();
 
             services.AddConfiguration(webHostBuilderContext.Configuration);

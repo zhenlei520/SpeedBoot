@@ -118,6 +118,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "zh-cn", "zh-cn", "{57BE6CB1
 		docs\zh-cn\ObjectStorageAliyun.md = docs\zh-cn\ObjectStorageAliyun.md
 		docs\zh-cn\ObjectStorageMinio.md = docs\zh-cn\ObjectStorageMinio.md
 		docs\zh-cn\README.md = docs\zh-cn\README.md
+		docs\zh-cn\AspNetCore.Authentication.md = docs\zh-cn\AspNetCore.Authentication.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "en", "en", "{7897FA0C-6D6B-4F7F-95EB-1A7510506603}"
@@ -137,6 +138,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Security", "Security", "{FFFA6B40-DD12-435F-84A6-1D4CCF689A8E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Security.Cryptography.Tests", "test\Security\SpeedBoot.Security.Cryptography.Tests\SpeedBoot.Security.Cryptography.Tests.csproj", "{05482858-D633-4008-9BD6-DBD1CC5F1EDD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{EA32AD16-E092-423B-9DAE-E24E6CA38435}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Authentication.Abstractions", "src\Authentication\SpeedBoot.Authentication.Abstractions\SpeedBoot.Authentication.Abstractions.csproj", "{9790D8E5-1E37-434B-A159-576035E24A15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.AspNetCore.Authentication", "src\SpeedBoot.AspNetCore.Authentication\SpeedBoot.AspNetCore.Authentication.csproj", "{B363427E-17B7-4CD8-A9D0-3AEA9A02E338}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.AspNetCore.Authentication.Tests", "test\SpeedBoot.AspNetCore.Authentication.Tests\SpeedBoot.AspNetCore.Authentication.Tests.csproj", "{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -296,6 +305,18 @@ Global
 		{05482858-D633-4008-9BD6-DBD1CC5F1EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05482858-D633-4008-9BD6-DBD1CC5F1EDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05482858-D633-4008-9BD6-DBD1CC5F1EDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9790D8E5-1E37-434B-A159-576035E24A15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9790D8E5-1E37-434B-A159-576035E24A15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9790D8E5-1E37-434B-A159-576035E24A15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9790D8E5-1E37-434B-A159-576035E24A15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B363427E-17B7-4CD8-A9D0-3AEA9A02E338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B363427E-17B7-4CD8-A9D0-3AEA9A02E338}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B363427E-17B7-4CD8-A9D0-3AEA9A02E338}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B363427E-17B7-4CD8-A9D0-3AEA9A02E338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -352,5 +373,9 @@ Global
 		{0D7F5EF7-F23C-4C96-B41D-E143C3C0221D} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{FFFA6B40-DD12-435F-84A6-1D4CCF689A8E} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{05482858-D633-4008-9BD6-DBD1CC5F1EDD} = {FFFA6B40-DD12-435F-84A6-1D4CCF689A8E}
+		{EA32AD16-E092-423B-9DAE-E24E6CA38435} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
+		{9790D8E5-1E37-434B-A159-576035E24A15} = {EA32AD16-E092-423B-9DAE-E24E6CA38435}
+		{B363427E-17B7-4CD8-A9D0-3AEA9A02E338} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
+		{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E} = {216801A8-02DC-4AF4-9448-E13902585583}
 	EndGlobalSection
 EndGlobal

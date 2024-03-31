@@ -662,13 +662,14 @@ public static class StringExtension
 #endif
         out bool? result)
     {
-        if (value.IsNullOrWhiteSpace() || !BoolMap.TryGetValue(value!.ToLower(), out var valResult) || !bool.TryParse(value, out valResult))
+        if (!value.IsNullOrWhiteSpace() &&
+            (BoolMap.TryGetValue(value, out var valResult) || bool.TryParse(value, out valResult)))
         {
-            result = default;
-            return false;
+            result = valResult;
+            return true;
         }
-        result = valResult;
-        return true;
+        result = default;
+        return false;
     }
 
     public static bool? ToBoolOrNull(this string? value, bool? defaultValue = null)
@@ -734,4 +735,5 @@ public static class StringExtension
     }
 
     #endregion
+
 }

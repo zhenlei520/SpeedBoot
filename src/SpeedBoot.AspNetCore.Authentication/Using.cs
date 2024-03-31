@@ -1,0 +1,13 @@
+﻿global using SpeedBoot.Authentication.Abstractions;
+global using System.Security.Claims;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.Extensions.DependencyInjection;
+global using SpeedBoot.Core;
+global using Microsoft.Extensions.DependencyInjection.Extensions;
+global using Microsoft.Extensions.Options;
+global using System.Reflection;
+global using SpeedBoot.System;
+global using SpeedBoot.Authentication;
+global using System.Runtime.CompilerServices;
+global using SpeedBoot.AspNetCore.Authentication;
+global using Microsoft.Extensions.Configuration;
