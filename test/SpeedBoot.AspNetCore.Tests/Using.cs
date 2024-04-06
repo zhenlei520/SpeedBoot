@@ -12,3 +12,6 @@ global using SpeedBoot.AspNetCore;
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Security.Claims;
 global using SpeedBoot.AspNetCore.Tests.Infrastructure;
+global using FluentValidation;
+global using SpeedBoot.AspNetCore.Tests.Applications.Requests;
+global using SpeedBoot.AspNetCore.Validation;

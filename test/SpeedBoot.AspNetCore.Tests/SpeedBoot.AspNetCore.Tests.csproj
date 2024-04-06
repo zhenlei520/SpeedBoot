@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\src\SpeedBoot.AspNetCore.Authentication\SpeedBoot.AspNetCore.Authentication.csproj" />
       <ProjectReference Include="..\..\src\SpeedBoot.AspNetCore\SpeedBoot.AspNetCore.csproj" />
+      <ProjectReference Include="..\..\src\Validations\SpeedBoot.AspNetCore.Validation.FluentValidation\SpeedBoot.AspNetCore.Validation.FluentValidation.csproj" />
     </ItemGroup>
 
     <ItemGroup>
