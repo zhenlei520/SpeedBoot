@@ -1,6 +1,8 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
+using SpeedBoot.AspNetCore.Tests.Infrastructure.BLL;
+
 namespace SpeedBoot.AspNetCore.Tests.Services;
 
 public class UserService : ServiceBase
@@ -18,6 +20,26 @@ public class UserService : ServiceBase
     public string GetName(IUserContext<CustomUser, int> userContext)
     {
         return userContext.User?.Name ?? "空";
+    }
+
+    /// <summary>
+    /// api/v1/users/username
+    /// </summary>
+    /// <param name="userBll"></param>
+    /// <returns></returns>
+    public string GetUserName(UserBLL userBll)
+    {
+        return userBll.GetUserName();
+    }
+
+    /// <summary>
+    /// api/v1/users/username2
+    /// </summary>
+    /// <param name="userDal"></param>
+    /// <returns></returns>
+    public string GetUserName2(IUserDAL userDal)
+    {
+        return userDal.GetUserName();
     }
 
     private string CreateToken(Claim[] claims, TimeSpan? timeout = null)

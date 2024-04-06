@@ -1,0 +1,11 @@
+﻿global using FluentValidation;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Options;
+global using SpeedBoot.AspNetCore.Validation.FluentValidation.EndpointFilters;
+global using System.Reflection;
+global using Microsoft.AspNetCore.Http.Json;
+global using System.Collections.Concurrent;
+global using SpeedBoot.AspNetCore;
+global using SpeedBoot.AspNetCore.Validation;
+global using SpeedBoot.Core;

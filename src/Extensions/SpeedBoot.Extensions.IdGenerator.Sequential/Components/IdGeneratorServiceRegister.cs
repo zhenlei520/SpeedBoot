@@ -4,13 +4,25 @@ public class IdGeneratorServiceRegister : ServiceRegisterComponentBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {
-        DatabaseType? databaseType = null;
-        var databaseTypeStr = App.Instance.GetConfiguration(true)?["SpeedBoot:DatabaseType"];
-        if (!databaseTypeStr.IsNullOrWhiteSpace())
+        SequentialOptions? sequentialOptions = null;
+        var speedBootConfiguration = App.Instance.GetConfiguration(true)?.GetSection("SpeedBoot");
+        if (speedBootConfiguration != null)
         {
-            databaseType = (DatabaseType)int.Parse(databaseTypeStr);
+            var idGeneratorConfiguration = speedBootConfiguration.GetSection("IdGenerator");
+            sequentialOptions = idGeneratorConfiguration.Get<SequentialOptions>();
+            if (sequentialOptions == null && idGeneratorConfiguration != null)
+            {
+                var databaseTypeStr = speedBootConfiguration["DatabaseType"];
+                if (!databaseTypeStr.IsNullOrWhiteSpace())
+                {
+                    sequentialOptions = new SequentialOptions()
+                    {
+                        DatabaseType = (DatabaseType)int.Parse(databaseTypeStr)
+                    };
+                }
+            }
         }
-
-        services.AddSequentialIdGenerator(Utils.GetGuidType(databaseType));
+        sequentialOptions ??= new SequentialOptions();
+        services.AddSequentialIdGenerator(Utils.GetGuidType(sequentialOptions.DatabaseType));
     }
 }
