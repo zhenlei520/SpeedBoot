@@ -157,6 +157,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.AspNetCore.Authen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.AspNetCore.Validation.FluentValidation", "src\Validations\SpeedBoot.AspNetCore.Validation.FluentValidation\SpeedBoot.AspNetCore.Validation.FluentValidation.csproj", "{C14F7855-E358-4482-8624-52CB57189B79}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serialization", "Serialization", "{3F34FB44-6ECB-40C2-B575-7CE1F44B891F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.Serialization.SystemTextJson", "src\Extensions\Serialization\SpeedBoot.Extensions.Serialization.SystemTextJson\SpeedBoot.Extensions.Serialization.SystemTextJson.csproj", "{8E51B54C-A670-4607-8F46-5C628F46FD51}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.Serializations.Aabstracts", "src\Extensions\Serialization\SpeedBoot.Extensions.Serializations.Aabstracts\SpeedBoot.Extensions.Serializations.Aabstracts.csproj", "{FC50EFB7-D3A2-41F5-9832-925E289B0CB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -331,6 +337,14 @@ Global
 		{C14F7855-E358-4482-8624-52CB57189B79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C14F7855-E358-4482-8624-52CB57189B79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C14F7855-E358-4482-8624-52CB57189B79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E51B54C-A670-4607-8F46-5C628F46FD51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E51B54C-A670-4607-8F46-5C628F46FD51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E51B54C-A670-4607-8F46-5C628F46FD51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E51B54C-A670-4607-8F46-5C628F46FD51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC50EFB7-D3A2-41F5-9832-925E289B0CB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC50EFB7-D3A2-41F5-9832-925E289B0CB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC50EFB7-D3A2-41F5-9832-925E289B0CB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC50EFB7-D3A2-41F5-9832-925E289B0CB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -392,5 +406,8 @@ Global
 		{B363427E-17B7-4CD8-A9D0-3AEA9A02E338} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 		{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{C14F7855-E358-4482-8624-52CB57189B79} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
+		{3F34FB44-6ECB-40C2-B575-7CE1F44B891F} = {D05AAB2C-DBFA-441F-A6EB-8A4022170CF4}
+		{8E51B54C-A670-4607-8F46-5C628F46FD51} = {3F34FB44-6ECB-40C2-B575-7CE1F44B891F}
+		{FC50EFB7-D3A2-41F5-9832-925E289B0CB3} = {3F34FB44-6ECB-40C2-B575-7CE1F44B891F}
 	EndGlobalSection
 EndGlobal
