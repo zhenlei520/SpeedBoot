@@ -7,6 +7,7 @@ public class IdGeneratorServiceRegister : ServiceRegisterComponentBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {
-        services.AddNormalIdGenerator();
+        var key = App.Instance.GetConfiguration(true)?.GetSection("SpeedBoot").GetSection("IdGenerator").GetSection("Key").Value;
+        services.AddNormalIdGenerator(key);
     }
 }

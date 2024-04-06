@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj" />
       <ProjectReference Include="..\SpeedBoot.Extensions.IdGenerator\SpeedBoot.Extensions.IdGenerator.csproj" />
     </ItemGroup>
 

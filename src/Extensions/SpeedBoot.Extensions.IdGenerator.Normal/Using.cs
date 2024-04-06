@@ -4,3 +4,4 @@
 global using Microsoft.Extensions.DependencyInjection;
 global using SpeedBoot.Extensions.IdGenerator;
 global using SpeedBoot.Core;
+global using SpeedBoot.Configuration;

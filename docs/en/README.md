@@ -9,3 +9,6 @@
 * Storage
    * [SpeedBoot.ObjectStorage.Aliyun](./ObjectStorageAliyun.md): Aliyun Oss (Support Non-intrusive registration service)
    * [SpeedBoot.ObjectStorage.Minio](./ObjectStorageMinio.md): Self-built storage Minio (Support Non-intrusive registration service)
+* ID generator
+    * [Normal](./IdGenerator.Normal.md): Unordered Guid generator (non-intrusive registration service)
+    * [Sequential](./IdGenerator.Sequential.md): Ordered Guid generator (non-intrusive registration service)
