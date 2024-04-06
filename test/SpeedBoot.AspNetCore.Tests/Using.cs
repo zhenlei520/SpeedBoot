@@ -15,3 +15,4 @@ global using SpeedBoot.AspNetCore.Tests.Infrastructure;
 global using FluentValidation;
 global using SpeedBoot.AspNetCore.Tests.Applications.Requests;
 global using SpeedBoot.AspNetCore.Validation;
+global using SpeedBoot.Extensions.DependencyInjection;

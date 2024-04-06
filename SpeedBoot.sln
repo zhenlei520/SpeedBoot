@@ -122,6 +122,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "zh-cn", "zh-cn", "{57BE6CB1
 		docs\zh-cn\AspNetCore.Validation.FluentValidation.md = docs\zh-cn\AspNetCore.Validation.FluentValidation.md
 		docs\zh-cn\IdGenerator.Normal.md = docs\zh-cn\IdGenerator.Normal.md
 		docs\zh-cn\IdGenerator.Sequential.md = docs\zh-cn\IdGenerator.Sequential.md
+		docs\zh-cn\Extensions.DependencyInjection.md = docs\zh-cn\Extensions.DependencyInjection.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "en", "en", "{7897FA0C-6D6B-4F7F-95EB-1A7510506603}"
@@ -135,6 +136,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "en", "en", "{7897FA0C-6D6B-
 		docs\en\AspNetCore.Validation.FluentValidation.md = docs\en\AspNetCore.Validation.FluentValidation.md
 		docs\en\IdGenerator.Normal.md = docs\en\IdGenerator.Normal.md
 		docs\en\IdGenerator.Sequential.md = docs\en\IdGenerator.Sequential.md
+		docs\en\Extensions.DependencyInjection.md = docs\en\Extensions.DependencyInjection.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Data.FreeSql", "src\Data\SpeedBoot.Data.FreeSql\SpeedBoot.Data.FreeSql.csproj", "{AF53B194-2C4C-4AA2-982D-0EAD040BA307}"
