@@ -5,7 +5,7 @@
 
 namespace System;
 
-public static class StringExtension
+public static class StringExtensions
 {
 #if !(NETCOREAPP3_0_OR_GREATER || NETSTANDARD2_1)
     public static bool Contains(this string str, string value, StringComparison stringComparison)
