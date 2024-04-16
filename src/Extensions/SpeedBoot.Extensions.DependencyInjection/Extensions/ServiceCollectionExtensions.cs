@@ -23,6 +23,8 @@ public static class ServiceCollectionExtensions
         if (!ServiceCollectionUtils.TryAdd<DependencyInjectionService>(services))
             return services;
 
+        App.Instance.RebuildRootServiceProvider ??= s => s.BuildServiceProvider();
+
         var autoInjectProvider = new DefaultAutoInjectProvider(assemblies);
         var serviceDescriptors = autoInjectProvider.GetServiceDescriptors();
         foreach (var serviceDescriptor in serviceDescriptors)
