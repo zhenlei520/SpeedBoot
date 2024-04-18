@@ -13,3 +13,8 @@ public interface IEvent
 
     public DateTime SetCreationTime(DateTime creationTime);
 }
+
+public interface IEvent<TResponse> : IEvent
+{
+
+}

@@ -5,22 +5,48 @@ namespace SpeedBoot.EventBus.Local;
 
 public class LocalEventBus: ILocalEventBus
 {
+    private readonly ILogger? _logger;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly ILocalEventBusMesh _localEventBusMesh;
+
+    public LocalEventBus(
+        ILocalEventBusMesh localEventBusMesh,
+        IServiceProvider serviceProvider,
+        ILogger? logger = null)
+    {
+        _localEventBusMesh = localEventBusMesh;
+        _serviceProvider = serviceProvider;
+        _logger = logger;
+    }
+
     public void Publish<TEvent>(TEvent @event) where TEvent : IEvent
     {
-        throw new NotImplementedException();
+        PublishAsync(@event).GetAwaiter().GetResult();
     }
 
-    public Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : IEvent
+    public async Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : IEvent
+    {
+        SpeedArgumentException.ThrowIfNull(@event);
+
+        var eventType = @event.GetType();
+        if (!_localEventBusMesh.MeshData.TryGetValue(eventType, out var eventHandlers))
+            throw new InvalidOperationException($"The {eventType.FullName} handler method was not found. Ensure the event has a handler or the handler's assembly is loaded by AppDomain");
+
+        var isCancel = false;
+        foreach (var handler in eventHandlers.Handlers)
+        {
+            await handler.ExecuteActionAsync(_serviceProvider, @event, cancellationToken);
+        }
+    }
+
+
+
+    public TResponse Publish<TEvent, TResponse>(TEvent @event) where TEvent : IEvent<TResponse>
     {
         throw new NotImplementedException();
     }
 
-    public TResult Publish<TEvent, TResult>(TEvent @event) where TEvent : IEvent
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<TResult> PublishAsync<TEvent, TResult>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : IEvent
+    public Task<TResponse> PublishAsync<TEvent, TResponse>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : IEvent<TResponse>
     {
         throw new NotImplementedException();
     }

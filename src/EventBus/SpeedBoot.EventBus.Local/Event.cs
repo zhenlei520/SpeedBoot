@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.EventBus.Local;
 
-public class Event: IEvent
+public class Event : IEvent
 {
     private string _id = Guid.NewGuid().ToString();
 
@@ -16,4 +16,9 @@ public class Event: IEvent
     public DateTime GetCreationTime() => _createTime;
 
     public DateTime SetCreationTime(DateTime creationTime) => _createTime = creationTime;
+}
+
+public class Event<TResponse> : Event, IEvent<TResponse>
+{
+
 }

@@ -36,8 +36,10 @@ public class LocalEventHandlerBaseAttribute : Attribute
 
     internal bool HasReturnValue { get; private set; }
 
-    internal TaskInvokeDelegate? InvokeDelegate { get; private set; }
-    internal TaskInvokeDelegate2? InvokeDelegate2 { get; private set; }
+    internal SyncInvokeDelegate? SyncInvokeDelegate { get; private set; }
+    internal TaskInvokeDelegate? TaskInvokeDelegate { get; private set; }
+    internal SyncInvokeWithResultDelegate? SyncInvokeWithResultDelegate { get; private set; }
+    internal TaskInvokeWithResultDelegate? TaskInvokeWithResultDelegate { get; private set; }
 
     public LocalEventHandlerBaseAttribute(int order)
     {
@@ -60,11 +62,25 @@ public class LocalEventHandlerBaseAttribute : Attribute
         Initialize(instanceType, methodInfo, eventType);
         if (HasReturnValue)
         {
-            InvokeDelegate2 = ExpressionBuilder.Build2(MethodInfo, InstanceType);
+            if (IsSyncMethod)
+            {
+                SyncInvokeWithResultDelegate = ExpressionUtils.BuildSyncInvokeWithResultDelegate(InstanceType, MethodInfo);
+            }
+            else
+            {
+                TaskInvokeWithResultDelegate = ExpressionUtils.BuildTaskInvokeWithResultDelegate(InstanceType, MethodInfo);
+            }
         }
         else
         {
-            InvokeDelegate = ExpressionBuilder.Build(MethodInfo, InstanceType);
+            if (IsSyncMethod)
+            {
+                SyncInvokeDelegate = ExpressionUtils.BuildSyncInvokeDelegate(InstanceType, MethodInfo);
+            }
+            else
+            {
+                TaskInvokeDelegate = ExpressionUtils.BuildTaskInvokeDelegate(InstanceType, MethodInfo);
+            }
         }
     }
 

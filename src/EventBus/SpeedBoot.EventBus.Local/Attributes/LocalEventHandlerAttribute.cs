@@ -20,18 +20,39 @@ public class LocalEventHandlerAttribute : LocalEventHandlerBaseAttribute
         Order = order;
     }
 
-    internal Task ExecuteActionAsync<TEvent>(IServiceProvider serviceProvider, TEvent @event, CancellationToken cancellationToken)
-        where TEvent : IEvent
-    {
-        return InvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
-            GetParameters(serviceProvider, @event, cancellationToken));
-    }
-
-    internal Task<object> ExecuteAction2Async<TEvent>(IServiceProvider serviceProvider, TEvent @event,
+    internal void SyncExecuteAction<TEvent>(
+        IServiceProvider serviceProvider,
+        TEvent @event,
         CancellationToken cancellationToken)
         where TEvent : IEvent
     {
-        return InvokeDelegate2!.Invoke(serviceProvider.GetRequiredService(InstanceType),
+        SyncInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
             GetParameters(serviceProvider, @event, cancellationToken));
+    }
+
+    internal TResponse SyncExecuteActionWithResult<TResponse, TEvent>(
+        IServiceProvider serviceProvider,
+        TEvent @event,
+        CancellationToken cancellationToken)
+        where TEvent : IEvent
+    {
+        return (TResponse)SyncInvokeWithResultDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
+            GetParameters(serviceProvider, @event, cancellationToken));
+    }
+
+    internal Task ExecuteActionAsync<TEvent>(IServiceProvider serviceProvider, TEvent @event, CancellationToken cancellationToken)
+        where TEvent : IEvent
+    {
+        return TaskInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
+            GetParameters(serviceProvider, @event, cancellationToken));
+    }
+
+    internal async Task<TResponse> ExecuteActionWithResultAsync<TResponse, TEvent>(IServiceProvider serviceProvider, TEvent @event,
+        CancellationToken cancellationToken)
+        where TEvent : IEvent
+    {
+        var result = await TaskInvokeWithResultDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
+            GetParameters(serviceProvider, @event, cancellationToken));
+        return (TResponse)result;
     }
 }

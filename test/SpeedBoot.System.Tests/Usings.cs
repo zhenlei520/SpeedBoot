@@ -4,3 +4,4 @@ global using SpeedBoot.System.Tests.Repositories;
 global using SpeedBoot.SourceGenerator;
 global using System.Reflection;
 global using System.Text;
+global using SpeedBoot.System.Expressions;

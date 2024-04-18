@@ -6,3 +6,4 @@ global using System.Reflection;
 global using SpeedBoot.EventBus.Local;
 global using System.Linq.Expressions;
 global using SpeedBoot;
+global using SpeedBoot.System.Expressions;
