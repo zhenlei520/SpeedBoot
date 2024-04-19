@@ -36,10 +36,10 @@ public class LocalEventHandlerBaseAttribute : Attribute
 
     internal bool HasReturnValue { get; private set; }
 
-    internal SyncInvokeDelegate? SyncInvokeDelegate { get; private set; }
-    internal TaskInvokeDelegate? TaskInvokeDelegate { get; private set; }
-    internal SyncInvokeWithResultDelegate? SyncInvokeWithResultDelegate { get; private set; }
-    internal TaskInvokeWithResultDelegate? TaskInvokeWithResultDelegate { get; private set; }
+    internal Action<object, object[]?>? SyncInvokeDelegate { get; private set; }
+    internal Func<object, object[]?, Task>? TaskInvokeDelegate { get; private set; }
+    internal Func<object, object[]?, object>? SyncInvokeWithResultDelegate { get; private set; }
+    internal Func<object, object[], Task<object>>? TaskInvokeWithResultDelegate { get; private set; }
 
     public LocalEventHandlerBaseAttribute(int order)
     {
@@ -64,22 +64,22 @@ public class LocalEventHandlerBaseAttribute : Attribute
         {
             if (IsSyncMethod)
             {
-                SyncInvokeWithResultDelegate = ExpressionUtils.BuildSyncInvokeWithResultDelegate(InstanceType, MethodInfo);
+                SyncInvokeWithResultDelegate = MethodExpressionUtils.BuildSyncInvokeWithResultDelegate(InstanceType, MethodInfo);
             }
             else
             {
-                TaskInvokeWithResultDelegate = ExpressionUtils.BuildTaskInvokeWithResultDelegate(InstanceType, MethodInfo);
+                TaskInvokeWithResultDelegate = MethodExpressionUtils.BuildTaskInvokeWithResultDelegate(InstanceType, MethodInfo);
             }
         }
         else
         {
             if (IsSyncMethod)
             {
-                SyncInvokeDelegate = ExpressionUtils.BuildSyncInvokeDelegate(InstanceType, MethodInfo);
+                SyncInvokeDelegate = MethodExpressionUtils.BuildSyncInvokeDelegate(InstanceType, MethodInfo);
             }
             else
             {
-                TaskInvokeDelegate = ExpressionUtils.BuildTaskInvokeDelegate(InstanceType, MethodInfo);
+                TaskInvokeDelegate = MethodExpressionUtils.BuildTaskInvokeDelegate(InstanceType, MethodInfo);
             }
         }
     }

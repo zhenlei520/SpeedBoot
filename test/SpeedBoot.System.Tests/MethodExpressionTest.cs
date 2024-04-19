@@ -4,12 +4,12 @@
 namespace SpeedBoot.System.Tests;
 
 [TestClass]
-public class ExpressionTest
+public class MethodExpressionTest
 {
     [TestMethod]
     public void SyncInvokeDelegate()
     {
-        var @delegate = ExpressionUtils.BuildSyncInvokeDelegate(GetType(), GetType().GetMethod(nameof(Method1)));
+        var @delegate = MethodExpressionUtils.BuildSyncInvokeDelegate(GetType(), GetType().GetMethod(nameof(Method1)));
         @delegate.Invoke(this, null);
         Console.WriteLine($"exec SyncInvokeDelegate, {DateTime.UtcNow}");
     }
@@ -17,7 +17,7 @@ public class ExpressionTest
     [TestMethod]
     public async Task TaskInvokeDelegate()
     {
-        var @delegate = ExpressionUtils.BuildTaskInvokeDelegate(GetType(), GetType().GetMethod(nameof(Method2)));
+        var @delegate = MethodExpressionUtils.BuildTaskInvokeDelegate(GetType(), GetType().GetMethod(nameof(Method2)));
         await @delegate.Invoke(this, null);
         Console.WriteLine($"exec TaskInvokeDelegate, {DateTime.UtcNow}");
     }
@@ -25,7 +25,7 @@ public class ExpressionTest
     [TestMethod]
     public void SyncInvokeWithResultDelegate()
     {
-        var @delegate = ExpressionUtils.BuildSyncInvokeWithResultDelegate<string>(GetType(), GetType().GetMethod(nameof(Method3)));
+        var @delegate = MethodExpressionUtils.BuildSyncInvokeWithResultDelegate<string>(GetType(), GetType().GetMethod(nameof(Method3)));
         var res = @delegate.Invoke(this, null);
         Console.WriteLine($"exec SyncInvokeWithResultDelegate, {DateTime.UtcNow}, {res}");
     }
@@ -33,7 +33,7 @@ public class ExpressionTest
     [TestMethod]
     public void SyncInvokeWithResultDelegate2()
     {
-        var @delegate = ExpressionUtils.BuildSyncInvokeWithResultDelegate(GetType(), GetType().GetMethod(nameof(Method31)));
+        var @delegate = MethodExpressionUtils.BuildSyncInvokeWithResultDelegate(GetType(), GetType().GetMethod(nameof(Method31)));
         var res = @delegate.Invoke(this, null);
         Console.WriteLine($"exec SyncInvokeWithResultDelegate, {DateTime.UtcNow}, {string.Join(',', res as List<string>)}");
     }
@@ -41,7 +41,7 @@ public class ExpressionTest
     [TestMethod]
     public async Task TaskInvokeWithResultDelegate()
     {
-        var @delegate = ExpressionUtils.BuildTaskInvokeWithResultDelegate<string>(GetType(), GetType().GetMethod(nameof(Method4)));
+        var @delegate = MethodExpressionUtils.BuildTaskInvokeWithResultDelegate<string>(GetType(), GetType().GetMethod(nameof(Method4)));
         var res = await @delegate.Invoke(this, null);
         Console.WriteLine($"exec SyncInvokeWithResultDelegate, {DateTime.UtcNow}, {res}");
     }
@@ -49,7 +49,7 @@ public class ExpressionTest
     [TestMethod]
     public async Task TaskInvokeWithResultDelegate2()
     {
-        var @delegate = ExpressionUtils.BuildTaskInvokeWithResultDelegate(GetType(), GetType().GetMethod(nameof(Method4)));
+        var @delegate = MethodExpressionUtils.BuildTaskInvokeWithResultDelegate(GetType(), GetType().GetMethod(nameof(Method4)));
         var res = await @delegate.Invoke(this, null);
         Console.WriteLine($"exec SyncInvokeWithResultDelegate, {DateTime.UtcNow}, {res}");
     }
