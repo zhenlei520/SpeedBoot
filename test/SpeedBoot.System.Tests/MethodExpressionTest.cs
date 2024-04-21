@@ -15,6 +15,26 @@ public class MethodExpressionTest
     }
 
     [TestMethod]
+    public void SyncInvokeDelegate2()
+    {
+        var methodInfo = GetType().GetMethods().Where(m => m.Name == nameof(Method5)).FirstOrDefault();
+
+        var @delegate = MethodExpressionUtils.BuildSyncInvokeDelegate(GetType(), methodInfo.MakeGenericMethod(typeof(User)));
+        @delegate.Invoke(this, new object[] { new User() });
+    }
+
+    [TestMethod]
+    public void SyncInvokeDelegate3()
+    {
+        var methodInfo = GetType().GetMethods().Where(m => m.Name == nameof(Method6)).FirstOrDefault();
+        var @delegate = MethodExpressionUtils.BuildSyncInvokeDelegate(GetType(), methodInfo);
+        @delegate.Invoke(this, new object[] { new User()
+        {
+            Name = "SpeedBoot"
+        }});
+    }
+
+    [TestMethod]
     public async Task TaskInvokeDelegate()
     {
         var @delegate = MethodExpressionUtils.BuildTaskInvokeDelegate(GetType(), GetType().GetMethod(nameof(Method2)));
@@ -86,5 +106,18 @@ public class MethodExpressionTest
         Console.WriteLine($"exec Method4, {DateTime.UtcNow}");
         Thread.Sleep(3000);
         return Task.FromResult("succeed");
+    }
+
+    public void Method5<TRequest>(TRequest request)
+        where TRequest : class
+    {
+        Console.WriteLine($"exec Method5, {typeof(TRequest).Name}");
+        Thread.Sleep(3000);
+    }
+
+    public void Method6(User user)
+    {
+        Console.WriteLine($"exec Method6, UserName: {user.Name}, {DateTime.UtcNow}");
+        Thread.Sleep(3000);
     }
 }

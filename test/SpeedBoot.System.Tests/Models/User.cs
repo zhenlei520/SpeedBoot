@@ -5,5 +5,5 @@ namespace SpeedBoot.System.Tests.Models;
 
 public class User
 {
-
+    public string Name { get; set; }
 }

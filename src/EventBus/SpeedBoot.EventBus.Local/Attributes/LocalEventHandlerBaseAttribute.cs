@@ -37,8 +37,11 @@ public class LocalEventHandlerBaseAttribute : Attribute
     internal bool HasReturnValue { get; private set; }
 
     internal Action<object, object[]?>? SyncInvokeDelegate { get; private set; }
+
     internal Func<object, object[]?, Task>? TaskInvokeDelegate { get; private set; }
+
     internal Func<object, object[]?, object>? SyncInvokeWithResultDelegate { get; private set; }
+
     internal Func<object, object[], Task<object>>? TaskInvokeWithResultDelegate { get; private set; }
 
     public LocalEventHandlerBaseAttribute(int order)

@@ -3,6 +3,9 @@
 
 namespace SpeedBoot.System.Expressions;
 
+/// <summary>
+/// If the method is a generic method, you need to pass in the execution type of the method
+/// </summary>
 public static class MethodExpressionUtils
 {
     public static Action<object, object[]?> BuildSyncInvokeDelegate(Type instanceType, MethodInfo methodInfo)
@@ -72,6 +75,7 @@ public static class MethodExpressionUtils
         // Parameters to executor
         var instanceParameter = Expression.Parameter(typeof(object), "target");
         var parametersParameter = Expression.Parameter(typeof(object?[]), "parameters");
+
         var paramExpression = methodInfo.GetParameters()
             .Select((param, index) =>
             {
