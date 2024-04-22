@@ -18,7 +18,7 @@ public class Event : IEvent
     public DateTime SetCreationTime(DateTime creationTime) => _createTime = creationTime;
 }
 
-public class Event<TResponse> : Event, IEvent<TResponse>
+public abstract class Event<TResponse> : Event, IEvent<TResponse>
 {
-
+    public abstract TResponse? Result { get; set; }
 }

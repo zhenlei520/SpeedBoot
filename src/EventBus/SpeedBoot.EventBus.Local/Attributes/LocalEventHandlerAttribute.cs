@@ -22,22 +22,11 @@ public class LocalEventHandlerAttribute : LocalEventHandlerBaseAttribute
 
     internal void SyncExecuteAction<TEvent>(
         IServiceProvider serviceProvider,
-        TEvent @event,
-        CancellationToken cancellationToken)
+        TEvent @event)
         where TEvent : IEvent
     {
         SyncInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
-            GetParameters(serviceProvider, @event, cancellationToken));
-    }
-
-    internal TResponse SyncExecuteActionWithResult<TResponse, TEvent>(
-        IServiceProvider serviceProvider,
-        TEvent @event,
-        CancellationToken cancellationToken)
-        where TEvent : IEvent
-    {
-        return (TResponse)SyncInvokeWithResultDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
-            GetParameters(serviceProvider, @event, cancellationToken));
+            GetParameters(serviceProvider, @event));
     }
 
     internal Task ExecuteActionAsync<TEvent>(IServiceProvider serviceProvider, TEvent @event, CancellationToken cancellationToken)
@@ -45,14 +34,5 @@ public class LocalEventHandlerAttribute : LocalEventHandlerBaseAttribute
     {
         return TaskInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
             GetParameters(serviceProvider, @event, cancellationToken));
-    }
-
-    internal async Task<TResponse> ExecuteActionWithResultAsync<TResponse, TEvent>(IServiceProvider serviceProvider, TEvent @event,
-        CancellationToken cancellationToken)
-        where TEvent : IEvent
-    {
-        var result = await TaskInvokeWithResultDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
-            GetParameters(serviceProvider, @event, cancellationToken));
-        return (TResponse)result;
     }
 }

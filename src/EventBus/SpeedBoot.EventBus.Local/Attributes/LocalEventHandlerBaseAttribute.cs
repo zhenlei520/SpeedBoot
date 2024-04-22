@@ -40,10 +40,6 @@ public class LocalEventHandlerBaseAttribute : Attribute
 
     internal Func<object, object[]?, Task>? TaskInvokeDelegate { get; private set; }
 
-    internal Func<object, object[]?, object>? SyncInvokeWithResultDelegate { get; private set; }
-
-    internal Func<object, object[], Task<object>>? TaskInvokeWithResultDelegate { get; private set; }
-
     public LocalEventHandlerBaseAttribute(int order)
     {
         Order = order;
@@ -65,14 +61,7 @@ public class LocalEventHandlerBaseAttribute : Attribute
         Initialize(instanceType, methodInfo, eventType);
         if (HasReturnValue)
         {
-            if (IsSyncMethod)
-            {
-                SyncInvokeWithResultDelegate = MethodExpressionUtils.BuildSyncInvokeWithResultDelegate(InstanceType, MethodInfo);
-            }
-            else
-            {
-                TaskInvokeWithResultDelegate = MethodExpressionUtils.BuildTaskInvokeWithResultDelegate(InstanceType, MethodInfo);
-            }
+            throw new NotSupportedException("Methods with return values are not supported");
         }
         else
         {
@@ -87,7 +76,7 @@ public class LocalEventHandlerBaseAttribute : Attribute
         }
     }
 
-    protected object?[] GetParameters<TEvent>(IServiceProvider serviceProvider, TEvent @event, CancellationToken cancellationToken)
+    protected object?[] GetParameters<TEvent>(IServiceProvider serviceProvider, TEvent @event, CancellationToken? cancellationToken = null)
         where TEvent : IEvent
     {
         var parameters = new object?[ParameterTypes.Length];

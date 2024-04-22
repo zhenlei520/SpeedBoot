@@ -16,5 +16,5 @@ public interface IEvent
 
 public interface IEvent<TResponse> : IEvent
 {
-
+    TResponse Result { get; set; }
 }
