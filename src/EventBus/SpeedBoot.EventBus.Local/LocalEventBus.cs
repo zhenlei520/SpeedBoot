@@ -3,51 +3,42 @@
 
 namespace SpeedBoot.EventBus.Local;
 
-public class LocalEventBus: ILocalEventBus
+public class LocalEventBus : ILocalEventBus
 {
-    private readonly ILogger? _logger;
-    private readonly IServiceProvider _serviceProvider;
+    private readonly IStrategyExecutor _strategyExecutor;
     private readonly ILocalEventBusMesh _localEventBusMesh;
 
     public LocalEventBus(
         ILocalEventBusMesh localEventBusMesh,
-        IServiceProvider serviceProvider,
-        ILogger? logger = null)
+        IStrategyExecutor strategyExecutor)
     {
         _localEventBusMesh = localEventBusMesh;
-        _serviceProvider = serviceProvider;
-        _logger = logger;
+        _strategyExecutor = strategyExecutor;
     }
 
     public void Publish<TEvent>(TEvent @event) where TEvent : IEvent
     {
-        PublishAsync(@event).GetAwaiter().GetResult();
+        var dispatchRecord = GetDispatchRecord(@event);
+        _strategyExecutor.Execute(dispatchRecord, @event);
+
     }
 
-    public async Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : IEvent
+    public Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : IEvent
+    {
+        var dispatchRecord = GetDispatchRecord(@event);
+        return _strategyExecutor.ExecuteAsync(dispatchRecord, @event, cancellationToken);
+
+    }
+
+    private DispatchRecord GetDispatchRecord<TEvent>(TEvent @event)
     {
         SpeedArgumentException.ThrowIfNull(@event);
 
         var eventType = @event.GetType();
-        if (!_localEventBusMesh.MeshData.TryGetValue(eventType, out var eventHandlers))
-            throw new InvalidOperationException($"The {eventType.FullName} handler method was not found. Ensure the event has a handler or the handler's assembly is loaded by AppDomain");
+        if (!_localEventBusMesh.MeshData.TryGetValue(eventType, out var dispatchRecord))
+            throw new InvalidOperationException(
+                $"The {eventType.FullName} handler method was not found. Ensure the event has a handler or the handler's assembly is loaded by AppDomain");
 
-        var isCancel = false;
-        foreach (var handler in eventHandlers.Handlers)
-        {
-            await handler.ExecuteActionAsync(_serviceProvider, @event, cancellationToken);
-        }
-    }
-
-
-
-    public TResponse Publish<TEvent, TResponse>(TEvent @event) where TEvent : IEvent<TResponse>
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<TResponse> PublishAsync<TEvent, TResponse>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : IEvent<TResponse>
-    {
-        throw new NotImplementedException();
+        return dispatchRecord;
     }
 }

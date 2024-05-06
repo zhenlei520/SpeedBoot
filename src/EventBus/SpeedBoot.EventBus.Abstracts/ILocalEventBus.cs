@@ -5,9 +5,4 @@ namespace SpeedBoot.EventBus.Abstracts;
 
 public interface ILocalEventBus : IEventBus
 {
-    TResponse Publish<TEvent, TResponse>(TEvent @event)
-        where TEvent : IEvent<TResponse>;
-
-    Task<TResponse> PublishAsync<TEvent, TResponse>(TEvent @event, CancellationToken cancellationToken = default)
-        where TEvent : IEvent<TResponse>;
 }

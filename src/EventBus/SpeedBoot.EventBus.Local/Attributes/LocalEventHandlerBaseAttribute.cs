@@ -21,9 +21,6 @@ public class LocalEventHandlerBaseAttribute : Attribute
 
     internal Type InstanceType { get; set; }
 
-    /// <summary>
-    /// todo: await remove
-    /// </summary>
     internal Type EventType { get; set; }
 
     internal Type[] ParameterTypes { get; private set; }
@@ -32,17 +29,13 @@ public class LocalEventHandlerBaseAttribute : Attribute
 
     internal int MaxRetryTimes { get; private set; }
 
+    public FailureLevel FailureLevel { get; set; }
+
     internal bool IsSyncMethod { get; set; }
 
-    internal bool HasReturnValue { get; private set; }
+    internal Action<object, object?[]>? SyncInvokeDelegate { get; private set; }
 
-    internal Action<object, object[]?>? SyncInvokeDelegate { get; private set; }
-
-    internal Func<object, object[]?, Task>? TaskInvokeDelegate { get; private set; }
-
-    internal Func<object, object[]?, object>? SyncInvokeWithResultDelegate { get; private set; }
-
-    internal Func<object, object[], Task<object>>? TaskInvokeWithResultDelegate { get; private set; }
+    internal Func<object, object?[], Task>? TaskInvokeDelegate { get; private set; }
 
     public LocalEventHandlerBaseAttribute(int order)
     {
@@ -57,37 +50,23 @@ public class LocalEventHandlerBaseAttribute : Attribute
         MethodInfo = methodInfo;
         ParameterTypes = methodInfo.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
         IsSyncMethod = MethodInfo.IsSyncMethod();
-        HasReturnValue = MethodInfo.HasReturnValue();
     }
 
     internal void BuildExpression(Type instanceType, MethodInfo methodInfo, Type eventType)
     {
         Initialize(instanceType, methodInfo, eventType);
-        if (HasReturnValue)
+
+        if (IsSyncMethod)
         {
-            if (IsSyncMethod)
-            {
-                SyncInvokeWithResultDelegate = MethodExpressionUtils.BuildSyncInvokeWithResultDelegate(InstanceType, MethodInfo);
-            }
-            else
-            {
-                TaskInvokeWithResultDelegate = MethodExpressionUtils.BuildTaskInvokeWithResultDelegate(InstanceType, MethodInfo);
-            }
+            SyncInvokeDelegate = MethodExpressionUtils.BuildSyncInvokeDelegate(InstanceType, MethodInfo);
         }
         else
         {
-            if (IsSyncMethod)
-            {
-                SyncInvokeDelegate = MethodExpressionUtils.BuildSyncInvokeDelegate(InstanceType, MethodInfo);
-            }
-            else
-            {
-                TaskInvokeDelegate = MethodExpressionUtils.BuildTaskInvokeDelegate(InstanceType, MethodInfo);
-            }
+            TaskInvokeDelegate = MethodExpressionUtils.BuildTaskInvokeDelegate(InstanceType, MethodInfo);
         }
     }
 
-    protected object?[] GetParameters<TEvent>(IServiceProvider serviceProvider, TEvent @event, CancellationToken cancellationToken)
+    protected object?[] GetParameters<TEvent>(IServiceProvider serviceProvider, TEvent @event, CancellationToken? cancellationToken = null)
         where TEvent : IEvent
     {
         var parameters = new object?[ParameterTypes.Length];
@@ -96,7 +75,7 @@ public class LocalEventHandlerBaseAttribute : Attribute
             if (ParameterTypes[index] == @event.GetType())
                 parameters[index] = @event;
             else if (ParameterTypes[index] == typeof(CancellationToken))
-                parameters[index] = cancellationToken;
+                parameters[index] = cancellationToken ?? CancellationToken.None;
             else
                 parameters[index] = serviceProvider.GetService(ParameterTypes[index]);
         }

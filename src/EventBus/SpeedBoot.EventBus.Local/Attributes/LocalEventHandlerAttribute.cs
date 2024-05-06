@@ -20,39 +20,29 @@ public class LocalEventHandlerAttribute : LocalEventHandlerBaseAttribute
         Order = order;
     }
 
-    internal void SyncExecuteAction<TEvent>(
-        IServiceProvider serviceProvider,
-        TEvent @event,
-        CancellationToken cancellationToken)
-        where TEvent : IEvent
+    internal List<LocalEventHandlerAttribute> GetCancelList(List<LocalEventHandlerAttribute> cancelHandlers)
     {
-        SyncInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
-            GetParameters(serviceProvider, @event, cancellationToken));
+        var startCancelOrder = FailureLevel switch
+        {
+            FailureLevel.Throw => Order - 1,
+            FailureLevel.ThrowAndCancel => Order,
+            _ => throw new NotImplementedException()
+        };
+
+        return cancelHandlers.Where(cancelHandler => cancelHandler.Order <= startCancelOrder).ToList();
     }
 
-    internal TResponse SyncExecuteActionWithResult<TResponse, TEvent>(
+    internal void SyncExecuteAction<TEvent>(
         IServiceProvider serviceProvider,
-        TEvent @event,
-        CancellationToken cancellationToken)
+        TEvent @event)
         where TEvent : IEvent
     {
-        return (TResponse)SyncInvokeWithResultDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
-            GetParameters(serviceProvider, @event, cancellationToken));
+        SyncInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType), GetParameters(serviceProvider, @event));
     }
 
     internal Task ExecuteActionAsync<TEvent>(IServiceProvider serviceProvider, TEvent @event, CancellationToken cancellationToken)
         where TEvent : IEvent
     {
-        return TaskInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
-            GetParameters(serviceProvider, @event, cancellationToken));
-    }
-
-    internal async Task<TResponse> ExecuteActionWithResultAsync<TResponse, TEvent>(IServiceProvider serviceProvider, TEvent @event,
-        CancellationToken cancellationToken)
-        where TEvent : IEvent
-    {
-        var result = await TaskInvokeWithResultDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType),
-            GetParameters(serviceProvider, @event, cancellationToken));
-        return (TResponse)result;
+        return TaskInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType), GetParameters(serviceProvider, @event, cancellationToken));
     }
 }

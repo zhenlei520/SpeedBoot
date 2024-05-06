@@ -12,10 +12,13 @@ public static class ServiceCollectionExtensions
 
         var localEventBusOptions = new LocalEventBusOptions();
         action?.Invoke(localEventBusOptions);
+        SpeedArgumentException.ThrowIfGreaterThan(localEventBusOptions.HandlerInstanceLifetime, localEventBusOptions.EventBusLifetime);
+
         services.AddSingleton<ILocalEventBusMesh>(sp => new LocalEventBusMesh(localEventBusOptions, sp.GetService<ILogger>()));
         services.TryRegisterHandlerInstanceType(localEventBusOptions.HandlerInstanceLifetime);
-        services.Add(new ServiceDescriptor(typeof(ILocalEventBus), typeof(LocalEventBus), localEventBusOptions.EventbusLifetime));
-
+        services.Add(new ServiceDescriptor(typeof(ILocalEventBus), typeof(LocalEventBus), localEventBusOptions.EventBusLifetime));
+        services.AddScoped<LocalEventExecuteContext>();
+        services.AddScoped<IStrategyExecutor, StrategyExecutor>();
         return services;
     }
 

@@ -51,8 +51,7 @@ public class LocalEventBusMesh : ILocalEventBusMesh
             var parameters = methodInfo.GetParameters().Where(parameter => typeof(IEvent).IsAssignableFrom(parameter.ParameterType))
                 .ToList();
             if (parameters.Count != 1)
-                throw new ArgumentOutOfRangeException(
-                    $"[{methodInfo.Name}] only allows one parameter and inherits from Event, other parameters must support getting from DI");
+                throw new ArgumentOutOfRangeException($"[{methodInfo.Name}] only allows one parameter and inherits from Event, other parameters must support getting from DI");
 
             localEventHandlerAttribute.BuildExpression(instanceType, methodInfo, parameters[0].ParameterType);
             return true;

@@ -7,7 +7,7 @@ public class LocalEventBusOptions
 {
     public Assembly[]? Assemblies { get; set; }
 
-    public ServiceLifetime EventbusLifetime { get; set; } = ServiceLifetime.Scoped;
+    public ServiceLifetime EventBusLifetime { get; set; } = ServiceLifetime.Scoped;
 
     public ServiceLifetime HandlerInstanceLifetime { get; set; } = ServiceLifetime.Scoped;
 }

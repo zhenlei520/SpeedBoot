@@ -20,5 +20,5 @@ public class Event : IEvent
 
 public class Event<TResponse> : Event, IEvent<TResponse>
 {
-
+    public TResponse? Result { get; set; }
 }
