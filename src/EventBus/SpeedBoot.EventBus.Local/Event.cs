@@ -1,4 +1,4 @@
-// Copyright (c) zhenlei520 All rights reserved.
+﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
 namespace SpeedBoot.EventBus.Local;
@@ -18,7 +18,7 @@ public class Event : IEvent
     public DateTime SetCreationTime(DateTime creationTime) => _createTime = creationTime;
 }
 
-public class Event<TResponse> : Event, IEvent<TResponse>
+public abstract class Event<TResponse> : Event, IEvent<TResponse>
 {
     public TResponse? Result { get; set; }
 }
