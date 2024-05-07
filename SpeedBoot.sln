@@ -163,6 +163,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.EventBus.Abstract
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.EventBus.Local", "src\EventBus\SpeedBoot.EventBus.Local\SpeedBoot.EventBus.Local.csproj", "{AA16A2AA-9121-4151-BA58-EC44ACBE67BA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventBus", "EventBus", "{2C0109F2-B0FB-4186-B30E-AB1C409736EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.EventBus.Local.Tests", "test\EventBus\SpeedBoot.EventBus.Local.Tests\SpeedBoot.EventBus.Local.Tests.csproj", "{97AE9B76-0CA9-48FC-AC70-540B3208AF5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -345,6 +349,10 @@ Global
 		{AA16A2AA-9121-4151-BA58-EC44ACBE67BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA16A2AA-9121-4151-BA58-EC44ACBE67BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA16A2AA-9121-4151-BA58-EC44ACBE67BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97AE9B76-0CA9-48FC-AC70-540B3208AF5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97AE9B76-0CA9-48FC-AC70-540B3208AF5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97AE9B76-0CA9-48FC-AC70-540B3208AF5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97AE9B76-0CA9-48FC-AC70-540B3208AF5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -409,5 +417,7 @@ Global
 		{9294B993-7142-4EA7-AB86-6C805CA09942} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 		{DA71DC8B-C6F9-4C66-9DFF-8D156DC17B75} = {9294B993-7142-4EA7-AB86-6C805CA09942}
 		{AA16A2AA-9121-4151-BA58-EC44ACBE67BA} = {9294B993-7142-4EA7-AB86-6C805CA09942}
+		{2C0109F2-B0FB-4186-B30E-AB1C409736EF} = {216801A8-02DC-4AF4-9448-E13902585583}
+		{97AE9B76-0CA9-48FC-AC70-540B3208AF5F} = {2C0109F2-B0FB-4186-B30E-AB1C409736EF}
 	EndGlobalSection
 EndGlobal

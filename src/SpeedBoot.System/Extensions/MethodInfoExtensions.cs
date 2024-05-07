@@ -7,7 +7,7 @@ public static class MethodInfoExtensions
 {
     public static bool IsAsyncMethod(this MethodInfo methodInfo)
         => typeof(Task).IsAssignableFrom(methodInfo.ReturnType) ||
-            typeof(Task<>).IsAssignableFrom(methodInfo.ReturnType.GetGenericTypeDefinition());
+            (methodInfo.ReturnType.IsGenericType && typeof(Task<>).IsAssignableFrom(methodInfo.ReturnType.GetGenericTypeDefinition()));
 
     public static bool IsSyncMethod(this MethodInfo methodInfo)
         => !methodInfo.IsAsyncMethod();

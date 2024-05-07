@@ -15,7 +15,7 @@ public class LocalEventHandlerBaseAttribute : Attribute
     /// <summary>
     /// The default value is 3，EnableRetry must be true to take effect
     /// </summary>
-    public int RetryTimes { get; set; }
+    public int RetryTimes { get; set; } = 3;
 
     public bool RetryEnabled { get; set; }
 

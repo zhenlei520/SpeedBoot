@@ -20,14 +20,12 @@ public class LocalEventBus : ILocalEventBus
     {
         var dispatchRecord = GetDispatchRecord(@event);
         _strategyExecutor.Execute(dispatchRecord, @event);
-
     }
 
     public Task PublishAsync<TEvent>(TEvent @event, CancellationToken cancellationToken = default) where TEvent : IEvent
     {
         var dispatchRecord = GetDispatchRecord(@event);
         return _strategyExecutor.ExecuteAsync(dispatchRecord, @event, cancellationToken);
-
     }
 
     private DispatchRecord GetDispatchRecord<TEvent>(TEvent @event)

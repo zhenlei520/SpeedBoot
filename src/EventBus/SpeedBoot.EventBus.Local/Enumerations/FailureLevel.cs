@@ -2,7 +2,7 @@
 
 public enum FailureLevel
 {
-    Throw = 1,
+    Throw,
 
     ThrowAndCancel,
 

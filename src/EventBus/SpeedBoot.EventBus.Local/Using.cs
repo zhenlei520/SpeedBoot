@@ -8,3 +8,4 @@ global using System.Linq.Expressions;
 global using SpeedBoot;
 global using SpeedBoot.System.Expressions;
 global using System.Runtime.ExceptionServices;
+global using Microsoft.Extensions.DependencyInjection.Extensions;

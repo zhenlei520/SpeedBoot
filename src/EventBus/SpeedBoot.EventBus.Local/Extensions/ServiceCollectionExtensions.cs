@@ -17,6 +17,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ILocalEventBusMesh>(sp => new LocalEventBusMesh(localEventBusOptions, sp.GetService<ILogger>()));
         services.TryRegisterHandlerInstanceType(localEventBusOptions.HandlerInstanceLifetime);
         services.Add(new ServiceDescriptor(typeof(ILocalEventBus), typeof(LocalEventBus), localEventBusOptions.EventBusLifetime));
+        services.TryAdd(new ServiceDescriptor(typeof(IEventBus), typeof(EventBus), localEventBusOptions.EventBusLifetime));
         services.AddScoped<LocalEventExecuteContext>();
         services.AddScoped<IStrategyExecutor, StrategyExecutor>();
         return services;
