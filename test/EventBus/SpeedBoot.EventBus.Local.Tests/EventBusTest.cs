@@ -11,11 +11,11 @@ public class EventBusTest
     public EventBusTest()
     {
         var services = new ServiceCollection();
-        services.AddSpeedBoot();
         App.Instance.RebuildRootServiceProvider = services => services.BuildServiceProvider();
-        services.AddLocalEventBus();
+        services.AddSpeedBoot().Build();
+        // services.AddAutoInject();
         _rootServiceProvider = services.BuildServiceProvider();
-        App.Instance.GetSpeedBootApplication().SetServiceProvider(_rootServiceProvider);
+        // App.Instance.GetSpeedBootApplication().SetServiceProvider(_rootServiceProvider);
     }
 
     [TestMethod]
