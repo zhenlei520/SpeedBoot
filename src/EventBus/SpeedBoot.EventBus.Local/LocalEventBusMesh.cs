@@ -12,7 +12,7 @@ public class LocalEventBusMesh : ILocalEventBusMesh
 
     public LocalEventBusMesh(LocalEventBusOptions localEventBusOptions, ILogger? logger = null)
     {
-        _assemblies = localEventBusOptions.Assemblies ??= App.Instance.GetSpeedBootApplication().Assemblies;
+        _assemblies = localEventBusOptions.GetAssemblies();
         _logger = logger;
         BuildMesh();
     }

@@ -37,6 +37,8 @@ public class LocalEventHandlerBaseAttribute : Attribute
 
     internal Func<object, object?[], Task>? TaskInvokeDelegate { get; private set; }
 
+    internal Type[] EventBusActionFilterTypes { get; private set; }
+
     public LocalEventHandlerBaseAttribute(int order)
     {
         Order = order;
@@ -50,6 +52,8 @@ public class LocalEventHandlerBaseAttribute : Attribute
         MethodInfo = methodInfo;
         ParameterTypes = methodInfo.GetParameters().Select(parameterInfo => parameterInfo.ParameterType).ToArray();
         IsSyncMethod = MethodInfo.IsSyncMethod();
+
+        EventBusActionFilterTypes = MethodInfo.GetCustomAttributes<EventBusActionFilterBaseAttribute>().OrderBy(a => a.Order).Select(a=> a.ServiceType).ToArray();
     }
 
     internal void BuildExpression(Type instanceType, MethodInfo methodInfo, Type eventType)

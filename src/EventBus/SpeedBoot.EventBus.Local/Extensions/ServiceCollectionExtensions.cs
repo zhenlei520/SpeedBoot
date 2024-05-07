@@ -16,6 +16,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<ILocalEventBusMesh>(sp => new LocalEventBusMesh(localEventBusOptions, sp.GetService<ILogger>()));
         services.TryRegisterHandlerInstanceType(localEventBusOptions.HandlerInstanceLifetime);
+        services.TryRegisterEventBusActionFilter(localEventBusOptions.GetAssemblies(), localEventBusOptions.HandlerInstanceLifetime);
         services.Add(new ServiceDescriptor(typeof(ILocalEventBus), typeof(LocalEventBus), localEventBusOptions.EventBusLifetime));
         services.TryAdd(new ServiceDescriptor(typeof(IEventBus), typeof(EventBus), localEventBusOptions.EventBusLifetime));
         services.AddScoped<LocalEventExecuteContext>();
@@ -37,6 +38,20 @@ public static class ServiceCollectionExtensions
         {
             services.Add(new ServiceDescriptor(instanceType, instanceType, handlerInstanceLifetime));
         }
+    }
+
+    private static void TryRegisterEventBusActionFilter(this IServiceCollection services, Assembly[] assemblies, ServiceLifetime handlerInstanceLifetime)
+    {
+        var eventBusInterceptorTypes = GetEventBusInterceptorTypes().ToList();
+        foreach (var providerType in eventBusInterceptorTypes)
+        {
+            services.Add(new ServiceDescriptor(providerType, providerType, handlerInstanceLifetime));
+        }
+
+        IEnumerable<Type> GetEventBusInterceptorTypes()
+            => from type in assemblies.SelectMany(assembly => assembly.GetTypes())
+                where type.IsClass && !type.IsAbstract && typeof(IEventBusActionFilterProvider).IsAssignableFrom(type)
+                select type;
     }
 
     private sealed class LocalEventBusProvider

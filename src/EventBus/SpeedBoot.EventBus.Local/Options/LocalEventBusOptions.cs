@@ -10,4 +10,9 @@ public class LocalEventBusOptions
     public ServiceLifetime EventBusLifetime { get; set; } = ServiceLifetime.Scoped;
 
     public ServiceLifetime HandlerInstanceLifetime { get; set; } = ServiceLifetime.Scoped;
+
+    public Assembly[] GetAssemblies()
+    {
+        return Assemblies ?? App.Instance.GetSpeedBootApplication().Assemblies;
+    }
 }

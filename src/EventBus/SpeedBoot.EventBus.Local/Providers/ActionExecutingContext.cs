@@ -5,10 +5,6 @@ namespace SpeedBoot.EventBus.Local;
 
 public class ActionExecutingContext
 {
-    public bool Continued { get; private set; }
-
-    public bool Finished { get; private set; }
-
     public MethodInfo MethodInfo { get; set; }
 
     public IEvent Event { get; private set; }

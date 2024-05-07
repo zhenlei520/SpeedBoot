@@ -10,8 +10,6 @@ public abstract class EventBusActionFilterBaseAttribute : Attribute
 
     public int Order { get; }
 
-    public ServiceLifetime ServiceLifetime { get; set; } = ServiceLifetime.Transient;
-
     protected EventBusActionFilterBaseAttribute(Type serviceType, int order)
     {
         ServiceType = serviceType;
@@ -21,7 +19,7 @@ public abstract class EventBusActionFilterBaseAttribute : Attribute
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public abstract class EventBusActionFilterBaseAttribute<TEventBusInterceptor> : EventBusActionFilterBaseAttribute
-    where TEventBusInterceptor : IEventBusInterceptor
+    where TEventBusInterceptor : IEventBusActionFilterProvider
 {
     public EventBusActionFilterBaseAttribute() : this(999)
     {
@@ -30,11 +28,5 @@ public abstract class EventBusActionFilterBaseAttribute<TEventBusInterceptor> : 
     public EventBusActionFilterBaseAttribute(int order)
         : base(typeof(TEventBusInterceptor), order)
     {
-    }
-
-    public EventBusActionFilterBaseAttribute(int order, ServiceLifetime serviceLifetime)
-        : this(order)
-    {
-        ServiceLifetime = serviceLifetime;
     }
 }
