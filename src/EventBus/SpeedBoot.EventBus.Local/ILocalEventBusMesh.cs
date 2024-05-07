@@ -1,9 +1,9 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-namespace SpeedBoot.System.Tests.Models;
+namespace SpeedBoot.EventBus.Local;
 
-public class User
+public interface ILocalEventBusMesh
 {
-    public string Name { get; set; }
+    public Dictionary<Type, DispatchRecord> MeshData { get; set; }
 }

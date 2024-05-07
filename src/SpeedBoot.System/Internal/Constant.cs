@@ -1,9 +1,9 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-namespace SpeedBoot.System.Tests.Models;
+namespace SpeedBoot.System;
 
-public class User
+public static class Constant
 {
-    public string Name { get; set; }
+    public const BindingFlags DefaultBindingFlags = BindingFlags.Instance | BindingFlags.Public;
 }

@@ -29,4 +29,10 @@ public static class TaskExtensions
     {
         return task.ConfigureAwait(continueOnCapturedContext).GetAwaiter().GetResult();
     }
+
+    internal static async Task<object?> AwaitTaskWithResult<T>(this Task<T> task)
+    {
+        var result = await task;
+        return result;
+    }
 }

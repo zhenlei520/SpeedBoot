@@ -4,7 +4,7 @@
 namespace SpeedBoot.System.Tests;
 
 [TestClass]
-public class StringExtensionTest
+public class StringExtensionsTest
 {
     [DataRow("112das3,1.2asd", 6)]
     [DataTestMethod]

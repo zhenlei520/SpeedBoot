@@ -74,4 +74,13 @@ public static class EnumerableExtensions
         result = sources.Where(predicate).FirstOrDefault();
         return result != null;
     }
+
+    public static bool Equal<TSource>(
+        this IEnumerable<TSource>? source,
+        IEnumerable<TSource>? target)
+    {
+        var sourceList = source?.ToList() ?? [];
+        var targetList = target?.ToList() ?? [];
+        return sourceList.Count == targetList.Count && sourceList.Where((t, index) => t.Equals(targetList[index])).Any();
+    }
 }

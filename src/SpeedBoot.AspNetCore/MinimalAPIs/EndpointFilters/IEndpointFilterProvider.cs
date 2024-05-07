@@ -7,8 +7,6 @@ namespace SpeedBoot.AspNetCore;
 
 public interface IEndpointFilterProvider
 {
-    int Order { get; }
-
     public ValueTask<object?> HandlerAsync(EndpointFilterInvocationContext invocationContext, EndpointFilterDelegate next);
 }
 
