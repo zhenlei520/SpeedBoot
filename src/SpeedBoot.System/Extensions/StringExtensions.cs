@@ -277,7 +277,7 @@ public static class StringExtensions
 
     public static bool TryToSByte(this string? value,
 #if NETCOREAPP3_0_OR_GREATER
-            [NotNullWhen(true)]
+        [NotNullWhen(true)]
 #endif
         out sbyte? result)
     {
@@ -736,4 +736,40 @@ public static class StringExtensions
 
     #endregion
 
+    /// <summary>
+    /// Complex types are not supported
+    /// support types: string, short, int, long, float, decimal, double, bool, char, byte, sbyte, ushort, uint, ulong, Guid, DateTime
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="type"></param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public static bool TryConvertTo(this string? value, Type type, out object? result)
+    {
+        result = null;
+        if (value.IsNullOrWhiteSpace())
+            return false;
+
+        try
+        {
+            var actualType = type;
+            if (type.IsNullableType())
+                actualType = Nullable.GetUnderlyingType(type);
+
+            if (actualType == typeof(Guid) || actualType == typeof(DateTime))
+            {
+                result = TypeDescriptor.GetConverter(actualType).ConvertFromInvariantString(value);
+            }
+            else
+            {
+                result = Convert.ChangeType(value, actualType!);
+            }
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return false;
+        }
+    }
 }

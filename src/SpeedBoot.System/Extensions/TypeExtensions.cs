@@ -26,4 +26,7 @@ public static class TypeExtensions
         SpeedArgumentException.ThrowIfNull(constructor);
         return constructor!;
     }
+
+    public static bool IsNullableType(this Type type)
+        => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
 }

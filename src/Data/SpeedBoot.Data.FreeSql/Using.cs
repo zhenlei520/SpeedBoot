@@ -16,3 +16,4 @@ global using System.Runtime.CompilerServices;
 global using FreeSql.Internal.Model;
 global using System.Collections.Concurrent;
 global using SpeedBoot.System;
+global using SpeedBoot.System.Collections.Concurrent;

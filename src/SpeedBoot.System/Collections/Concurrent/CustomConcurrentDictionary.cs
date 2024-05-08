@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System.Collections.Concurrent;
+namespace SpeedBoot.System.Collections.Concurrent;
 
 public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey : notnull
 {
