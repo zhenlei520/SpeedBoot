@@ -14,6 +14,7 @@ public static class TypeExtensions
             if (parameterTypeList.Equals(parameterTypes))
                 return constructor;
         }
+
         return null;
     }
 
@@ -29,4 +30,35 @@ public static class TypeExtensions
 
     public static bool IsNullableType(this Type type)
         => type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+
+    public static bool IsImplementType(this Type type, Type implementType)
+    {
+        var interfaces = type.GetInterfaces();
+        foreach (var @interface in interfaces)
+        {
+            if (@interface.IsGenericType)
+            {
+                if (implementType.IsGenericParameter)
+                {
+                    if (@interface.GetGenericTypeDefinition() == implementType)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+                    if (@interface == implementType || @interface.GetGenericTypeDefinition() == implementType)
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (@interface == implementType)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

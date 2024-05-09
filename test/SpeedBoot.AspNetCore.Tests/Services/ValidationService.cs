@@ -21,8 +21,8 @@ public class ValidationService: ServiceBase
         return Results.Ok();
     }
 
-    // public IResult GetUser([AsParameters]UserItemQuery request)
-    // {
-    //     return Results.Ok(request.Name);
-    // }
+    public IResult GetUser(UserItemQuery request)
+    {
+        return Results.Ok(request.Name);
+    }
 }

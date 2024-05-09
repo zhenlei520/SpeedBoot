@@ -11,3 +11,6 @@ global using System.Reflection;
 global using SpeedBoot.System;
 global using System.Text;
 global using System.Collections.Concurrent;
+global using SpeedBoot.System.Collections.Concurrent;
+global using System.Collections;
+global using SpeedBoot.System.Expressions;

@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.AspNetCore.Tests.Applications.Requests;
 
-public class UserItemQuery
+public class UserItemQuery : FromQuery<UserItemQuery>
 {
     public string Name { get; set; }
 
@@ -11,11 +11,7 @@ public class UserItemQuery
 
     public List<string>? Tags { get; set; }
 
-    // public PageQuery Query { get; set; }
-}
-public class PageQuery
-{
-    public int Page { get; set; } = 1;
+    public string[]? Tags2 { get; set; }
 
-    public int PageSize { get; set; } = 20;
+    public int[] Ids { get; set; }
 }

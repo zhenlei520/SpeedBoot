@@ -37,6 +37,8 @@ public class InstanceExpressionTest
         var repository = @delegate.Invoke([]) as Repository<User>;
         Assert.IsNotNull(repository);
 
+        InstanceExpressionUtils.BuildCreateInstanceDelegate(typeof(Repository<User>)).Invoke();
+
         InstanceExpressionUtils.BuildCreateInstanceDelegate<string>(typeof(Repository<User>)).Invoke("succeed");
         InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int>(typeof(Repository<User>)).Invoke("succeed", 2);
         InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int>(typeof(Repository<User>)).Invoke("succeed", 2);

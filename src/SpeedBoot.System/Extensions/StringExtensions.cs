@@ -744,7 +744,13 @@ public static class StringExtensions
     /// <param name="type"></param>
     /// <param name="result"></param>
     /// <returns></returns>
-    public static bool TryConvertTo(this string? value, Type type, out object? result)
+    public static bool TryConvertTo(
+        this string? value,
+        Type type,
+#if NETCOREAPP3_0_OR_GREATER
+        [NotNullWhen(true)]
+#endif
+        out object? result)
     {
         result = null;
         if (value.IsNullOrWhiteSpace())

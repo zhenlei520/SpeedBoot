@@ -26,6 +26,15 @@ public static class InstanceExpressionUtils
         return lambdaExpression.Compile()!;
     }
 
+    public static Func<object> BuildCreateInstanceDelegate(Type instanceType,
+        BindingFlags bindingAttr = Constant.DefaultBindingFlags)
+    {
+        var constructor = instanceType.GetRequestConstructor(bindingAttr,Array.Empty<Type>());
+        var newExpression = Expression.New(constructor);
+        var lambdaExpression = Expression.Lambda<Func<object>>(newExpression, null);
+        return lambdaExpression.Compile();
+    }
+
     public static Func<TParameter, object> BuildCreateInstanceDelegate<TParameter>(Type instanceType,
         BindingFlags bindingAttr = Constant.DefaultBindingFlags)
     {

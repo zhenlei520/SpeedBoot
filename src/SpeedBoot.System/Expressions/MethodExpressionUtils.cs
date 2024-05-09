@@ -90,4 +90,63 @@ public static class MethodExpressionUtils
         var methodCallExpression = Expression.Call(instanceExpression, methodInfo, paramExpression);
         return (methodCallExpression, instanceParameter, parametersParameter);
     }
+
+
+    public static Action<TParameter> BuildSyncInvokeWithStaticDelegate<TParameter>(MethodInfo methodInfo)
+    {
+        var parameterExpression = Expression.Parameter(typeof(TParameter), "a");
+        var methodCallExpression = Expression.Call(
+            methodInfo,
+            parameterExpression
+        );
+        var lambda = Expression.Lambda<Action<TParameter>>(
+            methodCallExpression,
+            parameterExpression
+        );
+        return lambda.Compile();
+    }
+
+    public static Action<object> BuildSyncInvokeWithStaticDelegate(MethodInfo methodInfo, Type parameterType)
+    {
+        var parameterExpression = Expression.Parameter(typeof(object), "a");
+        var parameterConvert = Expression.Convert(parameterExpression, parameterType);
+        var methodCallExpression = Expression.Call(
+            methodInfo,
+            parameterConvert
+        );
+        var lambda = Expression.Lambda<Action<object>>(
+            methodCallExpression,
+            parameterExpression
+        );
+        return lambda.Compile();
+    }
+
+    public static Func<TParameter, object> BuildSyncInvokeWithStaticAndResultDelegate<TParameter>(MethodInfo methodInfo)
+    {
+        var parameterExpression = Expression.Parameter(typeof(TParameter), "a");
+        var methodCallExpression = Expression.Call(
+            methodInfo,
+            parameterExpression
+        );
+        var lambda = Expression.Lambda<Func<TParameter, object>>(
+            methodCallExpression,
+            parameterExpression
+        );
+        return lambda.Compile();
+    }
+
+    public static Func<object, object> BuildSyncInvokeWithStaticAndResultDelegate(MethodInfo methodInfo, Type parameterType)
+    {
+        var parameterExpression = Expression.Parameter(typeof(object), "a");
+        var parameterConvert = Expression.Convert(parameterExpression, parameterType);
+        var methodCallExpression = Expression.Call(
+            methodInfo,
+            parameterConvert
+        );
+        var lambda = Expression.Lambda<Func<object, object>>(
+            methodCallExpression,
+            parameterExpression
+        );
+        return lambda.Compile();
+    }
 }
