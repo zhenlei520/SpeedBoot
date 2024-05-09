@@ -1,3 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-Console.WriteLine("Hello, World!");
+var config = DefaultConfig.Instance
+    .AddValidator(ExecutionValidator.FailOnError)
+    .WithOptions(ConfigOptions.DisableOptimizationsValidator);
+BenchmarkRunner.Run<Benchmarks>(config);
