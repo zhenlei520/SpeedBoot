@@ -3,11 +3,9 @@
 
 // ReSharper disable once CheckNamespace
 
-using MSystemLinq = System.Linq;
-
 namespace SpeedBoot.System;
 
-public static class EnumerableExtensions
+public static partial class EnumerableExtensions
 {
     public static IEnumerable<TSource>? WhereIfAny<TSource>(
         this IEnumerable<TSource>? source,
@@ -100,6 +98,15 @@ public static class EnumerableExtensions
         if (!type.IsImplementType(typeof(IEnumerable<>)))
             return false;
 
+        result = source.ConvertTo(type);
+
+        return true;
+    }
+
+    public static object ConvertTo(
+        this IEnumerable<string> source,
+        Type type)
+    {
         var singleValueType = type.IsArray ? type.GetElementType() : type.GetGenericArguments()[0];
         var list = ConvertToEnumerable(source, singleValueType);
         if (type.IsArray)
@@ -110,14 +117,10 @@ public static class EnumerableExtensions
                 return MethodExpressionUtils.BuildSyncInvokeWithResultDelegate(instanceType,
                     instanceType.GetMethod(nameof(List<string>.ToArray))!);
             });
-            result = func.Invoke(list, null);
-        }
-        else
-        {
-            result = list;
+            return func.Invoke(list, null);
         }
 
-        return true;
+        return list;
     }
 
     private static CustomConcurrentDictionary<Type, Func<object>> _instanceDelegate = new();

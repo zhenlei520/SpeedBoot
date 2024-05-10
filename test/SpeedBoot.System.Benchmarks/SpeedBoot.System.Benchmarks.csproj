@@ -15,7 +15,7 @@
     <ProjectReference Include="..\..\src\SpeedBoot.AspNetCore\SpeedBoot.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\SpeedBoot.System\SpeedBoot.System.csproj"/>
   </ItemGroup>
-  
+
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App"/>
   </ItemGroup>

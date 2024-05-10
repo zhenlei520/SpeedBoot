@@ -15,3 +15,5 @@ public class UserQuery: FromQuery<UserQuery>
 
     public List<DateTime> Times { get; set; }
 }
+
+

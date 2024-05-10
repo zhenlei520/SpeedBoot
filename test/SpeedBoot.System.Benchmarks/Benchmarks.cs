@@ -6,15 +6,22 @@ namespace SpeedBoot.System.Benchmarks;
 public class Benchmarks
 {
     static HttpContext _httpContext;
-    static FromQuery<UserQuery> _userQuery;
 
     [GlobalSetup]
     public void Initialized()
     {
-        var dictionary = new Dictionary<string, StringValues>();
-        dictionary.Add(nameof(UserQuery.Id), new StringValues("1"));
-        dictionary.Add(nameof(UserQuery.Name), new StringValues("SpeedBoot"));
-        dictionary.Add(nameof(UserQuery.Gender), new StringValues(true.ToString()));
+        var dictionary = new Dictionary<string, StringValues>
+        {
+            {
+                nameof(UserQuery.Id), new StringValues("1")
+            },
+            {
+                nameof(UserQuery.Name), new StringValues("SpeedBoot")
+            },
+            {
+                nameof(UserQuery.Gender), new StringValues(true.ToString())
+            }
+        };
         dictionary.Add(nameof(UserQuery.Tags), new StringValues(["SpeedBoot", "SpeedBoot2"]));
         dictionary.Add(nameof(UserQuery.Times), new StringValues(["2022-01-01", "2022-01-02"]));
         _httpContext = new DefaultHttpContext()
@@ -24,12 +31,11 @@ public class Benchmarks
                 Query = new QueryCollection(dictionary)
             }
         };
-        _userQuery = new();
-        GetBindWithLambda();
+        DynamicBindWithLambda();
     }
 
     [Benchmark(Baseline = true)]
-    public void GetBind()
+    public void HardCodeBind()
     {
         var userQuery = new UserQuery();
         if (_httpContext.Request.Query.TryGetValue(nameof(UserQuery.Id), out var idStr) && !string.IsNullOrWhiteSpace(idStr))
@@ -55,7 +61,7 @@ public class Benchmarks
     }
 
     [Benchmark]
-    public void GetBindWithLambda()
+    public void DynamicBindWithLambda()
     {
         _ = FromQuery<UserQuery>.BindAsync(_httpContext).ConfigureAwait(false).GetAwaiter().GetResult();
     }
