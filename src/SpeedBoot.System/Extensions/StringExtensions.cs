@@ -277,7 +277,7 @@ public static class StringExtensions
 
     public static bool TryToSByte(this string? value,
 #if NETCOREAPP3_0_OR_GREATER
-            [NotNullWhen(true)]
+        [NotNullWhen(true)]
 #endif
         out sbyte? result)
     {
@@ -736,4 +736,83 @@ public static class StringExtensions
 
     #endregion
 
+    static readonly Dictionary<Type, Func<string, (bool State, object? Value)>> _converterData = new()
+    {
+        { typeof(string), str => (true, str) },
+        { typeof(short), str => (short.TryParse(str, out var val), val) },
+        { typeof(short?), str => short.TryParse(str, out var val) ? (true, val) : (false, default(short?)) },
+        { typeof(int), str => (int.TryParse(str, out var val), val) },
+        { typeof(int?), str => int.TryParse(str, out var val) ? (true, val) : (false, default(int?)) },
+        { typeof(long), str => (long.TryParse(str, out var val), val) },
+        { typeof(long?), str => long.TryParse(str, out var val) ? (true, val) : (false, default(long?)) },
+        { typeof(float), str => (long.TryParse(str, out var val), val) },
+        { typeof(float?), str => long.TryParse(str, out var val) ? (true, val) : (false, default(float?)) },
+        { typeof(decimal), str => (decimal.TryParse(str, out var val), val) },
+        { typeof(decimal?), str => decimal.TryParse(str, out var val) ? (true, val) : (false, default(decimal?)) },
+        { typeof(double), str => (double.TryParse(str, out var val), val) },
+        { typeof(double?), str => double.TryParse(str, out var val) ? (true, val) : (false, default(double?)) },
+        { typeof(bool), str => (bool.TryParse(str, out var val), val) },
+        { typeof(bool?), str => bool.TryParse(str, out var val) ? (true, val) : (false, default(bool?)) },
+        { typeof(char), str => (char.TryParse(str, out var val), val) },
+        { typeof(char?), str => char.TryParse(str, out var val) ? (true, val) : (false, default(char?)) },
+        { typeof(byte), str => (byte.TryParse(str, out var val), val) },
+        { typeof(byte?), str => byte.TryParse(str, out var val) ? (true, val) : (false, default(byte?)) },
+        { typeof(sbyte), str => (sbyte.TryParse(str, out var val), val) },
+        { typeof(sbyte?), str => sbyte.TryParse(str, out var val) ? (true, val) : (false, default(sbyte?)) },
+        { typeof(ushort), str => (ushort.TryParse(str, out var val), val) },
+        { typeof(ushort?), str => ushort.TryParse(str, out var val) ? (true, val) : (false, default(ushort?)) },
+        { typeof(uint), str => (uint.TryParse(str, out var val), val) },
+        { typeof(uint?), str => uint.TryParse(str, out var val) ? (true, val) : (false, default(uint?)) },
+        { typeof(ulong), str => (ulong.TryParse(str, out var val), val) },
+        { typeof(ulong?), str => ulong.TryParse(str, out var val) ? (true, val) : (false, default(ulong?)) },
+        { typeof(Guid), str => (Guid.TryParse(str, out var val), val) },
+        { typeof(Guid?), str => Guid.TryParse(str, out var val) ? (true, val) : (false, default(Guid?)) },
+        { typeof(DateTime), str => (DateTime.TryParse(str, out var val), val) },
+        { typeof(DateTime?), str => DateTime.TryParse(str, out var val) ? (true, val) : (false, default(DateTime?)) },
+#if NET6_0_OR_GREATER
+        { typeof(TimeOnly), str => (TimeOnly.TryParse(str, out var val), val) },
+        { typeof(TimeOnly?), str => TimeOnly.TryParse(str, out var val) ? (true, val) : (false, default(TimeOnly?)) },
+        { typeof(DateOnly), str => (DateOnly.TryParse(str, out var val), val) },
+        { typeof(DateOnly?), str => DateOnly.TryParse(str, out var val) ? (true, val) : (false, default(DateOnly?)) },
+#endif
+    };
+
+    /// <summary>
+    /// Complex types are not supported
+    /// support types: string, short, int, long, float, decimal, double, bool, char, byte, sbyte, ushort, uint, ulong, Guid, DateTime,DateOnly,TimeOnly
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="type"></param>
+    /// <param name="result"></param>
+    /// <returns></returns>
+    public static bool TryConvertTo(
+        this string? value,
+        Type type,
+#if NETCOREAPP3_0_OR_GREATER
+        [NotNullWhen(true)]
+#endif
+        out object? result)
+    {
+        if (value == null)
+        {
+            result = null;
+            return false;
+        }
+        if(!_converterData.TryGetValue(type, out var func))
+            throw new NotSupportedException($"not supported type: {type}");
+
+        var res = func.Invoke(value);
+        result = res.Value;
+        return res.State;
+    }
+
+    public static object ConvertTo(
+        this string value,
+        Type type)
+    {
+        if(!_converterData.TryGetValue(type, out var func))
+            throw new NotSupportedException($"not supported type: {type}");
+
+        return func.Invoke(value).Value;
+    }
 }

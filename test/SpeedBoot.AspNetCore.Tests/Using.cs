@@ -16,3 +16,5 @@ global using FluentValidation;
 global using SpeedBoot.AspNetCore.Tests.Applications.Requests;
 global using SpeedBoot.AspNetCore.Validation;
 global using SpeedBoot.Extensions.DependencyInjection;
+global using System.Collections;
+global using SpeedBoot.System.Collections.Concurrent;

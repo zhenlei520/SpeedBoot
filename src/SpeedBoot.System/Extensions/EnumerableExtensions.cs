@@ -5,7 +5,7 @@
 
 namespace SpeedBoot.System;
 
-public static class EnumerableExtensions
+public static partial class EnumerableExtensions
 {
     public static IEnumerable<TSource>? WhereIfAny<TSource>(
         this IEnumerable<TSource>? source,
@@ -61,7 +61,7 @@ public static class EnumerableExtensions
     public static bool TryGet<TSource>(
         this IEnumerable<TSource>? sources,
 #if NETCOREAPP3_0_OR_GREATER
-                [NotNullWhen(true)]
+        [NotNullWhen(true)]
 #endif
         Expression<Func<TSource, bool>> condition,
         out TSource? result)
@@ -82,5 +82,65 @@ public static class EnumerableExtensions
         var sourceList = source?.ToList() ?? [];
         var targetList = target?.ToList() ?? [];
         return sourceList.Count == targetList.Count && sourceList.Where((t, index) => t.Equals(targetList[index])).Any();
+    }
+
+    private static CustomConcurrentDictionary<Type, Func<object, object[]?, object>> _arrayInstanceDelegate = new();
+
+    public static bool TryConvertTo(
+        this IEnumerable<string> source,
+        Type type,
+#if NETCOREAPP3_0_OR_GREATER
+        [NotNullWhen(true)]
+#endif
+        out object? result)
+    {
+        result = null;
+        if (!type.IsImplementType(typeof(IEnumerable<>)))
+            return false;
+
+        result = source.ConvertTo(type);
+
+        return true;
+    }
+
+    public static object ConvertTo(
+        this IEnumerable<string> source,
+        Type type)
+    {
+        var singleValueType = type.IsArray ? type.GetElementType() : type.GetGenericArguments()[0];
+        var list = ConvertToEnumerable(source, singleValueType);
+        if (type.IsArray)
+        {
+            var func = _arrayInstanceDelegate.GetOrAdd(singleValueType, _ =>
+            {
+                var instanceType = list.GetType();
+                return MethodExpressionUtils.BuildSyncInvokeWithResultDelegate(instanceType,
+                    instanceType.GetMethod(nameof(List<string>.ToArray))!);
+            });
+            return func.Invoke(list, null);
+        }
+
+        return list;
+    }
+
+    private static CustomConcurrentDictionary<Type, Func<object>> _instanceDelegate = new();
+
+    private static IList ConvertToEnumerable(this IEnumerable<string> sources, Type singleValueType)
+    {
+        var func = _instanceDelegate.GetOrAdd(singleValueType,
+            (type) => InstanceExpressionUtils.BuildCreateInstanceDelegate(typeof(List<>).MakeGenericType(singleValueType)));
+        var list = func.Invoke() as IList;
+        if (sources == null)
+            return list;
+
+        foreach (var source in sources)
+        {
+            if (source.TryConvertTo(singleValueType, out var itemValue))
+            {
+                list.Add(itemValue!);
+            }
+        }
+
+        return list;
     }
 }

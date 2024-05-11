@@ -37,21 +37,65 @@ public class InstanceExpressionTest
         var repository = @delegate.Invoke([]) as Repository<User>;
         Assert.IsNotNull(repository);
 
+        InstanceExpressionUtils.BuildCreateInstanceDelegate(typeof(Repository<User>)).Invoke();
+
         InstanceExpressionUtils.BuildCreateInstanceDelegate<string>(typeof(Repository<User>)).Invoke("succeed");
         InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int>(typeof(Repository<User>)).Invoke("succeed", 2);
         InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int>(typeof(Repository<User>)).Invoke("succeed", 2);
         InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool>(typeof(Repository<User>)).Invoke("succeed", 2, true);
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now);
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now));
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now));
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1);
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1, 1);
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1);
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong, uint>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1);
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong, uint, UInt16, byte>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1, 1, 1);
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong, uint, UInt16, byte, UInt32>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1, 1, 1, 1);
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong, uint, UInt16, byte, UInt32, float>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1, 1, 1, 1, 1);
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong, uint, UInt16, byte, UInt32, float, double>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1, 1, 1, 1, 1, 1d);
-        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong, uint, UInt16, byte, UInt32, float, double, decimal>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1, 1, 1, 1, 1, 2d, 1.1m);
+        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime>(typeof(Repository<User>))
+            .Invoke("succeed", 2, true, DateTime.Now);
+        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly>(typeof(Repository<User>))
+            .Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now));
+        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly>(typeof(Repository<User>))
+            .Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now));
+        InstanceExpressionUtils.BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long>(typeof(Repository<User>))
+            .Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1);
+        InstanceExpressionUtils
+            .BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort>(typeof(Repository<User>)).Invoke(
+                "succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1, 1);
+        InstanceExpressionUtils
+            .BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong>(typeof(Repository<User>))
+            .Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1);
+        InstanceExpressionUtils
+            .BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong,
+                uint>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now),
+                TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1);
+        InstanceExpressionUtils
+            .BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong, uint, UInt16,
+                byte>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now),
+                TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1, 1, 1);
+        InstanceExpressionUtils
+            .BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong, uint, UInt16, byte,
+                UInt32>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now),
+                TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1, 1, 1, 1);
+        InstanceExpressionUtils
+            .BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong, uint, UInt16, byte, UInt32,
+                float>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now),
+                TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1, 1, 1, 1, 1);
+        InstanceExpressionUtils
+            .BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong, uint, UInt16, byte, UInt32,
+                float, double>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now, DateOnly.FromDateTime(DateTime.Now),
+                TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1, 1, 1, 1, 1, 1d);
+        InstanceExpressionUtils
+            .BuildCreateInstanceDelegate<string, int, bool, DateTime, DateOnly, TimeOnly, long, ushort, ulong, uint, UInt16, byte, UInt32,
+                float, double, decimal>(typeof(Repository<User>)).Invoke("succeed", 2, true, DateTime.Now,
+                DateOnly.FromDateTime(DateTime.Now), TimeOnly.FromDateTime(DateTime.Now), 1, 1, 1, 1, 1, 1, 1, 1, 2d, 1.1m);
+    }
+
+    [TestMethod]
+    public void BuildSetPropertyValue()
+    {
+        var user = new User();
+        var propertyName = user.GetType().GetProperty(nameof(User.Name));
+        var action = InstanceExpressionUtils.SetPropertyValue<User>(propertyName);
+        action.Invoke(user, "SpeedBoot");
+
+        Assert.AreEqual("SpeedBoot", user.Name);
+
+        var action2 = InstanceExpressionUtils.SetPropertyValue(typeof(User), propertyName);
+        var user2 = new User();
+        action2.Invoke(user2, "SpeedBoot2");
+        Assert.AreEqual("SpeedBoot2", user2.Name);
     }
 }

@@ -18,6 +18,9 @@ builder.Services
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("12345678912345678912345678912345"))
         };
     });
+
+// builder.Services.AddControllers();
+
 builder.Services
     .AddSwaggerGen(options =>
     {
@@ -51,7 +54,6 @@ builder.Services
 var app = builder.AddMinimalAPIs();
 
 app.UseAuthentication();
-
 app.UseRouting();
 
 app.UseSwagger();
@@ -61,5 +63,7 @@ app.UseSwaggerUI(c =>
 });
 
 app.MapGet("/", () => "Hello World!");
+
+// app.MapControllers();
 
 app.Run();
