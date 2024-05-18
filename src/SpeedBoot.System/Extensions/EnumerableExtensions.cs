@@ -23,12 +23,6 @@ public static partial class EnumerableExtensions
         Func<TSource, bool>? predicate)
         => EnumerableUtils.WhereIf(source, isCompose, predicate);
 
-    public static IEnumerable<TSource>? WhereIf<TSource>(
-        this IEnumerable<TSource>? source,
-        bool isCompose,
-        Expression<Func<TSource, bool>?> predicate)
-        => EnumerableUtils.WhereIf(source, isCompose, predicate);
-
     /// <summary>
     /// is not null and is not an empty collection
     ///
