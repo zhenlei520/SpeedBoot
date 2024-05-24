@@ -50,7 +50,7 @@ public static class ServiceCollectionExtensions
 
         IEnumerable<Type> GetEventBusInterceptorTypes()
             => from type in assemblies.SelectMany(assembly => assembly.GetTypes())
-                where type.IsClass && !type.IsAbstract && typeof(IEventBusActionFilterProvider).IsAssignableFrom(type)
+                where type.IsClass && !type.IsAbstract && typeof(IEventBusActionInterceptor).IsAssignableFrom(type)
                 select type;
     }
 

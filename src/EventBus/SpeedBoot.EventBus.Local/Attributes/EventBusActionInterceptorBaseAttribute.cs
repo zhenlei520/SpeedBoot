@@ -4,13 +4,13 @@
 namespace SpeedBoot.EventBus.Local;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public abstract class EventBusActionFilterBaseAttribute : Attribute
+public abstract class EventBusActionInterceptorBaseAttribute : Attribute
 {
     public Type ServiceType { get; }
 
     public int Order { get; }
 
-    protected EventBusActionFilterBaseAttribute(Type serviceType, int order)
+    protected EventBusActionInterceptorBaseAttribute(Type serviceType, int order)
     {
         ServiceType = serviceType;
         Order = order;
@@ -18,14 +18,14 @@ public abstract class EventBusActionFilterBaseAttribute : Attribute
 }
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public abstract class EventBusActionFilterBaseAttribute<TEventBusInterceptor> : EventBusActionFilterBaseAttribute
-    where TEventBusInterceptor : IEventBusActionFilterProvider
+public abstract class EventBusActionInterceptorBaseAttribute<TEventBusInterceptor> : EventBusActionInterceptorBaseAttribute
+    where TEventBusInterceptor : IEventBusActionInterceptor
 {
-    public EventBusActionFilterBaseAttribute() : this(999)
+    public EventBusActionInterceptorBaseAttribute() : this(999)
     {
     }
 
-    public EventBusActionFilterBaseAttribute(int order)
+    public EventBusActionInterceptorBaseAttribute(int order)
         : base(typeof(TEventBusInterceptor), order)
     {
     }

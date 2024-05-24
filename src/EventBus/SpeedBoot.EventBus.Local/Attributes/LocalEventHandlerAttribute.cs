@@ -38,9 +38,9 @@ public class LocalEventHandlerAttribute : LocalEventHandlerBaseAttribute
         where TEvent : IEvent
     {
         var actionExecutingContext = new ActionExecutingContext(@event, MethodInfo);
-        foreach (var eventBusActionFilterType in EventBusActionFilterTypes)
+        foreach (var eventBusActionInterceptorType in EventBusActionInterceptorTypes)
         {
-            var eventBusInterceptor = serviceProvider.GetRequiredService(eventBusActionFilterType) as IEventBusActionFilterProvider;
+            var eventBusInterceptor = serviceProvider.GetRequiredService(eventBusActionInterceptorType) as IEventBusActionInterceptor;
             eventBusInterceptor!.OnActionExecuting(actionExecutingContext);
             SyncInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType), GetParameters(serviceProvider, @event));
             eventBusInterceptor!.OnActionExecuted(actionExecutingContext);
@@ -51,9 +51,9 @@ public class LocalEventHandlerAttribute : LocalEventHandlerBaseAttribute
         where TEvent : IEvent
     {
         var actionExecutingContext = new ActionExecutingContext(@event, MethodInfo);
-        foreach (var eventBusActionFilterType in EventBusActionFilterTypes)
+        foreach (var eventBusActionFilterType in EventBusActionInterceptorTypes)
         {
-            var eventBusInterceptor = serviceProvider.GetRequiredService(eventBusActionFilterType) as IEventBusActionFilterProvider;
+            var eventBusInterceptor = serviceProvider.GetRequiredService(eventBusActionFilterType) as IEventBusActionInterceptor;
             eventBusInterceptor!.OnActionExecuting(actionExecutingContext);
             await TaskInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType), GetParameters(serviceProvider, @event, cancellationToken));
             eventBusInterceptor!.OnActionExecuted(actionExecutingContext);

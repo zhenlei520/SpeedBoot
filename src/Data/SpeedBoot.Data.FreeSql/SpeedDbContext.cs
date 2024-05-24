@@ -14,6 +14,7 @@ public abstract class SpeedDbContext : DbContext, IDbContext
 
     protected SpeedDbContext(IFreeSql freeSql) : base(freeSql, new DbContextOptions())
     {
+
     }
 
     protected SpeedDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions) : base(freeSql, dbContextOptions)
