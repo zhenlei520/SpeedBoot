@@ -1,8 +1,6 @@
 // Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-using SpeedBoot.Data.EFCore.Tests.Infrastructure;
-
 namespace SpeedBoot.Data.EFCore.Tests;
 
 public class TestBase
