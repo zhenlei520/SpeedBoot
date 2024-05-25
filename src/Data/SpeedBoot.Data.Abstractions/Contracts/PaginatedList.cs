@@ -10,7 +10,25 @@ public class PaginatedList<TEntity>
 {
     public long Total { get; set; }
 
-    public int TotalPages { get; set; }
+    public long TotalPages { get; set; }
 
     public List<TEntity> Result { get; set; } = default!;
+
+    public PaginatedList()
+    {
+
+    }
+
+    public PaginatedList(long total, int pageSize, List<TEntity> result)
+    {
+        Total = total;
+        SetTotalPages(pageSize);
+        Result = result;
+    }
+
+    public PaginatedList<TEntity> SetTotalPages(int pageSize)
+    {
+        TotalPages = (Total + pageSize - 1) / pageSize;
+        return this;
+    }
 }
