@@ -10,12 +10,12 @@ public interface IConnectionStringProvider
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    Task<string> GetConnectionStringAsync(string name = ConnectionStrings.DEFAULT_CONNECTION_STRING_NAME);
+    Task<string> GetConnectionStringAsync(string? name = null);
 
     /// <summary>
     /// Get Database Connection Strings based on ConnectionName
     /// </summary>
     /// <param name="name"></param>
     /// <returns></returns>
-    string GetConnectionString(string name = ConnectionStrings.DEFAULT_CONNECTION_STRING_NAME);
+    string GetConnectionString(string? name = null);
 }

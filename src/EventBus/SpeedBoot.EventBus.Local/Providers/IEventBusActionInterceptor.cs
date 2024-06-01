@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.EventBus.Local;
 
-public interface IEventBusActionFilterProvider
+public interface IEventBusActionInterceptor
 {
     void OnActionExecuting(ActionExecutingContext context);
 

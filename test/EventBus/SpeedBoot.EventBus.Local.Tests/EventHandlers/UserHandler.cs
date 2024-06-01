@@ -12,14 +12,14 @@ public class UserHandler
         _logger = logger;
     }
 
-    [RecordTimeActionFilter]
+    [RecordTimeActionInterceptor]
     [LocalEventHandler(2)]
     public void AddRegisterUserEvent(RegisterUserEvent registerUserEvent)
     {
         _logger?.LogInformation($"AddRegisterUserEvent: {registerUserEvent.Name}");
     }
 
-    [RecordTimeActionFilter]
+    [RecordTimeActionInterceptor]
     [LocalEventHandler(1)]
     public void SendEmail(RegisterUserEvent registerUserEvent)
     {

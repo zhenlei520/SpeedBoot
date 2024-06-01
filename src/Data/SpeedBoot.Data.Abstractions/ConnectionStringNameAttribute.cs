@@ -27,7 +27,7 @@ public class ConnectionStringNameAttribute : Attribute
 
         var name = type.GetTypeInfo().GetCustomAttribute<ConnectionStringNameAttribute>()?.Name;
         if (name.IsNullOrWhiteSpace())
-            name = ConnectionStrings.DEFAULT_CONNECTION_STRING_NAME;
+            name = GlobalDataConfig.ConnectionString.DefaultConnectionStringName;
 
         DbContextNameRelationOptions.Add(new DbContextNameRelationOptions(name!, type));
         return name!;

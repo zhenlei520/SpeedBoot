@@ -9,7 +9,7 @@ public class TestDbContext : SpeedDbContext
 
     public DbSet<Person> Person { get; set; }
 
-    public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
+    public TestDbContext(DbContextOptions<TestDbContext> options, IServiceProvider serviceProvider) : base(options, serviceProvider)
     {
     }
 

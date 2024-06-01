@@ -3,13 +3,13 @@
 
 namespace SpeedBoot.EventBus.Local;
 
-public class RecordTimeEventBusActionFilterProvider : EventBusActionFilterProviderBase
+public class RecordTimeEventBusActionInterceptor : EventBusActionInterceptorBase
 {
     private readonly Stopwatch _stopwatch;
     private readonly ILogger? _logger;
     private readonly LogLevel _logLevel;
 
-    public RecordTimeEventBusActionFilterProvider(ILogger? logger = null, RecordTimeOption? recordTimeOption = null)
+    public RecordTimeEventBusActionInterceptor(ILogger? logger = null, RecordTimeOption? recordTimeOption = null)
     {
         _stopwatch = new Stopwatch();
         _logger = logger;

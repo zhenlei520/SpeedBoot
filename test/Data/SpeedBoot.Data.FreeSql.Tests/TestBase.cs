@@ -26,7 +26,7 @@ public abstract class TestBase
         var configurationRoot = configurationBuilder.Build();
         DataBase = int.Parse(configurationRoot["ConnectionStrings:DataBase"]);
         Services.AddConfiguration(configurationRoot);
-        Services.AddSpeed();
+        Services.AddSpeedBoot();
         Services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
         {
             switch (DataBase)
