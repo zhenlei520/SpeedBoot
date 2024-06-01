@@ -14,28 +14,49 @@ namespace SpeedBoot.Data.EFCore;
 internal class EFCoreSaveChangesInterceptor : Microsoft.EntityFrameworkCore.Diagnostics.ISaveChangesInterceptor
 {
     private readonly IEnumerable<ISaveChangesInterceptor> _saveChangesInterceptors;
+    private readonly IEnumerable<IDbContextInterceptor> _dbContextInterceptors;
 
     public EFCoreSaveChangesInterceptor(IServiceProvider serviceProvider)
     {
         _saveChangesInterceptors = serviceProvider.GetServices<ISaveChangesInterceptor>().OrderBy(i => i.Order);
+        _dbContextInterceptors = serviceProvider.GetServices<IDbContextInterceptor>().OrderBy(i => i.Order);
     }
 
     public InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
-        var dbContextEventData = eventData.GetEventData<SpeedBoot.Data.Abstractions.DbContextEventData>();
-        dbContextEventData.Result = result.Result;
-        foreach (var saveChangesInterceptor in _saveChangesInterceptors)
-            saveChangesInterceptor.SavingChanges(dbContextEventData);
+        if (_saveChangesInterceptors.Any())
+        {
+            var dbContextEventData = eventData.GetEventData<SpeedBoot.Data.Abstractions.DbContextEventData>();
+
+            dbContextEventData.Result = result.HasResult ? result.Result : null;
+            foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+                saveChangesInterceptor.SavingChanges(dbContextEventData);
+        }
+
         return result;
     }
 
     public int SavedChanges(SaveChangesCompletedEventData eventData, int result)
     {
-        var saveChangesCompletedEventData = eventData.GetEventData<Abstractions.SaveChangesCompletedEventData>();
-        saveChangesCompletedEventData.Result = result;
-        foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+        if (_saveChangesInterceptors.Any())
         {
-            saveChangesInterceptor.SavedChanges(saveChangesCompletedEventData);
+            var saveChangesCompletedEventData = eventData.GetEventData<Abstractions.SaveChangesCompletedEventData>();
+            saveChangesCompletedEventData.Result = result;
+
+            foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+            {
+                saveChangesInterceptor.SavedChanges(saveChangesCompletedEventData);
+            }
+        }
+
+        if (_dbContextInterceptors.Any() && eventData.Context is { Database.CurrentTransaction: null })
+        {
+            var saveSucceedDbContextEventData = eventData.GetEventData<Abstractions.SaveSucceedDbContextEventData>();
+
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                dbContextInterceptor.SaveSucceed(saveSucceedDbContextEventData);
+            }
         }
 
         return result;
@@ -43,11 +64,24 @@ internal class EFCoreSaveChangesInterceptor : Microsoft.EntityFrameworkCore.Diag
 
     public void SaveChangesFailed(DbContextErrorEventData eventData)
     {
-        var dbContextErrorEventData = eventData.GetEventData<Abstractions.DbContextErrorEventData>();
-        dbContextErrorEventData.Exception = eventData.Exception;
-        foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+        if (_saveChangesInterceptors.Any())
         {
-            saveChangesInterceptor.SaveChangesFailed(dbContextErrorEventData);
+            var dbContextErrorEventData = eventData.GetEventData<Abstractions.DbContextErrorEventData>();
+            dbContextErrorEventData.Exception = eventData.Exception;
+            foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+            {
+                saveChangesInterceptor.SaveChangesFailed(dbContextErrorEventData);
+            }
+        }
+
+        if (_dbContextInterceptors.Any() && eventData.Context is { Database.CurrentTransaction: null })
+        {
+            var saveFailedDbContextEventData = eventData.GetEventData<Abstractions.SaveFailedDbContextEventData>();
+            saveFailedDbContextEventData.Exception = eventData.Exception;
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                dbContextInterceptor.SaveFailed(saveFailedDbContextEventData);
+            }
         }
     }
 
@@ -56,11 +90,14 @@ internal class EFCoreSaveChangesInterceptor : Microsoft.EntityFrameworkCore.Diag
         InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
     {
-        var dbContextEventData = eventData.GetEventData<Abstractions.DbContextEventData>();
-        dbContextEventData.Result = result.Result;
-        foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+        if (_saveChangesInterceptors.Any())
         {
-            await saveChangesInterceptor.SavingChangesAsync(dbContextEventData, cancellationToken);
+            var dbContextEventData = eventData.GetEventData<Abstractions.DbContextEventData>();
+            dbContextEventData.Result = result.HasResult ? result.Result : null;
+            foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+            {
+                await saveChangesInterceptor.SavingChangesAsync(dbContextEventData, cancellationToken);
+            }
         }
 
         return result;
@@ -71,11 +108,24 @@ internal class EFCoreSaveChangesInterceptor : Microsoft.EntityFrameworkCore.Diag
         int result,
         CancellationToken cancellationToken = default)
     {
-        var saveChangesCompletedEventData = eventData.GetEventData<Abstractions.SaveChangesCompletedEventData>();
-        saveChangesCompletedEventData.Result = result;
-        foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+        if (_saveChangesInterceptors.Any())
         {
-            await saveChangesInterceptor.SavedChangesAsync(saveChangesCompletedEventData, cancellationToken);
+            var saveChangesCompletedEventData = eventData.GetEventData<Abstractions.SaveChangesCompletedEventData>();
+            saveChangesCompletedEventData.Result = result;
+            foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+            {
+                await saveChangesInterceptor.SavedChangesAsync(saveChangesCompletedEventData, cancellationToken);
+            }
+        }
+
+        if (_dbContextInterceptors.Any() && eventData.Context is { Database.CurrentTransaction: null })
+        {
+            var saveSucceedDbContextEventData = eventData.GetEventData<Abstractions.SaveSucceedDbContextEventData>();
+
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                await dbContextInterceptor.SaveSucceedAsync(saveSucceedDbContextEventData, cancellationToken);
+            }
         }
 
         return result;
@@ -85,11 +135,24 @@ internal class EFCoreSaveChangesInterceptor : Microsoft.EntityFrameworkCore.Diag
         DbContextErrorEventData eventData,
         CancellationToken cancellationToken = default)
     {
-        var dbContextErrorEventData = eventData.GetEventData<Abstractions.DbContextErrorEventData>();
-        dbContextErrorEventData.Exception = eventData.Exception;
-        foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+        if (_saveChangesInterceptors.Any())
         {
-            await saveChangesInterceptor.SaveChangesFailedAsync(dbContextErrorEventData, cancellationToken);
+            var dbContextErrorEventData = eventData.GetEventData<Abstractions.DbContextErrorEventData>();
+            dbContextErrorEventData.Exception = eventData.Exception;
+            foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+            {
+                await saveChangesInterceptor.SaveChangesFailedAsync(dbContextErrorEventData, cancellationToken);
+            }
+        }
+
+        if (_dbContextInterceptors.Any() && eventData.Context is { Database.CurrentTransaction: null })
+        {
+            var saveFailedDbContextEventData = eventData.GetEventData<Abstractions.SaveFailedDbContextEventData>();
+            saveFailedDbContextEventData.Exception = eventData.Exception;
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                await dbContextInterceptor.SaveFailedAsync(saveFailedDbContextEventData, cancellationToken);
+            }
         }
     }
 }

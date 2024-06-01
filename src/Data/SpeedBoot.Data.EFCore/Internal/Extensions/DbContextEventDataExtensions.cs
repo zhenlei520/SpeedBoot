@@ -12,9 +12,9 @@ internal static class DbContextEventDataExtensions
         return new TEventData()
         {
             EventId = dbContextEventData.EventId.Id.ToString(),
-            EventName = dbContextEventData.EventId.Name,
-            ContextId = dbContextEventData.Context.ContextId.ToString(),
-            Entites = dbContextEventData.Context.ChangeTracker.GetEntites()
+            EventName = dbContextEventData.EventId.Name ?? string.Empty,
+            ContextId = dbContextEventData.Context?.ContextId.ToString() ?? string.Empty,
+            Entites = dbContextEventData.Context?.ChangeTracker.GetEntites() ?? new List<EntityInfo>()
         };
     }
 }

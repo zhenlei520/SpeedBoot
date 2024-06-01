@@ -15,10 +15,12 @@ namespace SpeedBoot.Data.EFCore;
 internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Diagnostics.IDbTransactionInterceptor
 {
     private readonly IEnumerable<Abstractions.IDbTransactionInterceptor> _dbTransactionInterceptors;
+    private readonly IEnumerable<IDbContextInterceptor> _dbContextInterceptors;
 
     public EFCoreDbTransactionInterceptor(IServiceProvider serviceProvider)
     {
         _dbTransactionInterceptors = serviceProvider.GetServices<Abstractions.IDbTransactionInterceptor>().OrderBy(i => i.Order);
+        _dbContextInterceptors = serviceProvider.GetServices<IDbContextInterceptor>().OrderBy(i => i.Order);
     }
 
     public void CreatedSavepoint(
@@ -118,11 +120,25 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         DbTransaction transaction,
         Microsoft.EntityFrameworkCore.Diagnostics.TransactionEndEventData eventData)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<TransactionEndEventData>();
-        transactionEndEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionCommitted(transaction, transactionEndEventData);
+            var transactionEndEventData = eventData.GetTransactionEventData<TransactionEndEventData>();
+            transactionEndEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionCommitted(transaction, transactionEndEventData);
+            }
+        }
+
+        if (_dbContextInterceptors.Any())
+        {
+            var saveSucceedDbContextEventData = eventData.GetEventData<Abstractions.SaveSucceedDbContextEventData>();
+            saveSucceedDbContextEventData.DbTransaction = transaction;
+            saveSucceedDbContextEventData.ConnectionId = eventData.ConnectionId;
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                dbContextInterceptor.SaveSucceed(saveSucceedDbContextEventData);
+            }
         }
     }
 
@@ -131,11 +147,25 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         Microsoft.EntityFrameworkCore.Diagnostics.TransactionEndEventData eventData,
         CancellationToken cancellationToken = default)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<TransactionEndEventData>();
-        transactionEndEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            await dbTransactionInterceptor.TransactionCommittedAsync(transaction, new TransactionEndEventData(), cancellationToken);
+            var transactionEndEventData = eventData.GetTransactionEventData<TransactionEndEventData>();
+            transactionEndEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                await dbTransactionInterceptor.TransactionCommittedAsync(transaction, transactionEndEventData, cancellationToken);
+            }
+        }
+
+        if (_dbContextInterceptors.Any())
+        {
+            var saveSucceedDbContextEventData = eventData.GetEventData<Abstractions.SaveSucceedDbContextEventData>();
+            saveSucceedDbContextEventData.DbTransaction = transaction;
+            saveSucceedDbContextEventData.ConnectionId = eventData.ConnectionId;
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                await dbContextInterceptor.SaveSucceedAsync(saveSucceedDbContextEventData, cancellationToken);
+            }
         }
     }
 
@@ -144,11 +174,14 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         Microsoft.EntityFrameworkCore.Diagnostics.TransactionEventData eventData,
         InterceptionResult result)
     {
-        var transactionStartingEventData = eventData.GetTransactionEventData<TransactionStartingEventData>();
-        transactionStartingEventData.IsSuppressed = result.IsSuppressed;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionCommitting(transaction, transactionStartingEventData);
+            var transactionStartingEventData = eventData.GetTransactionEventData<TransactionStartingEventData>();
+            transactionStartingEventData.IsSuppressed = result.IsSuppressed;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionCommitting(transaction, transactionStartingEventData);
+            }
         }
 
         return result;
@@ -160,11 +193,14 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         InterceptionResult result,
         CancellationToken cancellationToken = default)
     {
-        var transactionStartingEventData = eventData.GetTransactionEventData<TransactionStartingEventData>();
-        transactionStartingEventData.IsSuppressed = result.IsSuppressed;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            await dbTransactionInterceptor.TransactionCommittingAsync(transaction, transactionStartingEventData, cancellationToken);
+            var transactionStartingEventData = eventData.GetTransactionEventData<TransactionStartingEventData>();
+            transactionStartingEventData.IsSuppressed = result.IsSuppressed;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                await dbTransactionInterceptor.TransactionCommittingAsync(transaction, transactionStartingEventData, cancellationToken);
+            }
         }
 
         return result;
@@ -174,12 +210,27 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         DbTransaction transaction,
         TransactionErrorEventData eventData)
     {
-        var transactionErrorEventData = eventData.GetTransactionEventData<Abstractions.TransactionErrorEventData>();
-        transactionErrorEventData.Exception = eventData.Exception;
-        transactionErrorEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionFailed(transaction, transactionErrorEventData);
+            var transactionErrorEventData = eventData.GetTransactionEventData<Abstractions.TransactionErrorEventData>();
+            transactionErrorEventData.Exception = eventData.Exception;
+            transactionErrorEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionFailed(transaction, transactionErrorEventData);
+            }
+        }
+
+        if (_dbContextInterceptors.Any())
+        {
+            var saveFailedDbContextEventData = eventData.GetEventData<Abstractions.SaveFailedDbContextEventData>();
+            saveFailedDbContextEventData.DbTransaction = transaction;
+            saveFailedDbContextEventData.ConnectionId = eventData.ConnectionId;
+            saveFailedDbContextEventData.Exception = eventData.Exception;
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                dbContextInterceptor.SaveFailed(saveFailedDbContextEventData);
+            }
         }
     }
 
@@ -188,23 +239,41 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         TransactionErrorEventData eventData,
         CancellationToken cancellationToken = default)
     {
-        var transactionErrorEventData = eventData.GetTransactionEventData<Abstractions.TransactionErrorEventData>();
-        transactionErrorEventData.Exception = eventData.Exception;
-        transactionErrorEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            await dbTransactionInterceptor.TransactionFailedAsync(transaction, transactionErrorEventData, cancellationToken);
+            var transactionErrorEventData = eventData.GetTransactionEventData<Abstractions.TransactionErrorEventData>();
+            transactionErrorEventData.Exception = eventData.Exception;
+            transactionErrorEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                await dbTransactionInterceptor.TransactionFailedAsync(transaction, transactionErrorEventData, cancellationToken);
+            }
+        }
+
+        if (_dbContextInterceptors.Any())
+        {
+            var saveFailedDbContextEventData = eventData.GetEventData<Abstractions.SaveFailedDbContextEventData>();
+            saveFailedDbContextEventData.DbTransaction = transaction;
+            saveFailedDbContextEventData.ConnectionId = eventData.ConnectionId;
+            saveFailedDbContextEventData.Exception = eventData.Exception;
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                await dbContextInterceptor.SaveFailedAsync(saveFailedDbContextEventData, cancellationToken);
+            }
         }
     }
 
     public void TransactionRolledBack(DbTransaction transaction,
         Microsoft.EntityFrameworkCore.Diagnostics.TransactionEndEventData eventData)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<TransactionEndEventData>();
-        transactionEndEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionRolledBack(transaction, transactionEndEventData);
+            var transactionEndEventData = eventData.GetTransactionEventData<TransactionEndEventData>();
+            transactionEndEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionRolledBack(transaction, transactionEndEventData);
+            }
         }
     }
 
@@ -212,11 +281,14 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         Microsoft.EntityFrameworkCore.Diagnostics.TransactionEndEventData eventData,
         CancellationToken cancellationToken = default)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<TransactionEndEventData>();
-        transactionEndEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            await dbTransactionInterceptor.TransactionRolledBackAsync(transaction, transactionEndEventData, cancellationToken);
+            var transactionEndEventData = eventData.GetTransactionEventData<TransactionEndEventData>();
+            transactionEndEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                await dbTransactionInterceptor.TransactionRolledBackAsync(transaction, transactionEndEventData, cancellationToken);
+            }
         }
     }
 
@@ -225,11 +297,14 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         Microsoft.EntityFrameworkCore.Diagnostics.TransactionEventData eventData,
         InterceptionResult result)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<TransactionEventData>();
-        transactionEndEventData.IsSuppressed = result.IsSuppressed;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionRollingBack(transaction, transactionEndEventData);
+            var transactionEndEventData = eventData.GetTransactionEventData<TransactionEventData>();
+            transactionEndEventData.IsSuppressed = result.IsSuppressed;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionRollingBack(transaction, transactionEndEventData);
+            }
         }
 
         return result;
@@ -241,11 +316,14 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         InterceptionResult result,
         CancellationToken cancellationToken = default)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<TransactionEventData>();
-        transactionEndEventData.IsSuppressed = result.IsSuppressed;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            await dbTransactionInterceptor.TransactionRollingBackAsync(transaction, transactionEndEventData, cancellationToken);
+            var transactionEndEventData = eventData.GetTransactionEventData<TransactionEventData>();
+            transactionEndEventData.IsSuppressed = result.IsSuppressed;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                await dbTransactionInterceptor.TransactionRollingBackAsync(transaction, transactionEndEventData, cancellationToken);
+            }
         }
 
         return result;
@@ -315,10 +393,13 @@ using TransactionStartingEventData = Microsoft.EntityFrameworkCore.Diagnostics.T
 internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Diagnostics.IDbTransactionInterceptor
 {
     private readonly IEnumerable<SpeedBoot.Data.Abstractions.IDbTransactionInterceptor> _dbTransactionInterceptors;
+    private readonly IEnumerable<IDbContextInterceptor> _dbContextInterceptors;
 
     public EFCoreDbTransactionInterceptor(IServiceProvider serviceProvider)
     {
-        _dbTransactionInterceptors = serviceProvider.GetServices<SpeedBoot.Data.Abstractions.IDbTransactionInterceptor>().OrderBy(i=> i.Order);
+        _dbTransactionInterceptors =
+ serviceProvider.GetServices<SpeedBoot.Data.Abstractions.IDbTransactionInterceptor>().OrderBy(i=> i.Order);
+        _dbContextInterceptors = serviceProvider.GetServices<IDbContextInterceptor>().OrderBy(i => i.Order);
     }
 
     public InterceptionResult<DbTransaction> TransactionStarting(
@@ -377,11 +458,15 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         TransactionEventData eventData,
         InterceptionResult result)
     {
-        var transactionStartingEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionStartingEventData>();
-        transactionStartingEventData.IsSuppressed = result.IsSuppressed;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionCommitting(transaction, transactionStartingEventData);
+            var transactionStartingEventData =
+                eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionStartingEventData>();
+            transactionStartingEventData.IsSuppressed = result.IsSuppressed;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionCommitting(transaction, transactionStartingEventData);
+            }
         }
 
         return result;
@@ -389,43 +474,73 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
 
     public void TransactionCommitted(DbTransaction transaction, TransactionEndEventData eventData)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEndEventData>();
-        transactionEndEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionCommitted(transaction, transactionEndEventData);
+            var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEndEventData>();
+            transactionEndEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionCommitted(transaction, transactionEndEventData);
+            }
+        }
+
+        if (_dbContextInterceptors.Any())
+        {
+            var saveSucceedDbContextEventData = eventData.GetEventData<SpeedBoot.Data.Abstractions.SaveSucceedDbContextEventData>();
+            saveSucceedDbContextEventData.DbTransaction = transaction;
+            saveSucceedDbContextEventData.ConnectionId = eventData.ConnectionId;
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                dbContextInterceptor.SaveSucceed(saveSucceedDbContextEventData);
+            }
         }
     }
 
-    public Task<InterceptionResult> TransactionCommittingAsync(
+    public async Task<InterceptionResult> TransactionCommittingAsync(
         DbTransaction transaction,
         TransactionEventData eventData,
         InterceptionResult result,
         CancellationToken cancellationToken = default)
     {
-        var transactionStartingEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionStartingEventData>();
-        transactionStartingEventData.IsSuppressed = result.IsSuppressed;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionCommittingAsync(transaction, transactionStartingEventData, cancellationToken);
+            var transactionStartingEventData =
+                eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionStartingEventData>();
+            transactionStartingEventData.IsSuppressed = result.IsSuppressed;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                await dbTransactionInterceptor.TransactionCommittingAsync(transaction, transactionStartingEventData, cancellationToken);
+            }
         }
 
-        return Task.FromResult(result);
+        return result;
     }
 
-    public Task TransactionCommittedAsync(
+    public async Task TransactionCommittedAsync(
         DbTransaction transaction,
         TransactionEndEventData eventData,
         CancellationToken cancellationToken = default)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEndEventData>();
-        transactionEndEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionCommittedAsync(transaction, transactionEndEventData, cancellationToken);
+            var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEndEventData>();
+            transactionEndEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                await dbTransactionInterceptor.TransactionCommittedAsync(transaction, transactionEndEventData, cancellationToken);
+            }
         }
 
-        return Task.CompletedTask;
+        if (_dbContextInterceptors.Any())
+        {
+            var saveSucceedDbContextEventData = eventData.GetEventData<SpeedBoot.Data.Abstractions.SaveSucceedDbContextEventData>();
+            saveSucceedDbContextEventData.DbTransaction = transaction;
+            saveSucceedDbContextEventData.ConnectionId = eventData.ConnectionId;
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                await dbContextInterceptor.SaveSucceedAsync(saveSucceedDbContextEventData, cancellationToken);
+            }
+        }
     }
 
     public InterceptionResult TransactionRollingBack(
@@ -433,11 +548,14 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         TransactionEventData eventData,
         InterceptionResult result)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEventData>();
-        transactionEndEventData.IsSuppressed = result.IsSuppressed;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionRollingBack(transaction, transactionEndEventData);
+            var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEventData>();
+            transactionEndEventData.IsSuppressed = result.IsSuppressed;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionRollingBack(transaction, transactionEndEventData);
+            }
         }
 
         return result;
@@ -445,11 +563,14 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
 
     public void TransactionRolledBack(DbTransaction transaction, TransactionEndEventData eventData)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEndEventData>();
-        transactionEndEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionRolledBack(transaction, transactionEndEventData);
+            var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEndEventData>();
+            transactionEndEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionRolledBack(transaction, transactionEndEventData);
+            }
         }
     }
 
@@ -459,11 +580,14 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         InterceptionResult result,
         CancellationToken cancellationToken = default)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEventData>();
-        transactionEndEventData.IsSuppressed = result.IsSuppressed;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionRollingBackAsync(transaction, transactionEndEventData, cancellationToken);
+            var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEventData>();
+            transactionEndEventData.IsSuppressed = result.IsSuppressed;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionRollingBackAsync(transaction, transactionEndEventData, cancellationToken);
+            }
         }
 
         return Task.FromResult(result);
@@ -474,11 +598,14 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
         TransactionEndEventData eventData,
         CancellationToken cancellationToken = default)
     {
-        var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEndEventData>();
-        transactionEndEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionRolledBackAsync(transaction, transactionEndEventData, cancellationToken);
+            var transactionEndEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionEndEventData>();
+            transactionEndEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionRolledBackAsync(transaction, transactionEndEventData, cancellationToken);
+            }
         }
 
         return Task.CompletedTask;
@@ -486,24 +613,54 @@ internal class EFCoreDbTransactionInterceptor : Microsoft.EntityFrameworkCore.Di
 
     public void TransactionFailed(DbTransaction transaction, TransactionErrorEventData eventData)
     {
-        var transactionErrorEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionErrorEventData>();
-        transactionErrorEventData.Exception = eventData.Exception;
-        transactionErrorEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            dbTransactionInterceptor.TransactionFailed(transaction, transactionErrorEventData);
+            var transactionErrorEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionErrorEventData>();
+            transactionErrorEventData.Exception = eventData.Exception;
+            transactionErrorEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                dbTransactionInterceptor.TransactionFailed(transaction, transactionErrorEventData);
+            }
+        }
+
+        if (_dbContextInterceptors.Any())
+        {
+            var saveFailedDbContextEventData = eventData.GetEventData<SpeedBoot.Data.Abstractions.SaveFailedDbContextEventData>();
+            saveFailedDbContextEventData.DbTransaction = transaction;
+            saveFailedDbContextEventData.ConnectionId = eventData.ConnectionId;
+            saveFailedDbContextEventData.Exception = eventData.Exception;
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                dbContextInterceptor.SaveFailed(saveFailedDbContextEventData);
+            }
         }
     }
 
     public async Task TransactionFailedAsync(DbTransaction transaction, TransactionErrorEventData eventData,
         CancellationToken cancellationToken = default)
     {
-        var transactionErrorEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionErrorEventData>();
-        transactionErrorEventData.Exception = eventData.Exception;
-        transactionErrorEventData.Duration = eventData.Duration;
-        foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+        if (_dbTransactionInterceptors.Any())
         {
-            await dbTransactionInterceptor.TransactionFailedAsync(transaction, transactionErrorEventData, cancellationToken);
+            var transactionErrorEventData = eventData.GetTransactionEventData<SpeedBoot.Data.Abstractions.TransactionErrorEventData>();
+            transactionErrorEventData.Exception = eventData.Exception;
+            transactionErrorEventData.Duration = eventData.Duration;
+            foreach (var dbTransactionInterceptor in _dbTransactionInterceptors)
+            {
+                await dbTransactionInterceptor.TransactionFailedAsync(transaction, transactionErrorEventData, cancellationToken);
+            }
+        }
+
+        if (_dbContextInterceptors.Any())
+        {
+            var saveFailedDbContextEventData = eventData.GetEventData<SpeedBoot.Data.Abstractions.SaveFailedDbContextEventData>();
+            saveFailedDbContextEventData.DbTransaction = transaction;
+            saveFailedDbContextEventData.ConnectionId = eventData.ConnectionId;
+            saveFailedDbContextEventData.Exception = eventData.Exception;
+            foreach (var dbContextInterceptor in _dbContextInterceptors)
+            {
+                await dbContextInterceptor.SaveFailedAsync(saveFailedDbContextEventData, cancellationToken);
+            }
         }
     }
 }

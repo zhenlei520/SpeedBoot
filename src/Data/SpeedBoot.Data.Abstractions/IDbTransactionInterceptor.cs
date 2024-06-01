@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.Data.Abstractions;
 
-public interface IDbTransactionInterceptor: IOrder
+public interface IDbTransactionInterceptor : IOrder
 {
     void TransactionCommitting(DbTransaction transaction, TransactionStartingEventData eventData);
 

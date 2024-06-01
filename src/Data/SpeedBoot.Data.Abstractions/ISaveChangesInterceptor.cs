@@ -16,8 +16,4 @@ public interface ISaveChangesInterceptor : IOrder
     void SaveChangesFailed(DbContextErrorEventData eventData);
 
     Task SaveChangesFailedAsync(DbContextErrorEventData eventData, CancellationToken cancellationToken = default);
-
-    void SaveChangesCanceled(DbContextEventData dbContextEventData);
-
-    Task SaveChangesCanceledAsync(DbContextEventData dbContextEventData, CancellationToken cancellationToken = default);
 }

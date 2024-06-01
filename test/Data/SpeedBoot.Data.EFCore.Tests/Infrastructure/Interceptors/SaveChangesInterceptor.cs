@@ -33,13 +33,4 @@ public class SaveChangesInterceptor : ISaveChangesInterceptor
     {
         return Task.CompletedTask;
     }
-
-    public void SaveChangesCanceled(DbContextEventData dbContextEventData)
-    {
-    }
-
-    public Task SaveChangesCanceledAsync(DbContextEventData dbContextEventData, CancellationToken cancellationToken = default)
-    {
-        return Task.CompletedTask;
-    }
 }

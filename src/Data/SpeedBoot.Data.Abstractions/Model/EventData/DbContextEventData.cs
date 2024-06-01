@@ -5,5 +5,5 @@ namespace SpeedBoot.Data.Abstractions;
 
 public class DbContextEventData : DbContextEventDataBase
 {
-    public int Result { get; set; }
+    public int? Result { get; set; }
 }
