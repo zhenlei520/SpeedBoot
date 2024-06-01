@@ -11,7 +11,10 @@ public class EventBusTest
     public EventBusTest()
     {
         var services = new ServiceCollection();
-        App.Instance.RebuildRootServiceProvider = services => services.BuildServiceProvider();
+
+        //todo: Temporary solution, follow up according to the selected di
+        App.Instance.RebuildRootServiceProvider ??= s => s.BuildServiceProvider();
+
         services.AddSpeedBoot().Build();
         // services.AddAutoInject();
         _rootServiceProvider = services.BuildServiceProvider();

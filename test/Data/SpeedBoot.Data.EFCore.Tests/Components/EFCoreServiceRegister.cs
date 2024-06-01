@@ -1,9 +1,9 @@
-// Copyright (c) zhenlei520 All rights reserved.
+﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-namespace SpeedBoot.Data.FreeSql.Tests;
+namespace SpeedBoot.Data.EFCore.Tests.Components;
 
-public abstract class TestBase
+public class EFCoreServiceRegister : ServiceRegisterComponentBase
 {
     /// <summary>
     /// SqlServer = 1
@@ -11,23 +11,16 @@ public abstract class TestBase
     /// PostgreSQL = 3
     /// Sqlite = 4
     /// </summary>
-    protected static int DataBase;
+    private static int DataBase;
 
-    /// <summary>
-    /// Service Collections
-    /// </summary>
-    protected IServiceCollection Services;
-
-    protected TestBase()
+    public override void ConfigureServices(IServiceCollection services)
     {
-        Services = new ServiceCollection();
         var configurationBuilder = new ConfigurationBuilder();
         configurationBuilder.AddJsonFile("appsettings.json");
         var configurationRoot = configurationBuilder.Build();
         DataBase = int.Parse(configurationRoot["ConnectionStrings:DataBase"]);
-        Services.AddConfiguration(configurationRoot);
-        Services.AddSpeedBoot();
-        Services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
+        services.AddConfiguration(configurationRoot);
+        services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
         {
             switch (DataBase)
             {
@@ -35,18 +28,15 @@ public abstract class TestBase
                     speedDbContextOptionsBuilder.UseSqlServer();
                     break;
                 case 2:
-                    speedDbContextOptionsBuilder.UseMySql();
+                    speedDbContextOptionsBuilder.UseMySql(new MySqlServerVersion("8.2.0"));
                     break;
                 case 3:
                     speedDbContextOptionsBuilder.UsePostgreSQL();
                     break;
                 case 4:
-                    speedDbContextOptionsBuilder.UseSqlite(freeSqlBuilder => freeSqlBuilder.UseAutoSyncStructure(true));
+                    speedDbContextOptionsBuilder.UseSqlite();
                     break;
             }
         });
-
-        var dbContext = Services.BuildServiceProvider().GetService<TestDbContext>();
-        SpeedArgumentException.ThrowIfNull(dbContext);
     }
 }

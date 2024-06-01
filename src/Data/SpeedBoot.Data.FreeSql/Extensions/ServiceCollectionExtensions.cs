@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
         Action<SpeedDbContextOptionsBuilder>? optionsAction = null)
         where TDbContext : SpeedDbContext, IDbContext //, new()
     {
+        GlobalDataConfig.RegisterDbContext<TDbContext>();
         services.TryAddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.TryAddScoped(typeof(IDbContext), serviceProvider => serviceProvider.GetRequiredService(typeof(TDbContext)));
@@ -24,7 +25,7 @@ public static class ServiceCollectionExtensions
         {
             services.Configure<ConnectionStrings>(Options.Options.DefaultName, connectionString =>
             {
-                var configurationSection = configuration.GetSection(ConnectionStrings.DEFAULT_SECTION);
+                var configurationSection = configuration.GetSection(GlobalDataConfig.ConnectionString.DefaultSection);
                 configurationSection.Bind(connectionString);
             });
         }

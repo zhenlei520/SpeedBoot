@@ -3,11 +3,11 @@
 
 namespace SpeedBoot.Data.Abstractions;
 
-public interface ISaveChangesInterceptor
+public interface ISaveChangesInterceptor : IOrder
 {
     void SavingChanges(DbContextEventData dbContextEventData);
 
-    Task SavingChangesAsync(DbContextEventData dbContextEventData);
+    Task SavingChangesAsync(DbContextEventData dbContextEventData, CancellationToken cancellationToken = default);
 
     void SavedChanges(SaveChangesCompletedEventData eventData);
 

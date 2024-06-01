@@ -9,4 +9,4 @@ global using SpeedBoot.Data.EFCore.Tests.Infrastructure;
 global using Microsoft.Extensions.Configuration;
 global using SpeedBoot;
 global using SpeedBoot.Data.Abstractions;
-global using System.ComponentModel.DataAnnotations;
+global using System.Reflection;
