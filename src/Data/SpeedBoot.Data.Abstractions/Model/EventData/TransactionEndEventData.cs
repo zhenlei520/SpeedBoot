@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.Data.Abstractions;
 
-public class TransactionStartingEventData
+public class TransactionEndEventData : TransactionEventDataBase
 {
-    
+    public TimeSpan Duration { get; set; }
 }

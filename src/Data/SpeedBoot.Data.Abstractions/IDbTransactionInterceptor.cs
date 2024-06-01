@@ -20,4 +20,8 @@ public interface IDbTransactionInterceptor: IOrder
     void TransactionRolledBack(DbTransaction transaction,TransactionEndEventData eventData);
 
     Task TransactionRolledBackAsync(DbTransaction transaction,TransactionEndEventData eventData, CancellationToken cancellationToken = default);
+
+    void TransactionFailed(DbTransaction transaction, TransactionErrorEventData eventData);
+
+    Task TransactionFailedAsync(DbTransaction transaction, TransactionErrorEventData eventData, CancellationToken cancellationToken = default);
 }

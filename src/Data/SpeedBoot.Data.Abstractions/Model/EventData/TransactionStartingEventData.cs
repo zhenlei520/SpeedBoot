@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.Data.Abstractions;
 
-public class TransactionEventData
+public class TransactionStartingEventData : TransactionEventDataBase
 {
-    
+    public bool IsSuppressed { get; set; }
 }

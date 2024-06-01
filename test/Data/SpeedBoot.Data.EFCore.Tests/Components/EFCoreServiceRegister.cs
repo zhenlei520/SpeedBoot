@@ -1,6 +1,9 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
+using SpeedBoot.Data.EFCore.Tests.Infrastructure.Interceptors;
+using ISaveChangesInterceptor = SpeedBoot.Data.Abstractions.ISaveChangesInterceptor;
+
 namespace SpeedBoot.Data.EFCore.Tests.Components;
 
 public class EFCoreServiceRegister : ServiceRegisterComponentBase
@@ -20,6 +23,7 @@ public class EFCoreServiceRegister : ServiceRegisterComponentBase
         var configurationRoot = configurationBuilder.Build();
         DataBase = int.Parse(configurationRoot["ConnectionStrings:DataBase"]);
         services.AddConfiguration(configurationRoot);
+        services.AddSingleton<ISaveChangesInterceptor, SaveChangesInterceptor>();
         services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
         {
             switch (DataBase)

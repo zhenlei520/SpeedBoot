@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.Data.Abstractions;
 
-public class DbContextEventData
+public class DbContextEventData : DbContextEventDataBase
 {
-
+    public int Result { get; set; }
 }

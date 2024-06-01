@@ -22,6 +22,10 @@ public class DbContextTest : TestBase
         var effectRow = dbContext.SaveChanges();
         Assert.AreEqual(1, effectRow);
 
+        var userInfo = dbContext.User.First(u => u.Name == "speed");
+        userInfo.Name = "speed2";
+        dbContext.SaveChanges();
+
         var person = new Person()
         {
             Name = "speed",
