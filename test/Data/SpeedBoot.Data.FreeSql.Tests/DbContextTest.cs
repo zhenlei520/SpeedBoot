@@ -20,8 +20,14 @@ public class DbContextTest : TestBase
             UpdateTime = DateTime.Now.ToUniversalTime()
         };
         dbContext.Set<User>().Add(user);
-        var effectRow = dbContext.SaveChanges();
-        Assert.AreEqual(1, effectRow);
+
+        var user2 = new User()
+        {
+            Name = "speed-freesql2",
+            CreateTime = DateTime.Today.ToUniversalTime(),
+            UpdateTime = DateTime.Now.ToUniversalTime()
+        };
+        dbContext.Set<User>().Add(user2);
 
         var person = new Person()
         {
@@ -30,7 +36,8 @@ public class DbContextTest : TestBase
             UpdateTime = DateTime.Now.ToUniversalTime()
         };
         dbContext.Set<Person>().Add(person);
-        effectRow = dbContext.SaveChanges();
-        Assert.AreEqual(1, effectRow);
+        var effectRow = dbContext.SaveChanges();
+        Assert.AreEqual(3, effectRow);
+        //todo: Modifications, deletions, additions, and transactions to be tested
     }
 }

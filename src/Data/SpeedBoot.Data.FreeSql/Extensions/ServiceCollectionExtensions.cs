@@ -45,19 +45,23 @@ public static class ServiceCollectionExtensions
             speedDbContextOptionsBuilder.OptionsAction?.Invoke(serviceProvider, freeSqlBuilder);
             var freeSql = freeSqlBuilder.Build();
             speedDbContextOptionsBuilder.FreeSqlOptionsAction?.Invoke(freeSql);
-            if (constructorType == ConstructorType.One)
+            switch (constructorType)
             {
-                return SpeedDbContextHelper.CreateInstance<TDbContext>(freeSql);
+                case ConstructorType.One:
+                    return SpeedDbContextHelper.CreateInstance<TDbContext>(freeSql);
+                case ConstructorType.OneWithServiceProvider:
+                    return SpeedDbContextHelper.CreateInstance<TDbContext>(freeSql, serviceProvider);
             }
 
             var dbContextOptions = new DbContextOptions();
             speedDbContextOptionsBuilder.DbContextOptionsAction?.Invoke(dbContextOptions);
-            if (constructorType == ConstructorType.Two)
+            return constructorType switch
             {
-                return SpeedDbContextHelper.CreateInstance<TDbContext>(freeSql, dbContextOptions);
-            }
-
-            throw new NotSupportedException();
+                ConstructorType.Two => SpeedDbContextHelper.CreateInstance<TDbContext>(freeSql, dbContextOptions),
+                ConstructorType.TwoWithServiceProvider => SpeedDbContextHelper.CreateInstance<TDbContext>(freeSql, serviceProvider),
+                ConstructorType.Three => SpeedDbContextHelper.CreateInstance<TDbContext>(freeSql, dbContextOptions, serviceProvider),
+                _ => throw new NotSupportedException()
+            };
         });
 
         return services;

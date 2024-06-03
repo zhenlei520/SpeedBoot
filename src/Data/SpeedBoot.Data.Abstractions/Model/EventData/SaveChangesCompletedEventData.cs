@@ -6,4 +6,10 @@ namespace SpeedBoot.Data.Abstractions;
 public class SaveChangesCompletedEventData : DbContextEventDataBase
 {
     public int Result { get; set; }
+
+    /// <summary>
+    /// execution time
+    /// ms
+    /// </summary>
+    public long? Duration { get; set; }
 }

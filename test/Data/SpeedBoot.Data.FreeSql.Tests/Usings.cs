@@ -14,3 +14,5 @@ global using SpeedBoot;
 global using FreeSql;
 global using SpeedBoot.Data.FreeSql;
 global using FreeSql.DataAnnotations;
+global using System.Reflection;
+global using SpeedBoot.Data.FreeSql.Tests.Components.Interceptors;
