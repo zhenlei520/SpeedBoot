@@ -5,7 +5,7 @@ namespace SpeedBoot.Data.FreeSql.Internal.Interceptors;
 
 internal static class SaveChangesInterceptor
 {
-    public static CustomConcurrentDictionary<string, string[]> PrimaryKeys = new CustomConcurrentDictionary<string, string[]>();
+    private static CustomConcurrentDictionary<string, string[]> PrimaryKeys = new CustomConcurrentDictionary<string, string[]>();
 
     public static void CurdAfter(IFreeSql freeSql, IServiceProvider serviceProvider, CurdAfterEventArgs args)
     {
@@ -16,7 +16,6 @@ internal static class SaveChangesInterceptor
         if (saveChangesInterceptor.Any())
         {
             var identifier = args.Identifier.ToString();
-            var entityState = args.CurdType.GetEntityState();
 
             var executeResult = args.ExecuteResult != null ? int.Parse(args.ExecuteResult.ToString()) : 0;
             var primaryKeys = PrimaryKeys.GetOrAdd(args.Table.DbName, (dbName) =>
@@ -25,21 +24,34 @@ internal static class SaveChangesInterceptor
                 return dbTableInfo.Primarys.Select(primary => primary.Name).ToArray();
             });
 
-            if (args.CurdType is CurdType.Insert)
+            var auditInterceptor = serviceProvider.GetRequiredService<AuditInterceptor>();
+            foreach (var interceptor in saveChangesInterceptor)
             {
-                foreach (var interceptor in saveChangesInterceptor)
+                interceptor.SavedChanges(new SaveChangesCompletedEventData()
                 {
-                    interceptor.SavedChanges(new SaveChangesCompletedEventData()
-                    {
-                        EventId = identifier,
-                        EventName = "CurdAfter",
-                        ContextId = identifier,
-                        Duration = args.ElapsedMilliseconds,
-                        Result = executeResult,
-                        Entites = args.GetEntities(primaryKeys, executeResult, entityState)
-                    });
-                }
+                    EventId = identifier,
+                    EventName = "CurdAfter",
+                    ContextId = identifier,
+                    Duration = args.ElapsedMilliseconds,
+                    Result = executeResult,
+                    Entites = GetEntities(primaryKeys, auditInterceptor)
+                });
             }
         }
+    }
+
+    static List<EntityInfo> GetEntities(
+        string[] primaryKeys,
+        AuditInterceptor auditInterceptor)
+    {
+        return auditInterceptor.Entites.Select(entity =>
+        {
+            foreach (var propertyInfo in entity.PropertyInfos.Where(propertyInfo => primaryKeys.Contains(propertyInfo.PropertyName)))
+            {
+                propertyInfo.IsPrimaryKey = true;
+            }
+
+            return entity;
+        }).ToList();
     }
 }

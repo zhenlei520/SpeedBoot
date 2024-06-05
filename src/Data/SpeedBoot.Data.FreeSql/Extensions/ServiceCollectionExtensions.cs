@@ -34,7 +34,7 @@ public static class ServiceCollectionExtensions
         var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder(typeof(TDbContext));
         optionsAction?.Invoke(speedDbContextOptionsBuilder);
         services.TryAddScoped<TDbContext>(serviceProvider => SpeedDbContextHelper<TDbContext>.Execute(serviceProvider, speedDbContextOptionsBuilder));
-
+        services.TryAddScoped<AuditInterceptor>();
         return services;
     }
 }

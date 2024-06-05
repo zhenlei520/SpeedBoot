@@ -40,4 +40,16 @@ public class DbContextTest : TestBase
         Assert.AreEqual(3, effectRow);
         //todo: Modifications, deletions, additions, and transactions to be tested
     }
+
+    [TestMethod]
+    public void Update()
+    {
+        var serviceProvider = Services.BuildServiceProvider();
+        using var scope = serviceProvider.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<TestDbContext>();
+        var user = dbContext.User.Where(p => p.Name == "speed-freesql").First();
+        user.Name = "speed-freesql3";
+        dbContext.Set<User>().Update(user);
+        dbContext.SaveChanges();
+    }
 }

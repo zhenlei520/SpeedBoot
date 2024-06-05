@@ -8,6 +8,8 @@ public abstract class SpeedDbContext : DbContext, IDbContext
     private IServiceProvider? _currentServiceProvider;
     private bool _isInitialized;
 
+    protected bool EnabledInterceptor { get; }
+
     protected IServiceProvider? CurrentServiceProvider
     {
         get
@@ -50,6 +52,7 @@ public abstract class SpeedDbContext : DbContext, IDbContext
     protected SpeedDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions)
         : base(freeSql, dbContextOptions)
     {
+        OnEntityChange(dbContextOptions);
         CurdAfter(freeSql);
     }
 
@@ -62,11 +65,27 @@ public abstract class SpeedDbContext : DbContext, IDbContext
         : base(freeSql, dbContextOptions)
     {
         _currentServiceProvider = currentServiceProvider;
+        OnEntityChange(dbContextOptions);
         CurdAfter(freeSql);
+    }
+
+    protected virtual void OnEntityChange(DbContextOptions dbContextOptions)
+    {
+        if (!GetEnabledInterceptor())
+            return;
+
+        dbContextOptions.OnEntityChange = report =>
+        {
+            var auditInterceptor = CurrentServiceProvider!.GetRequiredService<AuditInterceptor>();
+            report.ForEach(changeInfo => auditInterceptor.SetEntity(changeInfo));
+        };
     }
 
     protected virtual void CurdAfter(IFreeSql freeSql)
     {
+        if (!GetEnabledInterceptor())
+            return;
+
         freeSql.Aop.CurdAfter += (obj, args) =>
         {
             if (CurrentServiceProvider != null)
@@ -75,4 +94,6 @@ public abstract class SpeedDbContext : DbContext, IDbContext
             }
         };
     }
+
+    private bool GetEnabledInterceptor() => EnabledInterceptor && CurrentServiceProvider != null;
 }
