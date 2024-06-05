@@ -20,3 +20,4 @@ global using Microsoft.AspNetCore.Http;
 global using FreeSql.Aop;
 global using SpeedBoot.Data.FreeSql.Internal.Interceptors;
 global using System.Data;
+global using SpeedBoot.System.Expressions;

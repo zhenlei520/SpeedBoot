@@ -9,7 +9,7 @@ public class TestDbContext : SpeedDbContext
 
     public DbSet<Person> Person { get; set; }
 
-    protected TestDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions, IServiceProvider serviceProvider)
+    public TestDbContext(IFreeSql freeSql, DbContextOptions dbContextOptions, IServiceProvider serviceProvider)
         : base(freeSql, dbContextOptions, serviceProvider)
     {
         base.Orm.CodeFirst.ConfigEntity<Person>(e =>
