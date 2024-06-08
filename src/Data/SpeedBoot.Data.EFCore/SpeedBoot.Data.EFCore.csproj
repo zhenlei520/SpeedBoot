@@ -11,7 +11,7 @@
     <ProjectReference Include="..\SpeedBoot.Data.Abstractions\SpeedBoot.Data.Abstractions.csproj" />
     <ProjectReference Include="..\SpeedBoot.Data.DependencyInjection.Abstractions\SpeedBoot.Data.DependencyInjection.Abstractions.csproj" />
   </ItemGroup>
-  
+
   <Choose>
     <When Condition="'$(TargetFramework)' == 'netcoreapp2.1' or '$(TargetFramework)' == 'netcoreapp2.2' or '$(TargetFramework)' == 'netcoreapp3.0' or '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0' or '$(TargetFramework)' == 'net8.0'">
       <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
@@ -57,8 +57,8 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.*" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.*" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.*" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="2.1.*" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.*" />
       </ItemGroup>
     </Otherwise>
