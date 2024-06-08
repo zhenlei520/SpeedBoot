@@ -6,19 +6,26 @@
 namespace SpeedBoot.Data.FreeSql.Internal.Interceptors;
 
 internal class FreeSqlAuditInterceptor : IDisposable
+#if NET5_0_OR_GREATER || NETSTANDARD2_1
+    , IAsyncDisposable
+#endif
 {
     private static CustomConcurrentDictionary<Type, Func<object, Dictionary<string, object>>> _data =
         new CustomConcurrentDictionary<Type, Func<object, Dictionary<string, object>>>();
 
     private readonly FreeSqlSaveChangesInterceptor _freeSqlSaveChangesInterceptor;
     private readonly IEnumerable<ISaveChangesInterceptor> _saveChangesInterceptors;
+    private readonly IEnumerable<IDbContextInterceptor> _dbContextInterceptors;
+    private bool _isDispose;
 
     public FreeSqlAuditInterceptor(
         FreeSqlSaveChangesInterceptor freeSqlSaveChangesInterceptor,
-        IEnumerable<ISaveChangesInterceptor> saveChangesInterceptors)
+        IEnumerable<ISaveChangesInterceptor> saveChangesInterceptors,
+        IEnumerable<IDbContextInterceptor> dbContextInterceptors)
     {
         _freeSqlSaveChangesInterceptor = freeSqlSaveChangesInterceptor;
         _saveChangesInterceptors = saveChangesInterceptors;
+        _dbContextInterceptors = dbContextInterceptors;
     }
 
     public void SetEntity(IServiceProvider serviceProvider, DbContext.EntityChangeReport.ChangeInfo changeInfo)
@@ -81,12 +88,49 @@ internal class FreeSqlAuditInterceptor : IDisposable
 
     public void Dispose()
     {
-        if (_freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData == null)
+        if (_isDispose || _freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData == null)
             return;
 
+        _isDispose = true;
         foreach (var saveChangesInterceptor in _saveChangesInterceptors)
         {
             saveChangesInterceptor.SavedChanges(_freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData);
         }
+
+        foreach (var dbContextInterceptor in _dbContextInterceptors)
+        {
+            dbContextInterceptor.SaveSucceed(new SaveSucceedDbContextEventData()
+            {
+                EventId = _freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData.EventId,
+                EventName = _freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData.EventName,
+                ContextId = _freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData.ContextId,
+                Entites = _freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData.Entites
+            });
+        }
     }
+
+#if NET5_0_OR_GREATER || NETSTANDARD2_1
+    public async ValueTask DisposeAsync()
+    {
+        if (_isDispose || _freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData == null)
+            return;
+
+        _isDispose = true;
+        foreach (var saveChangesInterceptor in _saveChangesInterceptors)
+        {
+            await saveChangesInterceptor.SavedChangesAsync(_freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData);
+        }
+
+        foreach (var dbContextInterceptor in _dbContextInterceptors)
+        {
+            await dbContextInterceptor.SaveSucceedAsync(new SaveSucceedDbContextEventData()
+            {
+                EventId = _freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData.EventId,
+                EventName = _freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData.EventName,
+                ContextId = _freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData.ContextId,
+                Entites = _freeSqlSaveChangesInterceptor.SaveChangesCompletedEventData.Entites
+            }, CancellationToken.None);
+        }
+    }
+#endif
 }

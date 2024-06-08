@@ -86,9 +86,17 @@ public abstract class SpeedDbContext : DbContext, IDbContext
         if (!GetEnabledInterceptor())
             return;
 
+        freeSql.Aop.CurdBefore += (obj, args) =>
+        {
+            if (GetEnabledInterceptor())
+            {
+                SaveChangesUtils.CurdBefore(freeSql, CurrentServiceProvider, args);
+            }
+        };
+
         freeSql.Aop.CurdAfter += (obj, args) =>
         {
-            if (CurrentServiceProvider != null)
+            if (GetEnabledInterceptor())
             {
                 SaveChangesUtils.CurdAfter(freeSql, CurrentServiceProvider, args);
             }

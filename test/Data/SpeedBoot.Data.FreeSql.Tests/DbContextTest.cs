@@ -16,7 +16,6 @@ public class DbContextTest : TestBase
         var user = new User()
         {
             Name = "speed-freesql",
-            CreateTime = DateTime.Today.ToUniversalTime(),
             UpdateTime = DateTime.Now.ToUniversalTime()
         };
         dbContext.Set<User>().Add(user);
