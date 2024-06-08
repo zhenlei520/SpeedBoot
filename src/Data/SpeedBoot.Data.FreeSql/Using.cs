@@ -21,3 +21,4 @@ global using FreeSql.Aop;
 global using SpeedBoot.Data.FreeSql.Internal.Interceptors;
 global using System.Data;
 global using SpeedBoot.System.Expressions;
+global using SpeedBoot.Data.FreeSql.Internal.Utils;

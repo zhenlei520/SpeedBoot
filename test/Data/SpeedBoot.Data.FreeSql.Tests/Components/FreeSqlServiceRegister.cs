@@ -20,7 +20,7 @@ public class FreeSqlServiceRegister : ServiceRegisterComponentBase
         var configurationRoot = configurationBuilder.Build();
         DataBase = int.Parse(configurationRoot["ConnectionStrings:DataBase"]);
         services.AddConfiguration(configurationRoot);
-        services.AddSingleton<ISaveChangesInterceptor, SaveChangesInterceptor>();
+        services.AddSingleton<ISaveChangesInterceptor, SpeedBoot.Data.FreeSql.Tests.Components.Interceptors.SaveChangesInterceptor>();
         services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
         {
             switch (DataBase)
