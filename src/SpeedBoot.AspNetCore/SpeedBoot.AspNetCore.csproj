@@ -14,12 +14,12 @@
   <Choose>
     <When Condition="'$(TargetFramework)' == 'netcoreapp2.1' or '$(TargetFramework)' == 'netcoreapp2.2'">
       <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
-        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.*"/>
-        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.*"/>
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0"/>
       </ItemGroup>
       <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
-        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.*"/>
-        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.*"/>
+        <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.0"/>
       </ItemGroup>
     </When>
     <Otherwise>
