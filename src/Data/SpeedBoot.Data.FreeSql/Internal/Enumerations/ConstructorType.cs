@@ -12,5 +12,8 @@ public enum ConstructorType
 {
     Zero = 0,
     One = 1,
-    Two = 2
+    Two = 2,
+    OneWithServiceProvider = 3,
+    TwoWithServiceProvider = 4,
+    Three = 5
 }

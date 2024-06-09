@@ -26,8 +26,7 @@ public static class InstanceExpressionUtils
         return lambdaExpression.Compile()!;
     }
 
-    public static Func<object> BuildCreateInstanceDelegate(Type instanceType,
-        BindingFlags bindingAttr = Constant.DefaultBindingFlags)
+    public static Func<object> BuildCreateInstanceDelegate(Type instanceType, BindingFlags bindingAttr = Constant.DefaultBindingFlags)
     {
         var constructor = instanceType.GetRequestConstructor(bindingAttr,Array.Empty<Type>());
         var newExpression = Expression.New(constructor);
@@ -35,8 +34,7 @@ public static class InstanceExpressionUtils
         return lambdaExpression.Compile();
     }
 
-    public static Func<TParameter, object> BuildCreateInstanceDelegate<TParameter>(Type instanceType,
-        BindingFlags bindingAttr = Constant.DefaultBindingFlags)
+    public static Func<TParameter, object> BuildCreateInstanceDelegate<TParameter>(Type instanceType, BindingFlags bindingAttr = Constant.DefaultBindingFlags)
     {
         var parameterType = typeof(TParameter);
         var parameterExpression = Expression.Parameter(parameterType);
@@ -46,7 +44,8 @@ public static class InstanceExpressionUtils
         return lambdaExpression.Compile();
     }
 
-    public static Func<TParameter1, TParameter2, object> BuildCreateInstanceDelegate<TParameter1, TParameter2>(Type instanceType,
+    public static Func<TParameter1, TParameter2, object> BuildCreateInstanceDelegate<TParameter1, TParameter2>(
+        Type instanceType,
         BindingFlags bindingAttr = Constant.DefaultBindingFlags)
     {
         var parameterTypes = new[] { typeof(TParameter1), typeof(TParameter2) };
@@ -60,7 +59,8 @@ public static class InstanceExpressionUtils
     }
 
     public static Func<TParameter1, TParameter2, TParameter3, object> BuildCreateInstanceDelegate<TParameter1, TParameter2, TParameter3>(
-        Type instanceType, BindingFlags bindingAttr = Constant.DefaultBindingFlags)
+        Type instanceType,
+        BindingFlags bindingAttr = Constant.DefaultBindingFlags)
     {
         var parameterTypes = new[] { typeof(TParameter1), typeof(TParameter2), typeof(TParameter3) };
         var parameterExpressions = parameterTypes

@@ -26,6 +26,7 @@
     <ProjectReference Include="..\..\..\src\Data\SpeedBoot.Data.FreeSql.PostgreSql\SpeedBoot.Data.FreeSql.PostgreSql.csproj" />
     <ProjectReference Include="..\..\..\src\Data\SpeedBoot.Data.FreeSql.Sqlite\SpeedBoot.Data.FreeSql.Sqlite.csproj" />
     <ProjectReference Include="..\..\..\src\Data\SpeedBoot.Data.FreeSql.SqlServer\SpeedBoot.Data.FreeSql.SqlServer.csproj" />
+    <ProjectReference Include="..\..\..\src\Extensions\SpeedBoot.Extensions.DependencyInjection\SpeedBoot.Extensions.DependencyInjection.csproj" />
   </ItemGroup>
 
 
