@@ -1,7 +1,7 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-namespace System.Reflection;
+namespace SpeedBoot.System.Reflection;
 
 public static class MethodInfoExtensions
 {

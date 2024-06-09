@@ -9,3 +9,7 @@ global using SpeedBoot;
 global using SpeedBoot.System.Expressions;
 global using System.Runtime.ExceptionServices;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
+global using SpeedBoot.System;
+global using SpeedBoot.System.Linq;
+global using SpeedBoot.System.Reflection;
+global using SpeedBoot.System.Collections.Generic;

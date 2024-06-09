@@ -60,7 +60,7 @@ public static class MethodExpressionUtils
         var resultType = returnType.GetGenericArguments()[0];
 
         // Await the task and return its result
-        var awaitTask = Expression.Call(typeof(TaskExtensions), nameof(TaskExtensions.AwaitTaskWithResult), [resultType],
+        var awaitTask = Expression.Call(typeof(SpeedBoot.System.Threading.Tasks.TaskExtensions), nameof(SpeedBoot.System.Threading.Tasks.TaskExtensions.AwaitTaskWithResult), [resultType],
             methodCallExpression);
         // Create a lambda expression with correct parameters
         var lambda = Expression.Lambda<Func<object, object[]?, Task<object>>>(awaitTask, instanceParameter, parametersParameter);

@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System.Collections.Generic;
+namespace SpeedBoot.System.Collections.Generic;
 
 public static class KeyValuePairExtensions
 {

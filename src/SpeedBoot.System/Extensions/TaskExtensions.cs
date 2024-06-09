@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System.Threading.Tasks;
+namespace SpeedBoot.System.Threading.Tasks;
 
 public static class TaskExtensions
 {

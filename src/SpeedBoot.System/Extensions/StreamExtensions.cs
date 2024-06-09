@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System.IO;
+namespace SpeedBoot.System.IO;
 
 public static class StreamExtensions
 {

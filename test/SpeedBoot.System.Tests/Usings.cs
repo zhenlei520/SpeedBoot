@@ -7,3 +7,4 @@ global using System.Text;
 global using SpeedBoot.System.Expressions;
 global using System.Linq.Expressions;
 global using System.Collections;
+global using SpeedBoot.System.Reflection;

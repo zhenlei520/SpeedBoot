@@ -14,3 +14,4 @@ global using System.Collections.Concurrent;
 global using SpeedBoot.System.Collections.Concurrent;
 global using System.Collections;
 global using SpeedBoot.System.Expressions;
+global using SpeedBoot.System.Threading.Tasks;

@@ -5,3 +5,4 @@ global using SpeedBoot.Configuration;
 global using SpeedBoot.Core;
 global using Microsoft.Extensions.Configuration;
 global using SpeedBoot.Extensions.IdGenerator.Sequential.Options;
+global using SpeedBoot.System;
