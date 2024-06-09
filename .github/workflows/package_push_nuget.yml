@@ -42,4 +42,4 @@ jobs:
       run: ls -R ./nupkg
 
     - name: package push
-      run: dotnet nuget push "./nupkg/*.symbols.nupkg" --skip-duplicate -k  ${{secrets.SpeedBoot_NUGET_TOKEN}}  -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "./nupkg/*.symbols.nupkg" --skip-duplicate -k  ${{secrets.NUGET_TOKEN}}  -s https://api.nuget.org/v3/index.json
