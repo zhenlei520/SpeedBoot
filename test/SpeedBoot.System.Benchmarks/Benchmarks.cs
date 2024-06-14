@@ -5,7 +5,7 @@ namespace SpeedBoot.System.Benchmarks;
 
 public class Benchmarks
 {
-    static HttpContext _httpContext;
+    HttpContext _httpContext;
 
     [GlobalSetup]
     public void Initialized()
@@ -20,10 +20,14 @@ public class Benchmarks
             },
             {
                 nameof(UserQuery.Gender), new StringValues(true.ToString())
+            },
+            {
+                nameof(UserQuery.Tags), new StringValues(["SpeedBoot", "SpeedBoot2"])
+            },
+            {
+                nameof(UserQuery.Times), new StringValues(["2022-01-01", "2022-01-02"])
             }
         };
-        dictionary.Add(nameof(UserQuery.Tags), new StringValues(["SpeedBoot", "SpeedBoot2"]));
-        dictionary.Add(nameof(UserQuery.Times), new StringValues(["2022-01-01", "2022-01-02"]));
         _httpContext = new DefaultHttpContext()
         {
             Request =
@@ -42,21 +46,25 @@ public class Benchmarks
         {
             userQuery.Id = int.Parse(idStr);
         }
-        if (_httpContext.Request.Query.TryGetValue(nameof(UserQuery.Name), out var name) && !string.IsNullOrWhiteSpace(name))
+
+        if (_httpContext.Request.Query.TryGetValue(nameof(UserQuery.Name), out var nameStr) && !string.IsNullOrWhiteSpace(nameStr))
         {
-            userQuery.Name = name;
+            userQuery.Name = nameStr;
         }
+
         if (_httpContext.Request.Query.TryGetValue(nameof(UserQuery.Gender), out var genderStr) && !string.IsNullOrWhiteSpace(genderStr))
         {
             userQuery.Gender = bool.Parse(genderStr);
         }
+
         if (_httpContext.Request.Query.TryGetValue(nameof(UserQuery.Tags), out var tagValues) && tagValues.Count > 0)
         {
             userQuery.Tags = tagValues.Select(tag => tag!.ToString()).ToArray();
         }
+
         if (_httpContext.Request.Query.TryGetValue(nameof(UserQuery.Times), out var timeValues) && timeValues.Count > 0)
         {
-            userQuery.Times = timeValues.Select(DateTime.Parse!).ToList();
+            userQuery.Times = timeValues.Select(v => string.IsNullOrWhiteSpace(v) ? default(DateTime?) : DateTime.Parse(v)).ToList();
         }
     }
 

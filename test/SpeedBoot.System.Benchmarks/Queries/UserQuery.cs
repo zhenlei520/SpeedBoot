@@ -13,7 +13,5 @@ public class UserQuery: FromQuery<UserQuery>
 
     public string[] Tags { get; set; }
 
-    public List<DateTime> Times { get; set; }
+    public List<DateTime?> Times { get; set; }
 }
-
-

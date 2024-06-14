@@ -10,14 +10,11 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.12"/>
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\SpeedBoot.AspNetCore\SpeedBoot.AspNetCore.csproj" />
     <ProjectReference Include="..\..\src\SpeedBoot.System\SpeedBoot.System.csproj"/>
-  </ItemGroup>
-
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
   </ItemGroup>
 </Project>
