@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.System;
 
-public static class ConvertHelper
+public static class ConvertUtils
 {
     private static readonly List<Type> _data = new List<Type>()
     {
@@ -61,7 +61,7 @@ public static class ConvertHelper
 
     public static TResult GetValue<TResult>(string value)
     {
-        var func = ConvertToDelegate<TResult>.GetConvertToDelegate();
+        var func = ConvertDelegate<TResult>.GetConvertToDelegate();
         return func.Invoke(value);
     }
 
@@ -77,7 +77,7 @@ public static class ConvertHelper
 
     public static IEnumerable<TResult> GetValues<TResult>(IEnumerable<string> values)
     {
-        var func = ConvertToDelegate<TResult>.GetConvertToDelegate();
+        var func = ConvertDelegate<TResult>.GetConvertToDelegate();
         return values.Select(value => func.Invoke(value));
     }
 }

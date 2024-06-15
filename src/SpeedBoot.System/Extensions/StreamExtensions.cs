@@ -53,7 +53,7 @@ public static class StreamExtensions
 
     #endregion
 
-    #region 文件流保存到本地
+    #region save large files (文件流保存到本地)
 
     /// <summary>
     /// save large files
@@ -66,6 +66,9 @@ public static class StreamExtensions
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
     public static void SaveToBigFile(this Stream stream, string fileFullPath, int chunkSize = 4096, bool enableOverwrite = false)
     {
+        if (!enableOverwrite && File.Exists(fileFullPath))
+            return;
+
         ParameterCheck.CheckChunkSize(chunkSize);
 
         using var fs = File.Open(fileFullPath, FileMode.Create);
@@ -93,6 +96,9 @@ public static class StreamExtensions
         bool enableOverwrite = false,
         CancellationToken cancellationToken = default)
     {
+        if (!enableOverwrite && File.Exists(fileFullPath))
+            return;
+
         ParameterCheck.CheckChunkSize(chunkSize);
 
         using var fs = File.Open(fileFullPath, FileMode.Create);
@@ -113,6 +119,9 @@ public static class StreamExtensions
     /// <param name="enableOverwrite">enable file overwrite（启用文件覆盖） default: false</param>
     public static void SaveToSmallFile(this Stream stream, string fileFullPath, bool enableOverwrite = false)
     {
+        if (!enableOverwrite && File.Exists(fileFullPath))
+            return;
+
         using var fileStream = new FileStream(fileFullPath, FileMode.Create);
         stream.CopyTo(fileStream);
     }
@@ -132,6 +141,9 @@ public static class StreamExtensions
         bool enableOverwrite = false,
         CancellationToken cancellationToken = default)
     {
+        if (!enableOverwrite && File.Exists(fileFullPath))
+            return;
+
         using var fileStream = new FileStream(fileFullPath, FileMode.Create);
 
 #if NETCOREAPP3_0_OR_GREATER
@@ -139,7 +151,6 @@ public static class StreamExtensions
 #else
         await stream.CopyToAsync(fileStream);
 #endif
-
     }
 
     #endregion

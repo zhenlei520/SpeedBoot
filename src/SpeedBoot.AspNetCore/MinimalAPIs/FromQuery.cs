@@ -59,14 +59,14 @@ public class FromQuery<TQuery> where TQuery : new()
         Expression convertedValue;
         if (property.PropertyType == typeof(string))
             convertedValue = GetSingleValue();
-        else if (ConvertHelper.SupportConvertTo(property.PropertyType))
+        else if (ConvertUtils.SupportConvertTo(property.PropertyType))
         {
-            var methodInfo = typeof(ConvertHelper).GetMethod(nameof(ConvertHelper.GetValue), [typeof(string)]).MakeGenericMethod(property.PropertyType) ??
+            var methodInfo = typeof(ConvertUtils).GetMethod(nameof(ConvertUtils.GetValue), [typeof(string)]).MakeGenericMethod(property.PropertyType) ??
                              throw new SpeedException($"No 'Parse' method available for type {property.PropertyType.Name}");
             convertedValue = Expression.Call(methodInfo, GetSingleValue());
         }
         else if (property.PropertyType.IsArray && property.PropertyType.GetElementType() != null &&
-                 ConvertHelper.SupportConvertTo(property.PropertyType.GetElementType()!))
+                 ConvertUtils.SupportConvertTo(property.PropertyType.GetElementType()!))
         {
             var type = property.PropertyType.GetElementType();
             var methodInfo = typeof(FromQuery<TQuery>)
@@ -96,10 +96,10 @@ public class FromQuery<TQuery> where TQuery : new()
     }
 
     static TResult[] GetValuesWithArray<TResult>(IEnumerable<string> values)
-        => ConvertHelper.GetValues<TResult>(values).ToArray();
+        => ConvertUtils.GetValues<TResult>(values).ToArray();
 
     static List<TResult> GetValuesWithList<TResult>(IEnumerable<string> values)
-        => ConvertHelper.GetValues<TResult>(values).ToList();
+        => ConvertUtils.GetValues<TResult>(values).ToList();
 }
 
 #endif

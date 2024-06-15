@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.System;
 
-internal class ConvertToDelegate<TValue>
+internal class ConvertDelegate<TValue>
 {
     private static object _obj = new { };
     private static Func<string, TValue>? _parseFunc;
