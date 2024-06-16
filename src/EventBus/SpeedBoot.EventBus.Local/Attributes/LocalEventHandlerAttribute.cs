@@ -38,12 +38,20 @@ public class LocalEventHandlerAttribute : LocalEventHandlerBaseAttribute
         where TEvent : IEvent
     {
         var actionExecutingContext = new ActionExecutingContext(@event, MethodInfo);
-        foreach (var eventBusActionInterceptorType in EventBusActionInterceptorTypes)
+
+        if (EventBusActionInterceptorTypes.Any())
         {
-            var eventBusInterceptor = serviceProvider.GetRequiredService(eventBusActionInterceptorType) as IEventBusActionInterceptor;
-            eventBusInterceptor!.OnActionExecuting(actionExecutingContext);
+            foreach (var eventBusActionInterceptorType in EventBusActionInterceptorTypes)
+            {
+                var eventBusInterceptor = serviceProvider.GetRequiredService(eventBusActionInterceptorType) as IEventBusActionInterceptor;
+                eventBusInterceptor!.OnActionExecuting(actionExecutingContext);
+                SyncInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType), GetParameters(serviceProvider, @event));
+                eventBusInterceptor!.OnActionExecuted(actionExecutingContext);
+            }
+        }
+        else
+        {
             SyncInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType), GetParameters(serviceProvider, @event));
-            eventBusInterceptor!.OnActionExecuted(actionExecutingContext);
         }
     }
 
@@ -51,12 +59,20 @@ public class LocalEventHandlerAttribute : LocalEventHandlerBaseAttribute
         where TEvent : IEvent
     {
         var actionExecutingContext = new ActionExecutingContext(@event, MethodInfo);
-        foreach (var eventBusActionFilterType in EventBusActionInterceptorTypes)
+
+        if (EventBusActionInterceptorTypes.Any())
         {
-            var eventBusInterceptor = serviceProvider.GetRequiredService(eventBusActionFilterType) as IEventBusActionInterceptor;
-            eventBusInterceptor!.OnActionExecuting(actionExecutingContext);
+            foreach (var eventBusActionFilterType in EventBusActionInterceptorTypes)
+            {
+                var eventBusInterceptor = serviceProvider.GetRequiredService(eventBusActionFilterType) as IEventBusActionInterceptor;
+                eventBusInterceptor!.OnActionExecuting(actionExecutingContext);
+                await TaskInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType), GetParameters(serviceProvider, @event, cancellationToken));
+                eventBusInterceptor!.OnActionExecuted(actionExecutingContext);
+            }
+        }
+        else
+        {
             await TaskInvokeDelegate!.Invoke(serviceProvider.GetRequiredService(InstanceType), GetParameters(serviceProvider, @event, cancellationToken));
-            eventBusInterceptor!.OnActionExecuted(actionExecutingContext);
         }
     }
 }
