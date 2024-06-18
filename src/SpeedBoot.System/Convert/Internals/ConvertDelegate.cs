@@ -1,6 +1,7 @@
 // Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
+[assembly: InternalsVisibleTo("SpeedBoot.System.Tests")]
 namespace SpeedBoot.System;
 
 internal class ConvertDelegate<TValue>
@@ -28,6 +29,49 @@ internal class ConvertDelegate<TValue>
         if (valueType == typeof(string))
         {
             var lambda = Expression.Lambda<Func<string, TValue>>(inputParam, inputParam);
+            return lambda.Compile();
+        }
+
+        if (valueType.IsEnum || valueType.IsNullableType() && Nullable.GetUnderlyingType(valueType)!.IsEnum)
+        {
+            Expression body;
+
+            if (valueType.IsEnum)
+            {
+                body = Expression.Convert(
+                    Expression.Call(
+                        typeof(Enum).GetMethod("Parse", new[] { typeof(Type), typeof(string), typeof(bool) })!,
+                        Expression.Constant(valueType),
+                        inputParam,
+                        Expression.Constant(true)
+                    ),
+                    valueType
+                );
+            }
+            else
+            {
+                var underlyingType = Nullable.GetUnderlyingType(valueType)!;
+                var parseEnum = Expression.Convert(
+                    Expression.Call(
+                        typeof(Enum).GetMethod("Parse", new[] { typeof(Type), typeof(string), typeof(bool) })!,
+                        Expression.Constant(underlyingType),
+                        inputParam,
+                        Expression.Constant(true)
+                    ),
+                    underlyingType
+                );
+
+                var isNullOrWhiteSpaceMethod = typeof(string).GetMethod(nameof(string.IsNullOrWhiteSpace), new[] { typeof(string) });
+                var isNullOrWhiteSpaceCall = Expression.Call(isNullOrWhiteSpaceMethod!, inputParam);
+
+                body = Expression.Condition(
+                    isNullOrWhiteSpaceCall,
+                    Expression.Default(valueType),
+                    Expression.Convert(parseEnum, valueType)
+                );
+            }
+
+            var lambda = Expression.Lambda<Func<string, TValue>>(body, inputParam);
             return lambda.Compile();
         }
 

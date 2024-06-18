@@ -47,7 +47,7 @@ public static class ConvertUtils
     };
 
     public static bool SupportConvertTo(Type type)
-        => _data.Contains(type);
+        => _data.Contains(type) || type.IsEnum || (type.IsNullableType() && Nullable.GetUnderlyingType(type)!.IsEnum);
 
     public static bool TryGetValue<TResult>(string value, out TResult? result)
     {
