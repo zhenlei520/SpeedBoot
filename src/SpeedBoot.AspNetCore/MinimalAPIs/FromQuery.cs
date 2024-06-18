@@ -43,7 +43,12 @@ public class FromQuery<TQuery> where TQuery : new()
         ParameterExpression instanceTypeParam = Expression.Parameter(typeof(Type), "instanceType");
         ParameterExpression propertyNameParam = Expression.Parameter(typeof(string), "propertyName");
 
-        Expression convertedValue = GetPropertyValueExpression(property, value);
+        Expression? convertedValue = GetPropertyValueExpression(property, value);
+        if (convertedValue == null)
+        {
+            // If the type is not supported, return an empty action
+            return (obj, val, type, name) => { };
+        }
 
         MemberExpression propertyAccess = Expression.Property(target, property);
         BinaryExpression assignment = Expression.Assign(propertyAccess, convertedValue);
@@ -54,14 +59,15 @@ public class FromQuery<TQuery> where TQuery : new()
         return (obj, val, type, name) => compiledLambda(obj, val, type, name);
     }
 
-    private static Expression GetPropertyValueExpression(PropertyInfo property, ParameterExpression value)
+    private static Expression? GetPropertyValueExpression(PropertyInfo property, ParameterExpression value)
     {
-        Expression convertedValue;
+        Expression? convertedValue = null;
         if (property.PropertyType == typeof(string))
             convertedValue = GetSingleValue();
         else if (ConvertUtils.SupportConvertTo(property.PropertyType))
         {
-            var methodInfo = typeof(ConvertUtils).GetMethod(nameof(ConvertUtils.GetValue), [typeof(string)]).MakeGenericMethod(property.PropertyType) ??
+            var methodInfo = typeof(ConvertUtils).GetMethod(nameof(ConvertUtils.GetValue), [typeof(string)])
+                                 .MakeGenericMethod(property.PropertyType) ??
                              throw new SpeedException($"No 'Parse' method available for type {property.PropertyType.Name}");
             convertedValue = Expression.Call(methodInfo, GetSingleValue());
         }
@@ -77,14 +83,13 @@ public class FromQuery<TQuery> where TQuery : new()
         else if (property.PropertyType.IsImplementType(typeof(IList<>)))
         {
             var type = property.PropertyType.GetGenericArguments().First();
+            if (!ConvertUtils.SupportConvertTo(type))
+                return convertedValue;
+
             var methodInfo = typeof(FromQuery<TQuery>)
                 .GetMethod(nameof(GetValuesWithList), BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic)!
                 .MakeGenericMethod(type);
             convertedValue = Expression.Call(null, methodInfo, value);
-        }
-        else
-        {
-            throw new ArgumentException($"Unsupported property type '{property.PropertyType}'.");
         }
 
         return convertedValue;
