@@ -20,6 +20,7 @@ public class FromQuery<TQuery> where TQuery : new()
 
     public static ValueTask<TQuery?> BindAsync(HttpContext context)
     {
+        GeneratedCode.HelloWorld.SayHello();
         var queryCollection = context.Request.Query;
         var query = new TQuery();
         foreach (var item in queryCollection)

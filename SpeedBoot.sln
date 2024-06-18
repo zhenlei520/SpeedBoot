@@ -169,6 +169,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.EventBus.Local.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.System.Benchmarks", "test\SpeedBoot.System.Benchmarks\SpeedBoot.System.Benchmarks.csproj", "{F4EF8BC5-946B-4107-91C1-CB2F970D1CCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.AspNetCore.SourceGenerator", "src\SpeedBoot.AspNetCore.SourceGenerator\SpeedBoot.AspNetCore.SourceGenerator.csproj", "{F778BA6D-6905-4ADC-9043-971441686173}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -359,6 +361,10 @@ Global
 		{F4EF8BC5-946B-4107-91C1-CB2F970D1CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4EF8BC5-946B-4107-91C1-CB2F970D1CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4EF8BC5-946B-4107-91C1-CB2F970D1CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F778BA6D-6905-4ADC-9043-971441686173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F778BA6D-6905-4ADC-9043-971441686173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F778BA6D-6905-4ADC-9043-971441686173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F778BA6D-6905-4ADC-9043-971441686173}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -426,5 +432,6 @@ Global
 		{2C0109F2-B0FB-4186-B30E-AB1C409736EF} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{97AE9B76-0CA9-48FC-AC70-540B3208AF5F} = {2C0109F2-B0FB-4186-B30E-AB1C409736EF}
 		{F4EF8BC5-946B-4107-91C1-CB2F970D1CCD} = {216801A8-02DC-4AF4-9448-E13902585583}
+		{F778BA6D-6905-4ADC-9043-971441686173} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 	EndGlobalSection
 EndGlobal

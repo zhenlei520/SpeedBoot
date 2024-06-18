@@ -6,9 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Extensions\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj" />
-    <ProjectReference Include="..\Extensions\SpeedBoot.Extensions.DependencyInjection\SpeedBoot.Extensions.DependencyInjection.csproj" />
-    <ProjectReference Include="..\SpeedBoot.Core\SpeedBoot.Core.csproj" />
+    <ProjectReference Include="..\Extensions\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj"/>
+    <ProjectReference Include="..\Extensions\SpeedBoot.Extensions.DependencyInjection\SpeedBoot.Extensions.DependencyInjection.csproj"/>
+    <ProjectReference Include="..\SpeedBoot.AspNetCore.SourceGenerator\SpeedBoot.AspNetCore.SourceGenerator.csproj" OutputItemType="Analyzer">
+      <PrivateAssets>none</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </ProjectReference>
+    <ProjectReference Include="..\SpeedBoot.Core\SpeedBoot.Core.csproj"/>
   </ItemGroup>
 
   <Choose>

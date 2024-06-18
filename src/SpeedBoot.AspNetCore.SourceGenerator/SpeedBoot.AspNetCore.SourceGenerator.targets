@@ -1,0 +1,8 @@
+﻿<Project>
+  <ItemGroup>
+    <PackageReference Update="SpeedBoot.AspNetCore.SpeedBoot.AspNetCore.SourceGenerator">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>none</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+</Project>

@@ -35,6 +35,10 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "SourceGenerators": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "../SpeedBoot.AspNetCore.Tests/SpeedBoot.AspNetCore.Tests.csproj"
     }
   }
 }
