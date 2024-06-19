@@ -64,7 +64,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.Config
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IdGenerator", "IdGenerator", "{2D3F99D6-55C3-4C2C-A5A9-966948F915A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.IdGenerator", "src\Extensions\SpeedBoot.Extensions.IdGenerator\SpeedBoot.Extensions.IdGenerator.csproj", "{E7C1A908-7922-482F-8946-EE3EB6156DBA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.IdGenerator.Abstracts", "src\Extensions\SpeedBoot.Extensions.IdGenerator.Abstracts\SpeedBoot.Extensions.IdGenerator.Abstracts.csproj", "{E7C1A908-7922-482F-8946-EE3EB6156DBA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.IdGenerator.Normal", "src\Extensions\SpeedBoot.Extensions.IdGenerator.Normal\SpeedBoot.Extensions.IdGenerator.Normal.csproj", "{D9D83FE7-99E9-4D9B-8820-B524440151C3}"
 EndProject

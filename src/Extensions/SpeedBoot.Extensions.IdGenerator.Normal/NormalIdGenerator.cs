@@ -11,8 +11,8 @@ public class NormalIdGenerator : IIdGenerator
 
     public Guid Create() => Guid.NewGuid();
 
-    public NormalIdGenerator(string? key = null)
+    public NormalIdGenerator(string key)
     {
-        Key = key ?? nameof(NormalIdGenerator);
+        Key = key;
     }
 }

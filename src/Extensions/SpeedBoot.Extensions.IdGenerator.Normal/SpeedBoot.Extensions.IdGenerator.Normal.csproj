@@ -7,7 +7,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\SpeedBoot.Extensions.Configuration\SpeedBoot.Extensions.Configuration.csproj" />
-      <ProjectReference Include="..\SpeedBoot.Extensions.IdGenerator\SpeedBoot.Extensions.IdGenerator.csproj" />
+      <ProjectReference Include="..\SpeedBoot.Extensions.IdGenerator.Abstracts\SpeedBoot.Extensions.IdGenerator.Abstracts.csproj" />
     </ItemGroup>
 
 </Project>

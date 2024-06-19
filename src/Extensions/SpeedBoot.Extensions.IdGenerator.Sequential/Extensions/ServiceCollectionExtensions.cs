@@ -9,14 +9,11 @@ public static class ServiceCollectionExtensions
         SequentialGuidType sequentialGuidType,
         string? key = null)
     {
-        if (!ServiceCollectionUtils.TryAdd<SequentialIdGeneratorProvider>(services))
+        key ??= SequentialIdGeneratorConfig.DefaultKey;
+        if (IdGeneratorServiceCollectionRegistry.TryAdd(services, key))
             return services;
 
         services.AddSingleton<IIdGenerator>(_ => new SequentialIdGenerator(sequentialGuidType, key));
         return services;
-    }
-
-    private sealed class SequentialIdGeneratorProvider
-    {
     }
 }

@@ -46,17 +46,6 @@ public static class AppExtensions
         => app.GetRequiredRootServiceProvider(isTemporary).GetRequiredService<TService>();
 
     /// <summary>
-    /// Get the <typeparamref name="TService"/> service (not empty，Only API requests are supported)
-    ///
-    /// 得到<typeparamref name="TService"/>服务（不为空，仅支持API的请求）
-    /// </summary>
-    /// <typeparam name="TService"></typeparam>
-    /// <returns></returns>
-    public static IEnumerable<TService> GetRequiredSingletonServices<TService>(this App app, bool isTemporary = false)
-        where TService : notnull
-        => app.GetRequiredRootServiceProvider(isTemporary).GetServices<TService>();
-
-    /// <summary>
     ///
     /// </summary>
     /// <param name="app"></param>
@@ -82,7 +71,7 @@ public static class AppExtensions
         => app.GetRequiredRootServiceProvider(isTemporary).GetServices<TService>();
 
     public static TService? GetSingletonService<TService>(this App app, string key, bool isTemporary = false) where TService : IService
-        => app.GetRequiredSingletonServices<TService>(isTemporary).Where(item => item.Key == key).FirstOrDefault();
+        => app.GetSingletonServices<TService>(isTemporary).Where(item => item.Key == key).FirstOrDefault();
 
     public static TService GetRequiredSingletonService<TService>(this App app, string key, bool isTemporary = false)
         where TService : IService

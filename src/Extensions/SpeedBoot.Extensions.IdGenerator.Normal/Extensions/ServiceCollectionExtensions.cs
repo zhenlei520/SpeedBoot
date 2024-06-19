@@ -9,6 +9,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddNormalIdGenerator(this IServiceCollection services, string? key = null)
     {
+        key ??= NormalIdGeneratorConfig.DefaultKey;
+        IdGeneratorServiceCollectionRegistry.TryAdd(services, key);
         if (!ServiceCollectionUtils.TryAdd<NormalIdGeneratorProvider>(services))
             return services;
 
