@@ -3,9 +3,9 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System;
+namespace SpeedBoot.System;
 
-public static class StringExtension
+public static class StringExtensions
 {
 #if !(NETCOREAPP3_0_OR_GREATER || NETSTANDARD2_1)
     public static bool Contains(this string str, string value, StringComparison stringComparison)
@@ -277,7 +277,7 @@ public static class StringExtension
 
     public static bool TryToSByte(this string? value,
 #if NETCOREAPP3_0_OR_GREATER
-            [NotNullWhen(true)]
+        [NotNullWhen(true)]
 #endif
         out sbyte? result)
     {
@@ -735,5 +735,4 @@ public static class StringExtension
     }
 
     #endregion
-
 }

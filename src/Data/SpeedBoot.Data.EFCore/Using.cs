@@ -15,3 +15,6 @@ global using Microsoft.Extensions.Configuration;
 global using SpeedBoot;
 global using SpeedBoot.Configuration;
 global using SpeedBoot.System;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.EntityFrameworkCore.ChangeTracking;
+global using SpeedBoot.System.Linq;

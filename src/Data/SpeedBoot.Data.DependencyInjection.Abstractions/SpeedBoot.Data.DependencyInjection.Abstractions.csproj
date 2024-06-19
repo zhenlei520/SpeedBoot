@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Extensions\SpeedBoot.Extensions.DependencyInjection\SpeedBoot.Extensions.DependencyInjection.csproj" />
+      <ProjectReference Include="..\..\SpeedBoot.Core\SpeedBoot.Core.csproj" />
       <ProjectReference Include="..\SpeedBoot.Data.Abstractions\SpeedBoot.Data.Abstractions.csproj" />
     </ItemGroup>
 

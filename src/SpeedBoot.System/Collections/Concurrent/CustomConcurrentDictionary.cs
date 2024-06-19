@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System.Collections.Concurrent;
+namespace SpeedBoot.System.Collections.Concurrent;
 
 public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey : notnull
 {
@@ -26,12 +26,9 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
         _defaultLazyThreadSafetyMode = lazyThreadSafetyMode;
     }
 
-    public bool Get(TKey key, out TValue? value)
+    public TValue? Get(TKey key)
     {
-        bool result = _dicCache.TryGetValue(key, out var lazyValue);
-        value = lazyValue == null ? default : lazyValue.Value;
-
-        return result;
+        return this[key];
     }
 
     public bool TryGet(TKey key,

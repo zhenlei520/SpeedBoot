@@ -14,3 +14,4 @@ global using System.Text.RegularExpressions;
 global using System.Collections.ObjectModel;
 global using SpeedBoot.Core;
 global using SpeedBoot.Extensions.DependencyInjection;
+global using SpeedBoot.System;

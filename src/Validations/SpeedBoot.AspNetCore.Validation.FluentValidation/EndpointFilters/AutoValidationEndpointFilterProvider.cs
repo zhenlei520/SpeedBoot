@@ -5,7 +5,7 @@ namespace SpeedBoot.AspNetCore.Validation.FluentValidation.EndpointFilters;
 
 public class AutoValidationEndpointFilterProvider : EndpointFilterProviderBase
 {
-    private static readonly object _lock = new();
+    private static readonly object Lock = new();
     private static List<Type>? _validatorEntityTypes;
     private readonly IOptions<JsonOptions> _jsonOptions;
     private static readonly ConcurrentDictionary<Type, Type> ValidatorTypes = new();
@@ -23,7 +23,7 @@ public class AutoValidationEndpointFilterProvider : EndpointFilterProviderBase
     {
         if (_validatorEntityTypes is not null) return;
 
-        lock (_lock)
+        lock (Lock)
         {
             if (_validatorEntityTypes is not null) return;
 

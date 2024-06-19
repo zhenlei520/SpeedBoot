@@ -10,7 +10,7 @@ public class ServiceCollectionTest
     public void TestAddSpeed()
     {
         var services = new ServiceCollection();
-        services.AddSpeed();
+        services.AddSpeedBoot();
         Assert.IsTrue(services.Any(d => d.ServiceType == typeof(AppOptions)));
     }
 }

@@ -16,3 +16,5 @@ global using SpeedBoot.Core;
 global using SpeedBoot.System;
 global using System.Text;
 global using SpeedBoot.AspNetCore.Internal.EnglishPluralizationServices;
+global using Microsoft.Extensions.Primitives;
+global using System.ComponentModel;

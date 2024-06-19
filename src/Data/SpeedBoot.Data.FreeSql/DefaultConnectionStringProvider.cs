@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.Data.FreeSql;
 
-public class DefaultConnectionStringProvider: IConnectionStringProvider
+public class DefaultConnectionStringProvider : IConnectionStringProvider
 {
     private readonly IOptionsSnapshot<ConnectionStrings> _options;
 
@@ -12,11 +12,11 @@ public class DefaultConnectionStringProvider: IConnectionStringProvider
         _options = options;
     }
 
-    public Task<string> GetConnectionStringAsync(string name = ConnectionStrings.DEFAULT_CONNECTION_STRING_NAME)
+    public Task<string> GetConnectionStringAsync(string? name = null)
         => Task.FromResult(GetConnectionString(name));
 
-    public string GetConnectionString(string name = ConnectionStrings.DEFAULT_CONNECTION_STRING_NAME)
+    public string GetConnectionString(string? name = null)
     {
-        return _options.Value.GetConnectionString(name);
+        return _options.Value.GetConnectionString(name ?? GlobalDataConfig.ConnectionString.DefaultConnectionStringName);
     }
 }

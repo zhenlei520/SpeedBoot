@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.AspNetCore.Tests.Services;
 
-public class ValidationService :ServiceBase
+public class ValidationService: ServiceBase
 {
     public ValidationService()
     {
@@ -19,5 +19,10 @@ public class ValidationService :ServiceBase
     {
         // 到这里的时候，已经通过了参数验证
         return Results.Ok();
+    }
+
+    public IResult GetUser(UserItemQuery request)
+    {
+        return Results.Ok(request.Name);
     }
 }

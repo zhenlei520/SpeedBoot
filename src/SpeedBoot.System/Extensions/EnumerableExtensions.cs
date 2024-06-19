@@ -5,7 +5,7 @@
 
 namespace SpeedBoot.System;
 
-public static class EnumerableExtensions
+public static partial class EnumerableExtensions
 {
     public static IEnumerable<TSource>? WhereIfAny<TSource>(
         this IEnumerable<TSource>? source,
@@ -21,12 +21,6 @@ public static class EnumerableExtensions
         this IEnumerable<TSource>? source,
         bool isCompose,
         Func<TSource, bool>? predicate)
-        => EnumerableUtils.WhereIf(source, isCompose, predicate);
-
-    public static IEnumerable<TSource>? WhereIf<TSource>(
-        this IEnumerable<TSource>? source,
-        bool isCompose,
-        Expression<Func<TSource, bool>?> predicate)
         => EnumerableUtils.WhereIf(source, isCompose, predicate);
 
     /// <summary>
@@ -61,7 +55,7 @@ public static class EnumerableExtensions
     public static bool TryGet<TSource>(
         this IEnumerable<TSource>? sources,
 #if NETCOREAPP3_0_OR_GREATER
-                [NotNullWhen(true)]
+        [NotNullWhen(true)]
 #endif
         Expression<Func<TSource, bool>> condition,
         out TSource? result)
@@ -73,5 +67,14 @@ public static class EnumerableExtensions
         var predicate = condition.Compile();
         result = sources.Where(predicate).FirstOrDefault();
         return result != null;
+    }
+
+    public static bool Equal<TSource>(
+        this IEnumerable<TSource>? source,
+        IEnumerable<TSource>? target)
+    {
+        var sourceList = source?.ToList() ?? [];
+        var targetList = target?.ToList() ?? [];
+        return sourceList.Count == targetList.Count && sourceList.Where((t, index) => t.Equals(targetList[index])).Any();
     }
 }
