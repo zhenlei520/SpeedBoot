@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Extensions\SpeedBoot.Extensions.DependencyInjection\SpeedBoot.Extensions.DependencyInjection.csproj" />
+    <ProjectReference Include="..\..\..\src\Extensions\SpeedBoot.Extensions.DependencyInjection\SpeedBoot.Extensions.DependencyInjection.csproj" />
   </ItemGroup>
 
 </Project>
