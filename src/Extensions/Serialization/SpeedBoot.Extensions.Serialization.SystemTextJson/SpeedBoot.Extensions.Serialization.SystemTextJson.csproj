@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\SpeedBoot.Core\SpeedBoot.Core.csproj"/>
-    <ProjectReference Include="..\SpeedBoot.Extensions.Serializations.Aabstracts\SpeedBoot.Extensions.Serializations.Aabstracts.csproj" />
+    <ProjectReference Include="..\SpeedBoot.Extensions.Serializations.Abstracts\SpeedBoot.Extensions.Serializations.Abstracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

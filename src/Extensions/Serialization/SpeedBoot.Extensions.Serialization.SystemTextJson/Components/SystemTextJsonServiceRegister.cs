@@ -7,9 +7,11 @@ public class SystemTextJsonServiceRegister: ServiceRegisterComponentBase
 {
     public override void ConfigureServices(IServiceCollection services)
     {
-        services.AddSystemTextJson(new(JsonSerializerDefaults.Web)
+        services.AddSystemTextJson(new JsonSerializerOptions(JsonSerializerDefaults.Web)
         {
-            WriteIndented = true
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         });
     }
 }

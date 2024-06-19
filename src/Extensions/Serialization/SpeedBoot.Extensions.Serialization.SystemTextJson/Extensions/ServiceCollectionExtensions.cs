@@ -9,14 +9,18 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services,
         JsonSerializerOptions? jsonSerializerOptions = null)
     {
-        if (!ServiceCollectionUtils.TryAdd<SerializationProvider>(services))
-            return services;
-
-        services.AddSingleton<IJsonSerializer>(sp => new SpeedBoot.Extensions.Serialization.SystemTextJson.JsonSerializer(jsonSerializerOptions));
-        return services;
+        return services.AddSystemTextJson(SystemTextJsonConfig.DefaultKey, jsonSerializerOptions);
     }
 
-    private sealed class SerializationProvider
+    public static IServiceCollection AddSystemTextJson(
+        this IServiceCollection services,
+        string key,
+        JsonSerializerOptions? jsonSerializerOptions)
     {
+        if (!SerializationServiceCollectionRegistry.TryAdd(services, key))
+            return services;
+
+        services.AddSingleton<IJsonSerializer>(sp => new SpeedBoot.Extensions.Serialization.SystemTextJson.JsonSerializer(key, jsonSerializerOptions));
+        return services;
     }
 }

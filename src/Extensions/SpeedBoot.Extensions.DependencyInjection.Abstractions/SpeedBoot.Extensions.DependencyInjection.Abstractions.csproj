@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>$(TargetFrameworkAllVersion)</TargetFrameworks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Description>Interface standards for automatic registration by convention</Description>
   </PropertyGroup>
 

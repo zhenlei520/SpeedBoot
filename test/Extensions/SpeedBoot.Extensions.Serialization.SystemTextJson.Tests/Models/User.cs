@@ -1,11 +1,9 @@
 ﻿// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
-namespace SpeedBoot.Extensions.Serializations;
+namespace SpeedBoot.Extensions.Serialization.SystemTextJson.Tests.Models;
 
-public interface IJsonSerializer
+public class User
 {
-    string Serialize<T>(T obj);
-
-    T? Deserialize<T>(string json);
+    public string Name { get; set; }
 }
