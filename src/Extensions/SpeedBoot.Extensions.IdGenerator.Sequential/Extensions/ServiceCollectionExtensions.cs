@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
         string? key = null)
     {
         key ??= SequentialIdGeneratorConfig.DefaultKey;
-        if (IdGeneratorServiceCollectionRegistry.TryAdd(services, key))
+        if (!IdGeneratorServiceCollectionRegistry.TryAdd(services, key))
             return services;
 
         services.AddSingleton<IIdGenerator>(_ => new SequentialIdGenerator(sequentialGuidType, key));
