@@ -32,7 +32,7 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
     public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode, IEqualityComparer<TKey>? comparer)
     {
         _defaultLazyThreadSafetyMode = lazyThreadSafetyMode;
-        _dicCache = comparer == null
+        _dicCache = comparer != null
             ? new ConcurrentDictionary<TKey, Lazy<TValue>>(comparer)
             : new ConcurrentDictionary<TKey, Lazy<TValue>>();
     }
