@@ -7,7 +7,7 @@ namespace SpeedBoot.System.Collections.Concurrent;
 
 public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey : notnull
 {
-    private ConcurrentDictionary<TKey, Lazy<TValue>> _dicCache = new();
+    private ConcurrentDictionary<TKey, Lazy<TValue>> _dicCache;
 
     public TKey[] Keys => _dicCache.Keys.ToArray();
 
@@ -21,9 +21,20 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
     {
     }
 
-    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode)
+    public CustomConcurrentDictionary(IEqualityComparer<TKey>? comparer) : this(LazyThreadSafetyMode.ExecutionAndPublication, comparer)
+    {
+    }
+
+    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode) : this(lazyThreadSafetyMode, null)
+    {
+    }
+
+    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode, IEqualityComparer<TKey>? comparer)
     {
         _defaultLazyThreadSafetyMode = lazyThreadSafetyMode;
+        _dicCache = comparer == null
+            ? new ConcurrentDictionary<TKey, Lazy<TValue>>(comparer)
+            : new ConcurrentDictionary<TKey, Lazy<TValue>>();
     }
 
     public TValue? Get(TKey key)
@@ -111,6 +122,7 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
             value = val.Value;
             return true;
         }
+
         value = default;
         return false;
     }
