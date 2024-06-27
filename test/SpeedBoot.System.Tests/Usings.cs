@@ -8,3 +8,4 @@ global using SpeedBoot.System.Expressions;
 global using System.Linq.Expressions;
 global using System.Collections;
 global using SpeedBoot.System.Reflection;
+global using SpeedBoot.System.Collections.Generic;

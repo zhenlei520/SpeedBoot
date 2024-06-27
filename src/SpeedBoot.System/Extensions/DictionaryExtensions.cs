@@ -17,4 +17,15 @@ public static class DictionaryExtensions
         return data;
     }
 #endif
+
+    public static dynamic ToDynamic<TValue>(this IDictionary<string, TValue> data)
+    {
+        IDictionary<string, object?> expand = new ExpandoObject();
+        foreach (var item in data)
+        {
+            expand[item.Key] = item.Value;
+        }
+
+        return expand;
+    }
 }
