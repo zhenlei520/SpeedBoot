@@ -41,6 +41,39 @@ public class DbContextTest : TestBase
     }
 
     [TestMethod]
+    public async Task AddAsync()
+    {
+        var serviceProvider = Services.BuildServiceProvider();
+        using var scope = serviceProvider.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<TestDbContext>();
+
+        var user = new User()
+        {
+            Name = "speed-freesql",
+            UpdateTime = DateTime.Now.ToUniversalTime()
+        };
+        await dbContext.Set<User>().AddAsync(user);
+
+        var user2 = new User()
+        {
+            Name = "speed-freesql2",
+            CreateTime = DateTime.Today.ToUniversalTime(),
+            UpdateTime = DateTime.Now.ToUniversalTime()
+        };
+        await dbContext.Set<User>().AddAsync(user2);
+
+        var person = new Person()
+        {
+            Name = "speed-freesql",
+            CreateTime = DateTime.Today.ToUniversalTime(),
+            UpdateTime = DateTime.Now.ToUniversalTime()
+        };
+        await dbContext.Set<Person>().AddAsync(person);
+        var effectRow = await dbContext.SaveChangesAsync();
+        Assert.AreEqual(3, effectRow);
+    }
+
+    [TestMethod]
     public void Update()
     {
         var serviceProvider = Services.BuildServiceProvider();

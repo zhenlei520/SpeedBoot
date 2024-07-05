@@ -48,10 +48,6 @@ internal static class SaveChangesUtils
         if (args.CurdType is not (CurdType.Insert or CurdType.Delete or CurdType.Update or CurdType.InsertOrUpdate))
             return;
 
-        var saveChangesInterceptors = serviceProvider.GetServices<ISaveChangesInterceptor>().OrderBy(i => i.Order);
-        if (!saveChangesInterceptors.Any())
-            return;
-
         var identifier = args.Identifier.ToString();
         var executeResult = args.ExecuteResult != null ? int.Parse(args.ExecuteResult.ToString() ?? "0") : 0;
 
