@@ -43,26 +43,30 @@ public abstract class ServiceBase
     internal void AutoMapRoute(GlobalServiceRouteOptions globalServiceRouteOptions)
     {
         var methodInfos = MethodHelper.GetMethodInfos(GetType());
-        var templatesByClass = RouteAttributes.Any() ? RouteAttributes.Select(attribute => attribute.Template).ToList() : new List<string>() { globalServiceRouteOptions.RouteTemplate };
+        var templatesByClass = RouteAttributes.Any()
+            ? RouteAttributes.Select(attribute => attribute.Template).ToList()
+            : new List<string>() { globalServiceRouteOptions.RouteTemplate };
         string? serviceName = null;
         foreach (var methodInfo in methodInfos)
         {
-            var metadata = GetMapMetadata(globalServiceRouteOptions, methodInfo,templatesByClass, GetServiceName);
+            var metadata = GetMapMetadata(globalServiceRouteOptions, methodInfo, templatesByClass, GetServiceName);
             foreach (var (pattern, httpMethods) in metadata)
             {
-                var routeHandlerBuilder = MapMethods(pattern, httpMethods,CreateDelegate(methodInfo, this));
+                var routeHandlerBuilder = MapMethods(pattern, httpMethods, CreateDelegate(methodInfo, this));
                 var actions = RouteHandlerBuilderHelper.GetRouteHandlerBuilderActions(globalServiceRouteOptions, RouteOptions);
                 foreach (var action in actions)
                 {
                     action.Invoke(methodInfo, routeHandlerBuilder);
                 }
+
                 TryRegisterEndpointFilter(routeHandlerBuilder, methodInfo);
             }
         }
 
         string GetServiceName()
         {
-            return serviceName ??= this.GetServiceName(RouteOptions.DisablePluralizeServiceName ?? globalServiceRouteOptions.DisablePluralizeServiceName ?? false);
+            return serviceName ??= this.GetServiceName(RouteOptions.DisablePluralizeServiceName ??
+                                                       globalServiceRouteOptions.DisablePluralizeServiceName ?? false);
         }
     }
 
@@ -96,13 +100,29 @@ public abstract class ServiceBase
             {
                 newTemplate = newTemplate.Replace("[service]", serviceNameFunc.Invoke());
             }
+
             if (newTemplate.Contains("[action]"))
             {
-                newTemplate = newTemplate.Replace("[action]", actionNameFunc.Invoke());
+                newTemplate = newTemplate.Replace("[action]", TryGetCustomActionName(out var customActionName) ? customActionName : actionNameFunc.Invoke());
             }
+
             patterns.Add((newTemplate, httpMethods));
         }
+
         return patterns;
+
+        bool TryGetCustomActionName(out string actionName)
+        {
+            var attribute = methodInfo.GetCustomAttribute<ActionNameAttribute>();
+            if (attribute != null)
+            {
+                actionName = attribute.Name.ToSafeString();
+                return true;
+            }
+
+            actionName = string.Empty;
+            return false;
+        }
 
         string GetActionName()
         {
@@ -161,11 +181,13 @@ public abstract class ServiceBase
     private void RegisterEndpointFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
     {
         var endpointFilterAttributes = GetMethodEndpointFilterAttributes(methodInfo);
-        var tempEndpointFilters = EndpointFilters.Where(attribute => !endpointFilterAttributes.Any(a => a.GetType() == attribute.GetType())).ToList();
+        var tempEndpointFilters = EndpointFilters.Where(attribute => !endpointFilterAttributes.Any(a => a.GetType() == attribute.GetType()))
+            .ToList();
         foreach (var attribute in tempEndpointFilters)
         {
             routeHandlerBuilder.WithMetadata(attribute);
         }
+
         var allActionFilters = endpointFilterAttributes.Union(tempEndpointFilters).OrderBy(attribute => attribute.Order).ToList();
         foreach (var customFilterAttribute in allActionFilters)
         {
