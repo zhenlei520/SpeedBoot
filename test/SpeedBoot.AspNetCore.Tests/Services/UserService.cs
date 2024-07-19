@@ -42,6 +42,18 @@ public class UserService : ServiceBase
         return userDal.GetUserName();
     }
 
+    /// <summary>
+    /// api/v1/users/username2
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="userDal"></param>
+    /// <returns></returns>
+    [ActionName("User3/{id}")]
+    public string GetUserName3(string id, IUserDAL userDal)
+    {
+        return userDal.GetUserName();
+    }
+
     private string CreateToken(Claim[] claims, TimeSpan? timeout = null)
     {
         DateTime notBefore = DateTime.UtcNow;
