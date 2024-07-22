@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Auditing\" />
-    <Folder Include="Entities\Full\" />
+    <ProjectReference Include="..\..\Data\SpeedBoot.Data.Abstractions\SpeedBoot.Data.Abstractions.csproj" />
+    <ProjectReference Include="..\..\EventBus\SpeedBoot.EventBus.Abstracts\SpeedBoot.EventBus.Abstracts.csproj" />
   </ItemGroup>
 
 </Project>

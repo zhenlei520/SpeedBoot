@@ -26,6 +26,7 @@ public static class ServiceCollectionExtensions
         services.TryAddScoped(typeof(IDbContext), serviceProvider => serviceProvider.GetRequiredService(typeof(TDbContext)));
         services.TryAddScoped<IConnectionStringProvider, DefaultConnectionStringProvider>();
         services.TryAddScoped<UnitOfWorkWrapper>();
+
         services.AddSpeedDbContextCore();
 
         var configuration = App.Instance.GetConfiguration(true);
@@ -38,7 +39,7 @@ public static class ServiceCollectionExtensions
             });
         }
 
-        var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder(typeof(TDbContext));
+        var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder(services, typeof(TDbContext));
         optionsAction?.Invoke(speedDbContextOptionsBuilder);
         services.AddDbContext<TDbContext>((serviceProvider, builder) =>
         {
