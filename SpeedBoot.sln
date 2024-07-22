@@ -147,6 +147,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.AspNetCore.Authen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.AspNetCore.Authentication.Tests", "test\SpeedBoot.AspNetCore.Authentication.Tests\SpeedBoot.AspNetCore.Authentication.Tests.csproj", "{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ddd", "Ddd", "{AD0BEC47-5504-444A-940D-65EC5C9B030A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Ddd.Domain", "src\Ddd\SpeedBoot.Ddd.Domain\SpeedBoot.Ddd.Domain.csproj", "{FF6BF26E-D00A-45B9-BB12-B615BDDB0AC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -317,6 +321,10 @@ Global
 		{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF6BF26E-D00A-45B9-BB12-B615BDDB0AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF6BF26E-D00A-45B9-BB12-B615BDDB0AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF6BF26E-D00A-45B9-BB12-B615BDDB0AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF6BF26E-D00A-45B9-BB12-B615BDDB0AC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -377,5 +385,7 @@ Global
 		{9790D8E5-1E37-434B-A159-576035E24A15} = {EA32AD16-E092-423B-9DAE-E24E6CA38435}
 		{B363427E-17B7-4CD8-A9D0-3AEA9A02E338} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
 		{7033C3D9-E4A0-46FE-8017-9DE6F10ECF3E} = {216801A8-02DC-4AF4-9448-E13902585583}
+		{AD0BEC47-5504-444A-940D-65EC5C9B030A} = {20AF2DF3-F2E9-436E-BA4B-CE94C510E510}
+		{FF6BF26E-D00A-45B9-BB12-B615BDDB0AC0} = {AD0BEC47-5504-444A-940D-65EC5C9B030A}
 	EndGlobalSection
 EndGlobal
