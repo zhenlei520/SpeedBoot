@@ -68,5 +68,4 @@ public interface IRepository<TEntity, TDbContext>
     Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken = default);
 
     #endregion
-
 }

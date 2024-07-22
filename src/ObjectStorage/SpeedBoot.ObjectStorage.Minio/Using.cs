@@ -11,3 +11,5 @@ global using SpeedBoot.ObjectStorage;
 global using System.Runtime.CompilerServices;
 global using SpeedBoot.Configuration;
 global using SpeedBoot.Core;
+global using SpeedBoot.System;
+global using SpeedBoot.System.Threading.Tasks;

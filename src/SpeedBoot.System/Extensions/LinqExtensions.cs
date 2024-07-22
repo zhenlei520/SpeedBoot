@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System.Linq;
+namespace SpeedBoot.System.Linq;
 
 public static class LinqExtensions
 {

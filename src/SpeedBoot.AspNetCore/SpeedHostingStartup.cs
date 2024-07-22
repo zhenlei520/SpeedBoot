@@ -15,7 +15,7 @@ public class SpeedHostingStartup : IHostingStartup
             services.AddHostedService<GenericHostedService>();
 
             services.AddConfiguration(webHostBuilderContext.Configuration);
-            var speedBootApplicationExternal = services.AddSpeed(speedOptions =>
+            var speedBootApplicationExternal = services.AddSpeedBoot(speedOptions =>
             {
                 speedOptions.Assemblies = webHostBuilderContext.Configuration.GetAssemblies();
 

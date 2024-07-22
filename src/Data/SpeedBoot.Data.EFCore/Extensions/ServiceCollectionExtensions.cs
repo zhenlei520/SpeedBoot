@@ -33,7 +33,7 @@ public static class ServiceCollectionExtensions
         {
             services.Configure<ConnectionStrings>(Options.Options.DefaultName, connectionString =>
             {
-                var configurationSection = configuration.GetSection(ConnectionStrings.DEFAULT_SECTION);
+                var configurationSection = configuration.GetSection(GlobalDataConfig.ConnectionString.DefaultSection);
                 configurationSection.Bind(connectionString);
             });
         }

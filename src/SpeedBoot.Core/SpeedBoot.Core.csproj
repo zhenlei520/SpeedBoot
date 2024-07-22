@@ -10,21 +10,4 @@
     <ProjectReference Include="..\SpeedBoot.System\SpeedBoot.System.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="Internal\Extensions\AppExtensions.cs" />
-    <Compile Remove="Internal\Extensions\**" />
-    <Compile Update="Utils\ServiceCollectionUtils.cs">
-      <Link>Internal\ServiceCollectionUtils.cs</Link>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Remove="Internal\Extensions\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Internal\Extensions\**" />
-  </ItemGroup>
-
-
 </Project>

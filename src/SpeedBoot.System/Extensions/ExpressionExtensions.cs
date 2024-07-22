@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System;
+namespace SpeedBoot.System;
 
 public static class ExpressionExtensions
 {

@@ -6,15 +6,11 @@ internal static class Utils
 {
     public static SequentialGuidType GetGuidType(DatabaseType? databaseType)
     {
-        switch (databaseType)
+        return databaseType switch
         {
-            case DatabaseType.MySql:
-            case DatabaseType.PostgreSql:
-                return SequentialGuidType.SequentialAsString;
-            case DatabaseType.Oracle:
-                return SequentialGuidType.SequentialAsBinary;
-            default:
-                return SequentialGuidType.SequentialAtEnd;
-        }
+            DatabaseType.MySql or DatabaseType.PostgreSql => SequentialGuidType.SequentialAsString,
+            DatabaseType.Oracle => SequentialGuidType.SequentialAsBinary,
+            _ => SequentialGuidType.SequentialAtEnd
+        };
     }
 }

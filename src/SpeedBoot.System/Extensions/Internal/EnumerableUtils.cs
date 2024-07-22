@@ -17,10 +17,4 @@ internal static class EnumerableUtils
         bool isCompose,
         Func<TSource, bool>? predicate)
         => isCompose && predicate != null ? source!.Where(predicate) : source;
-
-    public static IEnumerable<TSource>? WhereIf<TSource>(
-        IEnumerable<TSource>? source,
-        bool isCompose,
-        Expression<Func<TSource, bool>?> predicate)
-        => WhereIf(source, isCompose, predicate.Compile());
 }

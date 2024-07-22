@@ -9,6 +9,12 @@ public static class GlobalDataConfig
 {
     public static List<Type> DbContextTypes = new();
 
+    public static ConnectionStringInfo ConnectionString = new ConnectionStringInfo()
+    {
+        DefaultSection = "ConnectionStrings",
+        DefaultConnectionStringName = "DefaultConnection"
+    };
+
     public static void RegisterDbContext<TDbContext>()
     {
         var dbContextType = typeof(TDbContext);

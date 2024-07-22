@@ -5,6 +5,11 @@ namespace SpeedBoot.Data.EFCore.Tests.Model;
 
 public class Person : Entity<Guid>
 {
+    public Person()
+    {
+        Id = Guid.NewGuid();
+    }
+
     public string Name { get; set; }
 
     public DateTime CreateTime { get; set; }

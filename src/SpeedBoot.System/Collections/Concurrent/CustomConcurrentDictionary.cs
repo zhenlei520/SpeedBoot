@@ -3,11 +3,11 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System.Collections.Concurrent;
+namespace SpeedBoot.System.Collections.Concurrent;
 
 public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey : notnull
 {
-    private ConcurrentDictionary<TKey, Lazy<TValue>> _dicCache = new();
+    private ConcurrentDictionary<TKey, Lazy<TValue>> _dicCache;
 
     public TKey[] Keys => _dicCache.Keys.ToArray();
 
@@ -21,17 +21,25 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
     {
     }
 
-    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode)
+    public CustomConcurrentDictionary(IEqualityComparer<TKey>? comparer) : this(LazyThreadSafetyMode.ExecutionAndPublication, comparer)
     {
-        _defaultLazyThreadSafetyMode = lazyThreadSafetyMode;
     }
 
-    public bool Get(TKey key, out TValue? value)
+    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode) : this(lazyThreadSafetyMode, null)
     {
-        bool result = _dicCache.TryGetValue(key, out var lazyValue);
-        value = lazyValue == null ? default : lazyValue.Value;
+    }
 
-        return result;
+    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode, IEqualityComparer<TKey>? comparer)
+    {
+        _defaultLazyThreadSafetyMode = lazyThreadSafetyMode;
+        _dicCache = comparer != null
+            ? new ConcurrentDictionary<TKey, Lazy<TValue>>(comparer)
+            : new ConcurrentDictionary<TKey, Lazy<TValue>>();
+    }
+
+    public TValue? Get(TKey key)
+    {
+        return this[key];
     }
 
     public bool TryGet(TKey key,
@@ -114,6 +122,7 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
             value = val.Value;
             return true;
         }
+
         value = default;
         return false;
     }

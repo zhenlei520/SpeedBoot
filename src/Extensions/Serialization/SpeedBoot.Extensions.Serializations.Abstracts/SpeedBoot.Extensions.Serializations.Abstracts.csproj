@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>$(TargetFrameworkAllVersion)</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Data\SpeedBoot.Data.DependencyInjection.Abstractions\SpeedBoot.Data.DependencyInjection.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

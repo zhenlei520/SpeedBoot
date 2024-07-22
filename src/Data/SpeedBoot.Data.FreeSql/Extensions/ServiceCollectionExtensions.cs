@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
         Action<SpeedDbContextOptionsBuilder>? optionsAction = null)
         where TDbContext : SpeedDbContext, IDbContext //, new()
     {
+        GlobalDataConfig.RegisterDbContext<TDbContext>();
         services.TryAddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.TryAddScoped(typeof(IDbContext), serviceProvider => serviceProvider.GetRequiredService(typeof(TDbContext)));
@@ -24,41 +25,17 @@ public static class ServiceCollectionExtensions
         {
             services.Configure<ConnectionStrings>(Options.Options.DefaultName, connectionString =>
             {
-                var configurationSection = configuration.GetSection(ConnectionStrings.DEFAULT_SECTION);
+                var configurationSection = configuration.GetSection(GlobalDataConfig.ConnectionString.DefaultSection);
                 configurationSection.Bind(connectionString);
             });
         }
 
-        SpeedDbContextHelper.Register<TDbContext>();
+        SpeedDbContextHelper<TDbContext>.Register();
         var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder(typeof(TDbContext));
         optionsAction?.Invoke(speedDbContextOptionsBuilder);
-        services.TryAddScoped<TDbContext>(serviceProvider =>
-        {
-            var freeSqlBuilder = new FreeSqlBuilder();
-            var constructorType = SpeedDbContextHelper.GetConstructorType<TDbContext>();
-            if (constructorType == ConstructorType.Zero)
-            {
-                return SpeedDbContextHelper.CreateInstance<TDbContext>();
-            }
-
-            speedDbContextOptionsBuilder.OptionsAction?.Invoke(serviceProvider, freeSqlBuilder);
-            var freeSql = freeSqlBuilder.Build();
-            speedDbContextOptionsBuilder.FreeSqlOptionsAction?.Invoke(freeSql);
-            if (constructorType == ConstructorType.One)
-            {
-                return SpeedDbContextHelper.CreateInstance<TDbContext>(freeSql);
-            }
-
-            var dbContextOptions = new DbContextOptions();
-            speedDbContextOptionsBuilder.DbContextOptionsAction?.Invoke(dbContextOptions);
-            if (constructorType == ConstructorType.Two)
-            {
-                return SpeedDbContextHelper.CreateInstance<TDbContext>(freeSql, dbContextOptions);
-            }
-
-            throw new NotSupportedException();
-        });
-
+        services.TryAddScoped<TDbContext>(serviceProvider => SpeedDbContextHelper<TDbContext>.Execute(serviceProvider, speedDbContextOptionsBuilder));
+        services.TryAddScoped<FreeSqlAuditInterceptor>();
+        services.TryAddScoped<FreeSqlSaveChangesInterceptor>();
         return services;
     }
 }

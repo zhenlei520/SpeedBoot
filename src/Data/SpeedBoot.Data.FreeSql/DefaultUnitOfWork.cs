@@ -3,7 +3,7 @@
 
 namespace SpeedBoot.Data.FreeSql;
 
-public class DefaultUnitOfWork : SpeedBoot.Data.Abstractions.IUnitOfWork
+public class DefaultUnitOfWork : Abstractions.IUnitOfWork
 {
     private readonly UnitOfWorkWrapper _unitOfWorkWrapper;
 

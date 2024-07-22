@@ -14,3 +14,5 @@ global using SpeedBoot.ObjectStorage;
 global using SpeedBoot.ObjectStorage.Aliyun;
 global using SpeedBoot.Configuration;
 global using SpeedBoot.Core;
+global using Aliyun.OSS.Util;
+global using SpeedBoot.System;

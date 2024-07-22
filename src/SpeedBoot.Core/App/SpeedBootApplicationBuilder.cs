@@ -18,4 +18,7 @@ public class SpeedBootApplicationBuilder
     /// Initialization module
     /// </summary>
     public void Build() => SpeedBootApplication.InitializeComponents();
+
+    public void SetRootServiceProvider(IServiceProvider rootServiceProvider)
+        => SpeedBootApplication.SetServiceProvider(rootServiceProvider);
 }

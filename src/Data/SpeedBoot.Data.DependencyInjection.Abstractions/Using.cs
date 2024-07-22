@@ -8,3 +8,4 @@ global using System.Runtime.CompilerServices;
 global using Microsoft.Extensions.DependencyInjection.Extensions;
 global using SpeedBoot.Data;
 global using SpeedBoot;
+global using SpeedBoot.System.Collections.Concurrent;

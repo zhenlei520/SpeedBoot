@@ -3,7 +3,7 @@
 
 // ReSharper disable once CheckNamespace
 
-namespace System.Threading.Tasks;
+namespace SpeedBoot.System.Threading.Tasks;
 
 public static class TaskExtensions
 {
@@ -28,5 +28,11 @@ public static class TaskExtensions
     public static TResult ToSync<TResult>(this Task<TResult> task, bool continueOnCapturedContext = false)
     {
         return task.ConfigureAwait(continueOnCapturedContext).GetAwaiter().GetResult();
+    }
+
+    internal static async Task<object?> AwaitTaskWithResult<T>(this Task<T> task)
+    {
+        var result = await task;
+        return result;
     }
 }

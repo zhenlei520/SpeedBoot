@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>$(TargetFrameworkAllVersion)</TargetFrameworks>
@@ -16,36 +16,57 @@
     <PackageReference Include="FreeSql.DbContext" Version="$(FreeSqlPackageVersion)" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Internal\Helper\" />
+  </ItemGroup>
+
   <Choose>
-    <When Condition="'$(TargetFramework)' == 'netcoreapp2.1' or '$(TargetFramework)' == 'netcoreapp2.2' or '$(TargetFramework)' == 'netcoreapp3.0' or '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0' or '$(TargetFramework)' == 'net8.0'">
+    <When Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'netcoreapp2.1' or '$(TargetFramework)' == 'netcoreapp2.2' or '$(TargetFramework)' == 'netcoreapp3.0' or '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0' or '$(TargetFramework)' == 'net8.0'">
       <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
-        <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.1" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="2.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.0" />
       </ItemGroup>
       <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
         <PackageReference Include="Microsoft.Extensions.Options" Version="2.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
       </ItemGroup>
       <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
-        <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.3" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.App"/>
       </ItemGroup>
       <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-        <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.32" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.App"/>
       </ItemGroup>
       <ItemGroup Condition="'$(TargetFramework)' == 'net5.0'">
         <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.App"/>
       </ItemGroup>
       <ItemGroup Condition="'$(TargetFramework)' == 'net6.0'">
         <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.App"/>
       </ItemGroup>
       <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-        <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.App"/>
       </ItemGroup>
       <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-        <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.App"/>
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+        <PackageReference Include="Microsoft.Extensions.Options" Version="2.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.0" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.1'">
+        <PackageReference Include="Microsoft.Extensions.Options" Version="3.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
       </ItemGroup>
     </When>
     <Otherwise>
       <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.32" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.App"/>
       </ItemGroup>
     </Otherwise>
   </Choose>

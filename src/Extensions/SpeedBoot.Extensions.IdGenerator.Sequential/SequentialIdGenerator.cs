@@ -8,12 +8,12 @@ public class SequentialIdGenerator : IIdGenerator
 
     public string Key { get; private set; }
 
-    protected SequentialIdGenerator(string? key = null)
+    protected SequentialIdGenerator(string key)
     {
-        Key = key ?? nameof(SequentialIdGenerator);
+        Key = key;
     }
 
-    public SequentialIdGenerator(SequentialGuidType guidType, string? key) : this(key)
+    public SequentialIdGenerator(SequentialGuidType guidType, string key) : this(key)
         => _guidType = guidType;
 
     public Guid Create()
