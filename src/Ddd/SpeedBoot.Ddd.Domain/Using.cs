@@ -6,3 +6,5 @@ global using SpeedBoot.EventBus.Abstracts;
 global using SpeedBoot.Ddd.Domain.Events;
 global using SpeedBoot.Data.Abstractions;
 global using SpeedBoot.Ddd.Domain.Entities.Auditing;
+global using System.Collections.Concurrent;
+
