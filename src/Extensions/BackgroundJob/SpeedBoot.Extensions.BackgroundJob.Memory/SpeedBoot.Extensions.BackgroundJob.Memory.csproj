@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>$(TargetFrameworkAllVersion)</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SpeedBoot.Extensions.BackgroundJob.Abstractions\SpeedBoot.Extensions.BackgroundJob.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>
