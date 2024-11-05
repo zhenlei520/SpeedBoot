@@ -5,9 +5,9 @@ namespace SpeedBoot.Extensions.Serialization.SystemTextJson.Components;
 
 public class SystemTextJsonServiceRegister: ServiceRegisterComponentBase
 {
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(ConfigureServiceContext context)
     {
-        services.AddSystemTextJson(new JsonSerializerOptions(JsonSerializerDefaults.Web)
+        context.Services.AddSystemTextJson(new JsonSerializerOptions(JsonSerializerDefaults.Web)
         {
             WriteIndented = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,

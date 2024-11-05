@@ -16,6 +16,8 @@ public class SpeedOptions
     /// </summary>
     public Assembly[]? Assemblies { get; set; }
 
+    public IConfiguration? Configuration { get; set; }
+
     /// <summary>
     /// current environment information
     /// </summary>

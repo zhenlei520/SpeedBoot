@@ -5,9 +5,9 @@ namespace SpeedBoot.Extensions.IdGenerator.Normal.Components;
 
 public class IdGeneratorServiceRegister : ServiceRegisterComponentBase
 {
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(ConfigureServiceContext context)
     {
         var key = App.Instance.GetConfiguration(true)?.GetSection("SpeedBoot").GetSection("IdGenerator").GetSection("Key").Value;
-        services.AddNormalIdGenerator(key);
+        context.Services.AddNormalIdGenerator(key);
     }
 }

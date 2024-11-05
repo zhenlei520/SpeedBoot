@@ -13,16 +13,16 @@ public class FreeSqlServiceRegister : ServiceRegisterComponentBase
     /// </summary>
     private static int DataBase;
 
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(ConfigureServiceContext context)
     {
         var configurationBuilder = new ConfigurationBuilder();
         configurationBuilder.AddJsonFile("appsettings.json");
         var configurationRoot = configurationBuilder.Build();
         DataBase = int.Parse(configurationRoot["ConnectionStrings:DataBase"]);
-        services.AddConfiguration(configurationRoot);
+        context.Services.AddConfiguration(configurationRoot);
         // services.AddSingleton<ISaveChangesInterceptor, SaveChangesInterceptor>();
-        services.AddSingleton<IDbContextInterceptor, DbContextInterceptor>();
-        services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
+        context.Services.AddSingleton<IDbContextInterceptor, DbContextInterceptor>();
+        context.Services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
         {
             switch (DataBase)
             {

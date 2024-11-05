@@ -10,6 +10,6 @@ namespace SpeedBoot.ObjectStorage.Aliyun;
 /// </summary>
 public class LocalEventBusServiceRegister : ServiceRegisterComponentBase
 {
-    public override void ConfigureServices(IServiceCollection services)
-        => services.AddLocalEventBus();
+    public override void ConfigureServices(ConfigureServiceContext context)
+        => context.Services.AddLocalEventBus();
 }

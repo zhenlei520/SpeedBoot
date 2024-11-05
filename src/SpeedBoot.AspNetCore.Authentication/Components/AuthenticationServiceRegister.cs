@@ -7,7 +7,7 @@ namespace SpeedBoot.Authentication.Components;
 
 public class AuthenticationServiceRegister : ServiceRegisterComponentBase
 {
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(ConfigureServiceContext context)
     {
         var identitySection = App.Instance.GetRequiredSingletonService<IConfiguration>(true).GetSection("SpeedBoot:Identity");
         var identityUserFullName = identitySection.GetSection("IdentityUserType").Value;
@@ -25,7 +25,7 @@ public class AuthenticationServiceRegister : ServiceRegisterComponentBase
                 => m.Name == nameof(SpeedBootIdentity_ServiceCollectionExtensions.AddSpeedBootIdentity) && m.IsGenericMethod &&
                 m.GetGenericArguments().Length == 2 && m.GetParameters().Length == 2);
         SpeedArgumentException.ThrowIfNull(methodInfo);
-        methodInfo!.MakeGenericMethod(identityUserType, identityUserKeyType).Invoke(null, new object[] { services, Action });
+        methodInfo!.MakeGenericMethod(identityUserType, identityUserKeyType).Invoke(null, new object[] { context.Services, Action });
 
         void Action(IdentityClaimOptions options)
         {
