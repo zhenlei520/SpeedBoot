@@ -20,6 +20,8 @@ internal static class SpeedBootApplicationExtensions
     {
         var serviceRegisterStartup = new ServiceRegisterStartup(
             application.Services,
+            application.Configuration,
+            application.EnvironmentName,
             application.Assemblies,
             new Lazy<ILogger?>(() => App.Instance.GetSingletonService<ILogger>(true), LazyThreadSafetyMode.ExecutionAndPublication));
         application.Startups.Add(serviceRegisterStartup);

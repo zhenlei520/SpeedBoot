@@ -13,8 +13,8 @@ public class DependencyInjectionServiceRegister : ServiceRegisterComponentBase
         _speedOptions = speedOptions;
     }
 
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(ConfigureServiceContext context)
     {
-        services.AddAutoInject(_speedOptions.GetValidAssemblies());
+        context.Services.AddAutoInject(_speedOptions.GetValidAssemblies());
     }
 }

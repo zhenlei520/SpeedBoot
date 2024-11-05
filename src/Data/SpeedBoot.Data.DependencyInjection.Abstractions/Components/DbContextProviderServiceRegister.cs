@@ -10,6 +10,6 @@ namespace SpeedBoot.Data.DependencyInjection.Abstractions;
 /// </summary>
 public class DbContextProviderServiceRegister : ServiceRegisterComponentBase
 {
-    public override void ConfigureServices(IServiceCollection services)
-        => services.AddSpeedDbContextCore();
+    public override void ConfigureServices(ConfigureServiceContext context)
+        => context.Services.AddSpeedDbContextCore();
 }

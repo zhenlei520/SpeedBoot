@@ -9,22 +9,27 @@ public class SpeedBootApplication : ISpeedBootApplication
 {
     public IServiceCollection Services { get; }
 
+    public IConfiguration? Configuration { get; }
+
+    public string EnvironmentName { get; private set; }
+
     public IServiceProvider? RootServiceProvider { get; private set; }
 
     public IList<IAppStartup> Startups { get; }
 
     public Assembly[] Assemblies { get; }
 
-    public SpeedBootApplication(IServiceCollection services, Assembly[] assemblies)
+    public SpeedBootApplication(IServiceCollection services, Assembly[] assemblies, IConfiguration? configuration, string? environmentName)
     {
         Services = services;
+        Configuration = configuration;
+        EnvironmentName = environmentName ?? Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
         Startups = new List<IAppStartup>();
         Assemblies = assemblies;
     }
 
     public void Shutdown()
     {
-
     }
 
     public void SetServiceProvider(IServiceProvider rootServiceProvider)

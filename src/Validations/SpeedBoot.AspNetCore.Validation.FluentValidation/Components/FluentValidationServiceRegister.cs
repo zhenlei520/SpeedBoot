@@ -5,8 +5,8 @@ namespace SpeedBoot.AspNetCore.Validation.FluentValidation.Components;
 
 public class FluentValidationServiceRegister: ServiceRegisterComponentBase
 {
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(ConfigureServiceContext context)
     {
-        services.AddFluentAutoValidation();
+        context.Services.AddFluentAutoValidation();
     }
 }

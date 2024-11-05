@@ -16,15 +16,15 @@ public class EFCoreServiceRegister : ServiceRegisterComponentBase
     /// </summary>
     private static int DataBase;
 
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(ConfigureServiceContext context)
     {
         var configurationBuilder = new ConfigurationBuilder();
         configurationBuilder.AddJsonFile("appsettings.json");
         var configurationRoot = configurationBuilder.Build();
         DataBase = int.Parse(configurationRoot["ConnectionStrings:DataBase"]);
-        services.AddConfiguration(configurationRoot);
-        services.AddSingleton<ISaveChangesInterceptor, SaveChangesInterceptor>();
-        services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
+        context.Services.AddConfiguration(configurationRoot);
+        context.Services.AddSingleton<ISaveChangesInterceptor, SaveChangesInterceptor>();
+        context.Services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
         {
             switch (DataBase)
             {
