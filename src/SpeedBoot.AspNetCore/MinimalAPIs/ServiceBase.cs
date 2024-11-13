@@ -3,9 +3,6 @@
 
 #if NET6_0_OR_GREATER
 
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-
 namespace SpeedBoot.AspNetCore;
 
 public abstract class ServiceBase
@@ -29,14 +26,16 @@ public abstract class ServiceBase
 
     protected List<RouteAttribute> RouteAttributes;
 #if NET7_0_OR_GREATER
-    protected List<EndpointFilterBaseAttribute> EndpointFilters;
+    protected IEnumerable<IMetadataAttribute> MetadataAttributes;
+    protected IEnumerable<EndpointFilterBaseAttribute> EndpointFilterAttributeWithClass;
 #endif
 
     protected ServiceBase()
     {
         RouteAttributes = GetType().GetCustomAttributes<RouteAttribute>(true).ToList();
 #if NET7_0_OR_GREATER
-        EndpointFilters = GetType().GetCustomAttributes<EndpointFilterBaseAttribute>(true).ToList();
+        MetadataAttributes = GetType().GetCustomAttributes(true).OfType<IMetadataAttribute>();
+        EndpointFilterAttributeWithClass = GetType().GetCustomAttributes<EndpointFilterBaseAttribute>(true);
 #endif
     }
 
@@ -45,7 +44,7 @@ public abstract class ServiceBase
         var methodInfos = MethodHelper.GetMethodInfos(GetType());
         var templatesByClass = RouteAttributes.Any()
             ? RouteAttributes.Select(attribute => attribute.Template).ToList()
-            : new List<string>() { globalServiceRouteOptions.RouteTemplate };
+            : [globalServiceRouteOptions.RouteTemplate];
         string? serviceName = null;
         foreach (var methodInfo in methodInfos)
         {
@@ -59,14 +58,16 @@ public abstract class ServiceBase
                     action.Invoke(methodInfo, routeHandlerBuilder);
                 }
 
-                TryRegisterEndpointFilter(routeHandlerBuilder, methodInfo);
+#if NET7_0_OR_GREATER
+                TryRegisterMetadata(routeHandlerBuilder, methodInfo.GetCustomAttributes(true).OfType<IMetadataAttribute>());
+                TryRegisterEndpointFilter(routeHandlerBuilder, methodInfo.GetCustomAttributes<EndpointFilterBaseAttribute>(true));
+#endif
             }
         }
 
         string GetServiceName()
         {
-            return serviceName ??= this.GetServiceName(RouteOptions.DisablePluralizeServiceName ??
-                                                       globalServiceRouteOptions.DisablePluralizeServiceName ?? false);
+            return serviceName ??= this.GetServiceName(RouteOptions.DisablePluralizeServiceName ?? globalServiceRouteOptions.DisablePluralizeServiceName ?? false);
         }
     }
 
@@ -103,7 +104,7 @@ public abstract class ServiceBase
 
             if (newTemplate.Contains("[action]"))
             {
-                newTemplate = newTemplate.Replace("[action]", TryGetCustomActionName(out var customActionName) ? customActionName : actionNameFunc.Invoke());
+                newTemplate = newTemplate.Replace("[action]", TryGetCustomActionName(methodInfo, out var customActionName) ? customActionName : actionNameFunc.Invoke());
             }
 
             patterns.Add((newTemplate, httpMethods));
@@ -111,18 +112,6 @@ public abstract class ServiceBase
 
         return patterns;
 
-        bool TryGetCustomActionName(out string actionName)
-        {
-            var attribute = methodInfo.GetCustomAttribute<ActionNameAttribute>();
-            if (attribute != null)
-            {
-                actionName = attribute.Name.ToSafeString();
-                return true;
-            }
-
-            actionName = string.Empty;
-            return false;
-        }
 
         string GetActionName()
         {
@@ -133,6 +122,19 @@ public abstract class ServiceBase
         {
             return speculateMethod ??= MethodHelper.SpeculateMethodsAndActionNameFunc(globalServiceRouteOptions, RouteOptions, methodInfo);
         }
+    }
+
+    bool TryGetCustomActionName(MethodInfo methodInfo, out string actionName)
+    {
+        var attribute = methodInfo.GetCustomAttribute<ActionNameAttribute>();
+        if (attribute != null)
+        {
+            actionName = attribute.Name.ToSafeString();
+            return true;
+        }
+
+        actionName = string.Empty;
+        return false;
     }
 
     Delegate CreateDelegate(MethodInfo methodInfo, object targetInstance)
@@ -170,40 +172,21 @@ public abstract class ServiceBase
         return EnglishPluralizationService.Pluralize(serviceName);
     }
 
-    protected virtual void TryRegisterEndpointFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
-    {
 #if NET7_0_OR_GREATER
-        RegisterEndpointFilter(routeHandlerBuilder, methodInfo);
+    protected virtual void TryRegisterMetadata(
+        RouteHandlerBuilder routeHandlerBuilder,
+        IEnumerable<IMetadataAttribute> metadataAttributeWithMethod)
+    {
+        MetadataHelper.CompletionMetadata(routeHandlerBuilder, metadataAttributeWithMethod, MetadataAttributes);
+    }
 #endif
-    }
 
 #if NET7_0_OR_GREATER
-    private void RegisterEndpointFilter(RouteHandlerBuilder routeHandlerBuilder, MethodInfo methodInfo)
+    protected virtual void TryRegisterEndpointFilter(
+        RouteHandlerBuilder routeHandlerBuilder,
+        IEnumerable<EndpointFilterBaseAttribute> endpointFilterAttributeWithMethod)
     {
-        var endpointFilterAttributes = GetMethodEndpointFilterAttributes(methodInfo);
-        var tempEndpointFilters = EndpointFilters.Where(attribute => !endpointFilterAttributes.Any(a => a.GetType() == attribute.GetType()))
-            .ToList();
-        foreach (var attribute in tempEndpointFilters)
-        {
-            routeHandlerBuilder.WithMetadata(attribute);
-        }
-
-        var allActionFilters = endpointFilterAttributes.Union(tempEndpointFilters).OrderBy(attribute => attribute.Order).ToList();
-        foreach (var customFilterAttribute in allActionFilters)
-        {
-            routeHandlerBuilder.AddEndpointFilter((invocationContext, next) =>
-            {
-                var actionFilterProvider =
-                    invocationContext.HttpContext.RequestServices.GetService(customFilterAttribute.ServiceType) as IEndpointFilterProvider;
-                SpeedArgumentException.ThrowIfNull(actionFilterProvider);
-                return actionFilterProvider.HandlerAsync(invocationContext, next);
-            });
-        }
-    }
-
-    private IEnumerable<EndpointFilterBaseAttribute> GetMethodEndpointFilterAttributes(MethodInfo methodInfo)
-    {
-        return methodInfo.GetCustomAttributes<EndpointFilterBaseAttribute>(true).ToList();
+        EndpointFilterHelper.RegisterEndpointFilter(routeHandlerBuilder, endpointFilterAttributeWithMethod, EndpointFilterAttributeWithClass);
     }
 #endif
 }
