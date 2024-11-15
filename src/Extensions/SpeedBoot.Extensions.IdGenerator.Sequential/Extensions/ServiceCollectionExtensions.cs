@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
         if (!IdGeneratorServiceCollectionRegistry.TryAdd(services, key))
             return services;
 
+        services.AddSingleton<IIdGenerator<Guid>, IIdGenerator>();
         services.AddSingleton<IIdGenerator>(_ => new SequentialIdGenerator(sequentialGuidType, key));
         return services;
     }

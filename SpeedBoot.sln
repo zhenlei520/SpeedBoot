@@ -179,6 +179,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.Depend
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.Serialization.SystemTextJson.Tests", "test\Extensions\SpeedBoot.Extensions.Serialization.SystemTextJson.Tests\SpeedBoot.Extensions.Serialization.SystemTextJson.Tests.csproj", "{F62344AF-4EBC-44DB-A812-2C2FCB204349}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedBoot.Extensions.IdGenerator.Snowflake", "src\Extensions\SpeedBoot.Extensions.IdGenerator.Snowflake\SpeedBoot.Extensions.IdGenerator.Snowflake.csproj", "{73BE3F72-C12E-4CE7-B2B8-A9063EA30980}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -381,6 +383,10 @@ Global
 		{AA16A2AA-9121-4151-BA58-EC44ACBE67BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA16A2AA-9121-4151-BA58-EC44ACBE67BA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{AA16A2AA-9121-4151-BA58-EC44ACBE67BA}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{73BE3F72-C12E-4CE7-B2B8-A9063EA30980}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73BE3F72-C12E-4CE7-B2B8-A9063EA30980}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73BE3F72-C12E-4CE7-B2B8-A9063EA30980}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73BE3F72-C12E-4CE7-B2B8-A9063EA30980}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -453,5 +459,6 @@ Global
 		{114489C0-D99D-422B-B79C-7700C786CC48} = {216801A8-02DC-4AF4-9448-E13902585583}
 		{2CE3FE5B-4265-41A1-81F5-E815CE50571D} = {114489C0-D99D-422B-B79C-7700C786CC48}
 		{F62344AF-4EBC-44DB-A812-2C2FCB204349} = {114489C0-D99D-422B-B79C-7700C786CC48}
+		{73BE3F72-C12E-4CE7-B2B8-A9063EA30980} = {2D3F99D6-55C3-4C2C-A5A9-966948F915A0}
 	EndGlobalSection
 EndGlobal

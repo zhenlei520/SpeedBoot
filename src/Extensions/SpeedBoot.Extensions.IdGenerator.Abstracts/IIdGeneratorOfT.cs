@@ -3,7 +3,8 @@
 
 namespace SpeedBoot.Extensions.IdGenerator.Abstracts;
 
-public interface IIdGenerator : IIdGenerator<Guid>
+public interface IIdGenerator<T> : IService
+    where T : struct
 {
-
+    T Create();
 }

@@ -14,6 +14,7 @@ public static class ServiceCollectionExtensions
         if (!ServiceCollectionUtils.TryAdd<NormalIdGeneratorProvider>(services))
             return services;
 
+        services.AddSingleton<IIdGenerator<Guid>, IIdGenerator>();
         services.AddSingleton<IIdGenerator>(_ => new NormalIdGenerator(key));
         return services;
     }

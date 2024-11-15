@@ -5,7 +5,7 @@ namespace SpeedBoot.Extensions.DependencyInjection.Abstractions;
 
 public abstract class ServiceCollectionRegistryBase<TService> where TService : IService
 {
-    private static Dictionary<IntPtr, List<string>> _keyValuePairs = new Dictionary<IntPtr, List<string>>();
+    private static Dictionary<IntPtr, List<string>> _keyValuePairs = new();
 
     public static bool TryAdd(IServiceCollection services, string key)
     {
