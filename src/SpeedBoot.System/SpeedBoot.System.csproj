@@ -9,6 +9,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Backport.System.Threading.Lock" Version="3.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>analyzers</IncludeAssets>
+    </PackageReference>
+    <Using Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="System.Threading.Lock" />
+    <Using Condition="!$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net9.0'))" Alias="Lock" Include="Backport.System.Threading.Lock" />
+    <Using Alias="LockFactory" Include="Backport.System.Threading.LockFactory" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\SpeedBoot.SourceGenerator\Attributes\I18nResourceAttribute.cs">
       <Link>Attributes\I18nResourceAttribute.cs</Link>
     </Compile>

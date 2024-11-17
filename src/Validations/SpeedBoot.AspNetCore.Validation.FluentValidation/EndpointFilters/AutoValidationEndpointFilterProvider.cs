@@ -1,11 +1,11 @@
-﻿// Copyright (c) zhenlei520 All rights reserved.
+// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
 namespace SpeedBoot.AspNetCore.Validation.FluentValidation.EndpointFilters;
 
 public class AutoValidationEndpointFilterProvider : EndpointFilterProviderBase
 {
-    private static readonly object Lock = new();
+    private static readonly Lock Lock = LockFactory.Create();
     private static List<Type>? _validatorEntityTypes;
     private readonly IOptions<JsonOptions> _jsonOptions;
     private static readonly ConcurrentDictionary<Type, Type> ValidatorTypes = new();

@@ -6,7 +6,7 @@ namespace SpeedBoot.System;
 
 internal class ConvertDelegate<TValue>
 {
-    private static object _obj = new { };
+    private static Lock _lock = LockFactory.Create();
     private static Func<string, TValue>? _parseFunc;
 
     public static Func<string, TValue> GetConvertToDelegate()
@@ -14,7 +14,7 @@ internal class ConvertDelegate<TValue>
         if (_parseFunc != null)
             return _parseFunc;
 
-        lock (_obj)
+        lock (_lock)
         {
             _parseFunc ??= BuildDelegate();
             return _parseFunc;
