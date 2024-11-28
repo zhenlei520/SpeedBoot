@@ -46,27 +46,28 @@ public static class ServiceCollectionExtensions
         {
             assemblies = assemblies.Union(AppDomain.CurrentDomain.GetAssemblies()).ToList();
         }
-        services.TryRegisterEndpointFilters(assemblies);
+        services.TryRegisterEndpointFilters(assemblies, globalServiceRouteOptions.DefaultEndpointFilterServiceLifetime);
         services.RegisterServices(assemblies, globalServiceRouteOptions);
         return App.Instance.GetRequiredSingletonService<WebApplication>();
     }
 
-    private static void TryRegisterEndpointFilters(this IServiceCollection services, IEnumerable<Assembly> assemblies)
+    private static void TryRegisterEndpointFilters(this IServiceCollection services, IEnumerable<Assembly> assemblies,  ServiceLifetime endpointFilterServiceLifetime)
     {
 #if NET7_0_OR_GREATER
-        services.RegisterEndpointFilters(assemblies);
+        services.RegisterEndpointFilters(assemblies, endpointFilterServiceLifetime);
 #endif
     }
 
 #if NET7_0_OR_GREATER
     private static void RegisterEndpointFilters(
         this IServiceCollection services,
-        IEnumerable<Assembly> assemblies)
+        IEnumerable<Assembly> assemblies,
+        ServiceLifetime endpointFilterServiceLifetime)
     {
         var endpointFilterProviderTypes = AssemblyHelper.GetEndpointFilterProviderTypes(assemblies).ToList();
         foreach (var providerType in endpointFilterProviderTypes)
         {
-            services.AddSingleton(providerType);
+            services.Add(new ServiceDescriptor(providerType, providerType, endpointFilterServiceLifetime));
         }
     }
 #endif

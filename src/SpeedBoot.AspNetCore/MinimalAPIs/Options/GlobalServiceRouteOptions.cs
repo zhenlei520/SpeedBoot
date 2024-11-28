@@ -14,7 +14,7 @@ public class GlobalServiceRouteOptions : ServiceRouteOptions
         get => _routeTemplate;
         set
         {
-            SpeedArgumentException.ThrowIfNullOrWhiteSpace(value,nameof(RouteTemplate));
+            SpeedArgumentException.ThrowIfNullOrWhiteSpace(value, nameof(RouteTemplate));
             _routeTemplate = value;
         }
     }
@@ -22,6 +22,8 @@ public class GlobalServiceRouteOptions : ServiceRouteOptions
     public bool DisableContainsAppDomainAssemblies { get; set; }
 
     public IEnumerable<Assembly>? AdditionalAssemblies { get; set; }
+
+    public ServiceLifetime DefaultEndpointFilterServiceLifetime { get; set; }
 
     public GlobalServiceRouteOptions()
     {
@@ -35,6 +37,7 @@ public class GlobalServiceRouteOptions : ServiceRouteOptions
         DisableTrimMethodPrefix = false;
         DisableTrimMethodSuffix = false;
         DisableAutoAppendId = false;
+        DefaultEndpointFilterServiceLifetime = ServiceLifetime.Singleton;
     }
 }
 
