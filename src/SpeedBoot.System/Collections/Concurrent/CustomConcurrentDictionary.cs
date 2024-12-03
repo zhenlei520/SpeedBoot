@@ -33,15 +33,7 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
     {
     }
 
-    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode) : this(lazyThreadSafetyMode, null)
-    {
-    }
-
-    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, LazyThreadSafetyMode lazyThreadSafetyMode) : this(collection, lazyThreadSafetyMode, null)
-    {
-    }
-
-    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode, IEqualityComparer<TKey>? comparer)
+    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode, IEqualityComparer<TKey>? comparer = null)
     {
         _defaultLazyThreadSafetyMode = lazyThreadSafetyMode;
         _dicCache = comparer != null
@@ -49,7 +41,7 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
             : new ConcurrentDictionary<TKey, Lazy<TValue>>();
     }
 
-    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, LazyThreadSafetyMode lazyThreadSafetyMode, IEqualityComparer<TKey>? comparer)
+    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, LazyThreadSafetyMode lazyThreadSafetyMode, IEqualityComparer<TKey>? comparer = null)
     {
         _defaultLazyThreadSafetyMode = lazyThreadSafetyMode;
         _dicCache = comparer != null
