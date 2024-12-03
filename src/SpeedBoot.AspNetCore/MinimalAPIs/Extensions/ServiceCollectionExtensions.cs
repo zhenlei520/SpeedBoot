@@ -84,9 +84,11 @@ public static class ServiceCollectionExtensions
         {
             services.AddSingleton(serviceType);
         }
+        var serviceProvider=services.BuildServiceProvider();
+        var app = serviceProvider.GetRequiredService<WebApplication>();
         foreach (var serviceType in serviceTypes)
         {
-            var service = services.BuildServiceProvider().GetRequiredService(serviceType);
+            var service = app.Services.GetRequiredService(serviceType);
 
             var serviceBase = (ServiceBase)service;
             if (serviceBase.RouteOptions.DisableAutoMapRoute ?? globalServiceRouteOptions.DisableAutoMapRoute ?? false)

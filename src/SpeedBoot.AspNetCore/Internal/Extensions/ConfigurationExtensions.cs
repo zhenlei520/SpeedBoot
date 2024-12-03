@@ -24,7 +24,7 @@ internal static class ConfigurationExtensions
         else
         {
             var assemblyName = configuration["SpeedBoot:AssemblyName"];
-            if (assemblyName != null) assemblyOptions.IncludeAssemblyRules = new List<string>() { assemblyName };
+            if (assemblyName != null) assemblyOptions.IncludeAssemblyRules = [assemblyName];
         }
 
         var excludeAssemblyRules = configuration.GetRules("SpeedBoot:ExcludeAssemblyRules");
