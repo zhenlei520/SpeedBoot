@@ -23,7 +23,11 @@ public class GlobalServiceRouteOptions : ServiceRouteOptions
 
     public IEnumerable<Assembly>? AdditionalAssemblies { get; set; }
 
+#if NET7_0_OR_GREATER
     public ServiceLifetime DefaultEndpointFilterServiceLifetime { get; set; }
+
+    public Func<Type, ServiceLifetime?>? EndpointFilterServiceLifetimeFunc { get; set; }
+#endif
 
     public GlobalServiceRouteOptions()
     {
@@ -37,7 +41,10 @@ public class GlobalServiceRouteOptions : ServiceRouteOptions
         DisableTrimMethodPrefix = false;
         DisableTrimMethodSuffix = false;
         DisableAutoAppendId = false;
+#if NET7_0_OR_GREATER
         DefaultEndpointFilterServiceLifetime = ServiceLifetime.Singleton;
+        EndpointFilterServiceLifetimeFunc = null;
+#endif
     }
 }
 
