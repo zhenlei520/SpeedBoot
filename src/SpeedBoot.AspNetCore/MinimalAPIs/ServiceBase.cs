@@ -11,13 +11,21 @@ public abstract class ServiceBase
 
     public WebApplication App => _app ??= SpeedBoot.App.Instance.GetRequiredSingletonService<WebApplication>();
 
-    public IServiceProvider Services =>
-        ServiceCollection.BuildServiceProvider().GetService<IHttpContextAccessor>()?.HttpContext?.RequestServices ??
-        ServiceCollection.BuildServiceProvider() ?? throw new Exception($"{nameof(ServiceBase)} get the IServiceProvider faild.");
+    public IServiceProvider Services => HttpContext?.RequestServices ??
+                                        ServiceCollection.BuildServiceProvider() ??
+                                        throw new Exception($"{nameof(ServiceBase)} get the IServiceProvider faild.");
 
     public IServiceCollection ServiceCollection => SpeedBoot.App.Instance.GetRequiredSingletonService<IServiceCollection>();
 
     public ServiceRouteOptions RouteOptions { get; set; } = new();
+
+    protected HttpContext? HttpContext => Services.GetRequiredService<IHttpContextAccessor>().HttpContext;
+
+    protected TService? GetService<TService>()
+        => Services.GetService<TService>();
+
+    protected TService GetRequiredService<TService>() where TService: notnull
+        => Services.GetRequiredService<TService>();
 
     private IEnglishPluralizationService? _englishPluralizationService;
 
@@ -67,7 +75,8 @@ public abstract class ServiceBase
 
         string GetServiceName()
         {
-            return serviceName ??= this.GetServiceName(RouteOptions.DisablePluralizeServiceName ?? globalServiceRouteOptions.DisablePluralizeServiceName ?? false);
+            return serviceName ??= this.GetServiceName(RouteOptions.DisablePluralizeServiceName ??
+                                                       globalServiceRouteOptions.DisablePluralizeServiceName ?? false);
         }
     }
 
@@ -104,7 +113,8 @@ public abstract class ServiceBase
 
             if (newTemplate.Contains("[action]"))
             {
-                newTemplate = newTemplate.Replace("[action]", TryGetCustomActionName(methodInfo, out var customActionName) ? customActionName : actionNameFunc.Invoke());
+                newTemplate = newTemplate.Replace("[action]",
+                    TryGetCustomActionName(methodInfo, out var customActionName) ? customActionName : actionNameFunc.Invoke());
             }
 
             patterns.Add((newTemplate, httpMethods));
