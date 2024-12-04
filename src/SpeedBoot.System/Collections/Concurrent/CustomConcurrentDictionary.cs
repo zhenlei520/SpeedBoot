@@ -25,7 +25,8 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
     {
     }
 
-    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey>? comparer) : this(collection, LazyThreadSafetyMode.ExecutionAndPublication, comparer)
+    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey>? comparer) : this(
+        collection, LazyThreadSafetyMode.ExecutionAndPublication, comparer)
     {
     }
 
@@ -37,10 +38,12 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
             : new ConcurrentDictionary<TKey, Lazy<TValue>>();
     }
 
-    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, LazyThreadSafetyMode lazyThreadSafetyMode = LazyThreadSafetyMode.ExecutionAndPublication, IEqualityComparer<TKey>? comparer = null)
+    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection,
+        LazyThreadSafetyMode lazyThreadSafetyMode = LazyThreadSafetyMode.ExecutionAndPublication, IEqualityComparer<TKey>? comparer = null)
     {
         _defaultLazyThreadSafetyMode = lazyThreadSafetyMode;
-        var data = collection.Select(kv => new KeyValuePair<TKey, Lazy<TValue>>(kv.Key, new Lazy<TValue>(() => kv.Value, lazyThreadSafetyMode)));
+        var data = collection.Select(kv =>
+            new KeyValuePair<TKey, Lazy<TValue>>(kv.Key, new Lazy<TValue>(() => kv.Value, lazyThreadSafetyMode)));
         _dicCache = comparer != null
             ? new ConcurrentDictionary<TKey, Lazy<TValue>>(data, comparer)
             : new ConcurrentDictionary<TKey, Lazy<TValue>>(data);
@@ -145,6 +148,9 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
     {
         _dicCache.Clear();
     }
+
+    public IEnumerable<KeyValuePair<TKey, TValue>> GetEnumerable()
+        => _dicCache.Select(x=> new KeyValuePair<TKey, TValue>(x.Key, x.Value.Value));
 
     public void Dispose()
     {
