@@ -7,7 +7,7 @@ namespace SpeedBoot.System.Collections.Concurrent;
 
 public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey : notnull
 {
-    private ConcurrentDictionary<TKey, Lazy<TValue>> _dicCache;
+    private readonly ConcurrentDictionary<TKey, Lazy<TValue>> _dicCache;
 
     public ICollection<TKey> Keys => _dicCache.Keys;
 
@@ -18,10 +18,6 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
     private readonly LazyThreadSafetyMode _defaultLazyThreadSafetyMode;
 
     public CustomConcurrentDictionary() : this(LazyThreadSafetyMode.ExecutionAndPublication)
-    {
-    }
-
-    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection) : this(collection, LazyThreadSafetyMode.ExecutionAndPublication)
     {
     }
 
@@ -41,12 +37,13 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
             : new ConcurrentDictionary<TKey, Lazy<TValue>>();
     }
 
-    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, LazyThreadSafetyMode lazyThreadSafetyMode, IEqualityComparer<TKey>? comparer = null)
+    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, LazyThreadSafetyMode lazyThreadSafetyMode = LazyThreadSafetyMode.ExecutionAndPublication, IEqualityComparer<TKey>? comparer = null)
     {
         _defaultLazyThreadSafetyMode = lazyThreadSafetyMode;
+        var data = collection.Select(kv => new KeyValuePair<TKey, Lazy<TValue>>(kv.Key, new Lazy<TValue>(() => kv.Value, lazyThreadSafetyMode)));
         _dicCache = comparer != null
-            ? new ConcurrentDictionary<TKey, Lazy<TValue>>(collection.Select(kv => new KeyValuePair<TKey, Lazy<TValue>>(kv.Key, new Lazy<TValue>(() => kv.Value, lazyThreadSafetyMode))), comparer)
-            : new ConcurrentDictionary<TKey, Lazy<TValue>>();
+            ? new ConcurrentDictionary<TKey, Lazy<TValue>>(data, comparer)
+            : new ConcurrentDictionary<TKey, Lazy<TValue>>(data);
     }
 
     public TValue? Get(TKey key)
