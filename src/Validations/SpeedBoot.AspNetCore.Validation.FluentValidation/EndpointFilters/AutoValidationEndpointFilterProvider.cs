@@ -5,31 +5,13 @@ namespace SpeedBoot.AspNetCore.Validation.FluentValidation.EndpointFilters;
 
 public class AutoValidationEndpointFilterProvider : EndpointFilterProviderBase
 {
-    private static readonly Lock Lock = LockFactory.Create();
-    private static List<Type>? _validatorEntityTypes;
     private readonly IOptions<JsonOptions> _jsonOptions;
-    private static readonly ConcurrentDictionary<Type, Type> ValidatorTypes = new();
+    private readonly ValidatorEntityTypeContext _validatorEntityTypeContext;
 
-    public AutoValidationEndpointFilterProvider(IOptions<JsonOptions> jsonOptions)
+    public AutoValidationEndpointFilterProvider(ValidatorEntityTypeContext validatorEntityTypeContext, IOptions<JsonOptions> jsonOptions)
     {
-        if (_validatorEntityTypes is null)
-        {
-            InitValidatorTypes();
-        }
         _jsonOptions = jsonOptions;
-    }
-
-    private static void InitValidatorTypes()
-    {
-        if (_validatorEntityTypes is not null) return;
-
-        lock (Lock)
-        {
-            if (_validatorEntityTypes is not null) return;
-
-            var validatorType = typeof(IValidator);
-            _validatorEntityTypes = App.Instance.Services.Where(service => service.ServiceType.IsAssignableTo(validatorType)).SelectMany(service => service.ServiceType.GenericTypeArguments).ToList();
-        }
+        _validatorEntityTypeContext = validatorEntityTypeContext;
     }
 
     public override async ValueTask<object?> HandlerAsync(EndpointFilterInvocationContext invocationContext, EndpointFilterDelegate next)
@@ -39,13 +21,14 @@ public class AutoValidationEndpointFilterProvider : EndpointFilterProviderBase
             var argument = invocationContext.Arguments[i];
 
             var type = argument?.GetType();
-            if (type is null || !_validatorEntityTypes!.Contains(type)) continue;
-            var validatorType = ValidatorTypes.GetOrAdd(type, t => typeof(IValidator<>).MakeGenericType(type));
+            if (type is null || !_validatorEntityTypeContext.TryGet(type, out var validatorType))
+                continue;
 
             if (invocationContext.HttpContext.RequestServices.GetService(validatorType) is not IValidator validator)
                 continue;
 
-            var validationResult = await validator.ValidateAsync(new ValidationContext<object?>(argument), invocationContext.HttpContext.RequestAborted);
+            var validationResult =
+                await validator.ValidateAsync(new ValidationContext<object?>(argument), invocationContext.HttpContext.RequestAborted);
 
             if (validationResult.IsValid)
                 continue;

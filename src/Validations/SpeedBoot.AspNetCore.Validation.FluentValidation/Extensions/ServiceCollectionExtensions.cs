@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
         if (!ServiceCollectionUtils.TryAdd<FluentAutoValidationProvider>(services))
             return services;
 
+        services.AddSingleton<ValidatorEntityTypeContext>();
         services.Configure<GlobalServiceRouteOptions>(options =>
         {
             var additionalAssemblies = options.AdditionalAssemblies?.ToList() ?? new List<Assembly>();
