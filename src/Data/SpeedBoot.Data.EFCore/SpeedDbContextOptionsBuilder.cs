@@ -7,10 +7,13 @@ public class SpeedDbContextOptionsBuilder
 {
     public Action<IServiceProvider, DbContextOptionsBuilder>? OptionsAction { get; set; }
 
+    internal IServiceCollection Services { get; }
+
     public Type DbContextType { get; }
 
-    public SpeedDbContextOptionsBuilder(Type dbContextType)
+    public SpeedDbContextOptionsBuilder(IServiceCollection services, Type dbContextType)
     {
+        Services = services;
         DbContextType = dbContextType;
     }
 }

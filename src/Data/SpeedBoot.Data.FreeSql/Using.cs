@@ -23,3 +23,7 @@ global using System.Data;
 global using SpeedBoot.System.Expressions;
 global using SpeedBoot.Data.FreeSql.Internal.Utils;
 global using SpeedBoot.System.Collections.Generic;
+global using SpeedBoot.Data.Abstractions.DataFiltering;
+global using SpeedBoot.Data.FreeSql.DataFiltering.Internal;
+global using SpeedBoot.Data.FreeSql.Options;
+global using SpeedBoot.Data.FreeSql.DataFiltering;

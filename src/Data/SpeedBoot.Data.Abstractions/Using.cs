@@ -7,4 +7,4 @@ global using System.Reflection;
 global using System.Runtime.Serialization;
 global using SpeedBoot.System;
 global using SpeedBoot.System.Collections.Generic;
-
+global using SpeedBoot.System.Collections.Concurrent;

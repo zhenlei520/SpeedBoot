@@ -32,7 +32,7 @@ public static class ServiceCollectionExtensions
         }
 
         SpeedDbContextHelper<TDbContext>.Register();
-        var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder(typeof(TDbContext));
+        var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder(services, typeof(TDbContext));
         optionsAction?.Invoke(speedDbContextOptionsBuilder);
         services.TryAddScoped<TDbContext>(serviceProvider => SpeedDbContextHelper<TDbContext>.Execute(serviceProvider, speedDbContextOptionsBuilder));
         services.TryAddScoped<FreeSqlAuditInterceptor>();

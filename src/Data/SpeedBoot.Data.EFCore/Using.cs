@@ -18,3 +18,8 @@ global using SpeedBoot.System;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.EntityFrameworkCore.ChangeTracking;
 global using SpeedBoot.System.Linq;
+global using SpeedBoot.Data.EFCore.DataFiltering.Internal;
+global using SpeedBoot.Data.Abstractions.DataFiltering;
+global using SpeedBoot.System.Collections.Concurrent;
+global using SpeedBoot.Data.EFCore.Options;
+global using SpeedBoot.Data.EFCore.DataFiltering;

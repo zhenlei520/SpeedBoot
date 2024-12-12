@@ -5,6 +5,8 @@ namespace SpeedBoot.Data.FreeSql;
 
 public class SpeedDbContextOptionsBuilder
 {
+    internal IServiceCollection Services { get; }
+
     public Type DbContextType { get; }
 
     public Action<IServiceProvider, FreeSqlBuilder>? OptionsAction { get; set; }
@@ -13,8 +15,9 @@ public class SpeedDbContextOptionsBuilder
 
     public Action<DbContextOptions>? DbContextOptionsAction { get; set; }
 
-    public SpeedDbContextOptionsBuilder(Type dbContextType)
+    public SpeedDbContextOptionsBuilder(IServiceCollection services, Type dbContextType)
     {
+        Services = services;
         DbContextType = dbContextType;
     }
 }
