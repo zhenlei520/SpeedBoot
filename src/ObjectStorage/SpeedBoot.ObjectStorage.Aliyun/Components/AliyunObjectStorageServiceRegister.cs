@@ -10,6 +10,6 @@ namespace SpeedBoot.ObjectStorage.Aliyun;
 /// </summary>
 public class AliyunObjectStorageServiceRegister : ServiceRegisterComponentBase
 {
-    public override void ConfigureServices(IServiceCollection services)
-        => services.AddAliyunStorage();
+    public override void ConfigureServices(ConfigureServiceContext context)
+        => context.Services.AddAliyunStorage();
 }

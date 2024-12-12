@@ -6,7 +6,7 @@
 namespace SpeedBoot.AspNetCore;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
-public abstract class EndpointFilterBaseAttribute : Attribute
+public abstract class EndpointFilterBaseAttribute : Attribute, IMetadataAttribute
 {
     public Type ServiceType { get; }
 
@@ -25,7 +25,6 @@ public abstract class EndpointFilterBaseAttribute<TEndpointFilterProvider> : End
 {
     public EndpointFilterBaseAttribute() : this(999)
     {
-
     }
 
     public EndpointFilterBaseAttribute(int order)

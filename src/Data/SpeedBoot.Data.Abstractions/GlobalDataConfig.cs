@@ -7,7 +7,8 @@ namespace SpeedBoot.Data.Abstractions;
 
 public static class GlobalDataConfig
 {
-    public static List<Type> DbContextTypes = new();
+    private static List<Type> _dbContextTypes = new();
+    public static IReadOnlyList<Type> DbContextTypes => _dbContextTypes;
 
     public static ConnectionStringInfo ConnectionString = new ConnectionStringInfo()
     {
@@ -18,9 +19,9 @@ public static class GlobalDataConfig
     public static void RegisterDbContext<TDbContext>()
     {
         var dbContextType = typeof(TDbContext);
-        if (DbContextTypes.Contains(dbContextType))
+        if (!DbContextTypes.Contains(dbContextType))
         {
-            DbContextTypes.Add(dbContextType);
+            _dbContextTypes.Add(dbContextType);
         }
     }
 }

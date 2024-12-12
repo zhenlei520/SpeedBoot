@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
         where TDbContext : SpeedDbContext, IDbContext //, new()
     {
         GlobalDataConfig.RegisterDbContext<TDbContext>();
+        services.TryAddScoped<SpeedBoot.Data.Abstractions.IUnitOfWork, DefaultUnitOfWork>();
         services.TryAddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.TryAddScoped(typeof(IRepository<,>), typeof(Repository<,>));
         services.TryAddScoped(typeof(IDbContext), serviceProvider => serviceProvider.GetRequiredService(typeof(TDbContext)));

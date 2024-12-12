@@ -12,7 +12,7 @@ public class DefaultUnitOfWork : Abstractions.IUnitOfWork
         _unitOfWorkWrapper = unitOfWorkWrapper;
     }
 
-    public async Task SaveChangesAsync(CancellationToken cancellationToken)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         foreach (var dbContextType in GlobalDataConfig.DbContextTypes)
         {
@@ -20,7 +20,7 @@ public class DefaultUnitOfWork : Abstractions.IUnitOfWork
         }
     }
 
-    public async Task CommitAsync(CancellationToken cancellationToken)
+    public async Task CommitAsync(CancellationToken cancellationToken = default)
     {
         foreach (var dbContextType in GlobalDataConfig.DbContextTypes)
         {
@@ -28,7 +28,7 @@ public class DefaultUnitOfWork : Abstractions.IUnitOfWork
         }
     }
 
-    public async Task RollbackAsync(CancellationToken cancellationToken)
+    public async Task RollbackAsync(CancellationToken cancellationToken = default)
     {
         foreach (var dbContextType in GlobalDataConfig.DbContextTypes)
         {

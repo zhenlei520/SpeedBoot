@@ -10,6 +10,6 @@ namespace SpeedBoot.ObjectStorage.Minio;
 /// </summary>
 public class MinioObjectStorageServiceRegister : ServiceRegisterComponentBase
 {
-    public override void ConfigureServices(IServiceCollection services)
-        => services.AddMinio();
+    public override void ConfigureServices(ConfigureServiceContext context)
+        => context.Services.AddMinio();
 }

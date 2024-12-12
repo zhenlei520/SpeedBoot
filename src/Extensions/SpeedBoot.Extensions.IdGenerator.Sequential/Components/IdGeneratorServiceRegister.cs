@@ -2,7 +2,7 @@
 
 public class IdGeneratorServiceRegister : ServiceRegisterComponentBase
 {
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(ConfigureServiceContext context)
     {
         SequentialOptions? sequentialOptions = null;
         var speedBootConfiguration = App.Instance.GetConfiguration(true)?.GetSection("SpeedBoot");
@@ -23,6 +23,6 @@ public class IdGeneratorServiceRegister : ServiceRegisterComponentBase
             }
         }
         sequentialOptions ??= new SequentialOptions();
-        services.AddSequentialIdGenerator(Utils.GetGuidType(sequentialOptions.DatabaseType));
+        context.Services.AddSequentialIdGenerator(Utils.GetGuidType(sequentialOptions.DatabaseType));
     }
 }

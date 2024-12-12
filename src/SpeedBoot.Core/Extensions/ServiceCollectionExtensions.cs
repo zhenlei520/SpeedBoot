@@ -19,7 +19,11 @@ public static class ServiceCollectionExtensions
         var speedOptions = new SpeedOptions();
         configure?.Invoke(speedOptions);
 
-        var speedBootApplication = new SpeedBootApplication(services, speedOptions.Assemblies ?? GlobalConfig.DefaultAssemblies);
+        var speedBootApplication = new SpeedBootApplication(
+            services,
+            speedOptions.Assemblies ?? GlobalConfig.DefaultAssemblies,
+            speedOptions.Configuration,
+            speedOptions.Environment);
         speedBootApplication.AddCompletionAppStartup();
         if (speedOptions.EnabledServiceRegisterComponent)
         {
@@ -40,11 +44,10 @@ public static class ServiceCollectionExtensions
 
     public static TInstance GetRequiredSingletonInstance<TInstance>(this IServiceCollection services) where TInstance : class
         => services.GetSingletonInstance<TInstance>() ??
-            throw new SpeedException($"Could not find an object of {typeof(TInstance).AssemblyQualifiedName} in services");
+           throw new SpeedException($"Could not find an object of {typeof(TInstance).AssemblyQualifiedName} in services");
 
     // ReSharper disable once ClassNeverInstantiated.Local
     private sealed class SpeedProvider
     {
-
     }
 }

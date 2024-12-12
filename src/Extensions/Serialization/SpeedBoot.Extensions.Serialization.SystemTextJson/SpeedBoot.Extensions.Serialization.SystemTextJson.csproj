@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;netstandard2.1;netcoreapp3.1;net5.0;net6.0;net7.0;net8.0;</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworkAllVersion)</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,8 +9,37 @@
     <ProjectReference Include="..\SpeedBoot.Extensions.Serializations.Abstracts\SpeedBoot.Extensions.Serializations.Abstracts.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="8.0.3" />
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.1'">
+    <PackageReference Include="Microsoft.NETCore.App" Version="2.1.30" />
   </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
+    <PackageReference Include="Microsoft.NETCore.App" Version="2.2.8" />
+  </ItemGroup>
+
+  <Choose>
+    <When Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'netcoreapp2.1' or '$(TargetFramework)' == 'netcoreapp2.2' or '$(TargetFramework)' == 'netcoreapp3.0' or '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0' or '$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net9.0'">
+      <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' or '$(TargetFramework)' == 'netstandard2.1' or '$(TargetFramework)' == 'netcoreapp2.1' or '$(TargetFramework)' == 'netcoreapp2.2' or '$(TargetFramework)' == 'netcoreapp3.0'">
+        <PackageReference Include="System.Text.Json" Version="4.7.2" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0'">
+        <PackageReference Include="System.Text.Json" Version="6.0.11" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+        <PackageReference Include="System.Text.Json" Version="7.0.0" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+        <PackageReference Include="System.Text.Json" Version="8.0.5" />
+      </ItemGroup>
+      <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+        <PackageReference Include="System.Text.Json" Version="9.0.0" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <PackageReference Include="System.Text.Json" Version="8.0.5" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
 
 </Project>

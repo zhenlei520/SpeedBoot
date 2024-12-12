@@ -9,12 +9,6 @@ namespace SpeedBoot.AspNetCore;
 
 public static class ServiceCollectionExtensions
 {
-    private static List<string> exceptNames = new List<string>()
-    {
-        "Microsoft.",
-        "System."
-    };
-
     public static WebApplication AddMinimalAPIs(
         this IServiceCollection services,
         WebApplicationBuilder builder,
@@ -46,27 +40,30 @@ public static class ServiceCollectionExtensions
         {
             assemblies = assemblies.Union(AppDomain.CurrentDomain.GetAssemblies()).ToList();
         }
-        services.TryRegisterEndpointFilters(assemblies);
+        services.TryRegisterEndpointFilters(assemblies, globalServiceRouteOptions);
         services.RegisterServices(assemblies, globalServiceRouteOptions);
         return App.Instance.GetRequiredSingletonService<WebApplication>();
     }
 
-    private static void TryRegisterEndpointFilters(this IServiceCollection services, IEnumerable<Assembly> assemblies)
+    private static void TryRegisterEndpointFilters(this IServiceCollection services, IEnumerable<Assembly> assemblies, GlobalServiceRouteOptions globalServiceRouteOptions)
     {
 #if NET7_0_OR_GREATER
-        services.RegisterEndpointFilters(assemblies);
+        services.RegisterEndpointFilters(assemblies, globalServiceRouteOptions);
 #endif
     }
 
 #if NET7_0_OR_GREATER
     private static void RegisterEndpointFilters(
         this IServiceCollection services,
-        IEnumerable<Assembly> assemblies)
+        IEnumerable<Assembly> assemblies,
+        GlobalServiceRouteOptions globalServiceRouteOptions)
     {
         var endpointFilterProviderTypes = AssemblyHelper.GetEndpointFilterProviderTypes(assemblies).ToList();
         foreach (var providerType in endpointFilterProviderTypes)
         {
-            services.AddSingleton(providerType);
+            var endpointFilterServiceLifetime = globalServiceRouteOptions.EndpointFilterServiceLifetimeFunc?.Invoke(providerType) ??
+                                                globalServiceRouteOptions.DefaultEndpointFilterServiceLifetime;
+            services.Add(new ServiceDescriptor(providerType, providerType, endpointFilterServiceLifetime));
         }
     }
 #endif
@@ -83,9 +80,11 @@ public static class ServiceCollectionExtensions
         {
             services.AddSingleton(serviceType);
         }
+        var serviceProvider=services.BuildServiceProvider();
+        var app = serviceProvider.GetRequiredService<WebApplication>();
         foreach (var serviceType in serviceTypes)
         {
-            var service = services.BuildServiceProvider().GetRequiredService(serviceType);
+            var service = app.Services.GetRequiredService(serviceType);
 
             var serviceBase = (ServiceBase)service;
             if (serviceBase.RouteOptions.DisableAutoMapRoute ?? globalServiceRouteOptions.DisableAutoMapRoute ?? false)

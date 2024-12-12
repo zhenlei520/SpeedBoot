@@ -7,11 +7,11 @@ namespace SpeedBoot.System.Collections.Concurrent;
 
 public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey : notnull
 {
-    private ConcurrentDictionary<TKey, Lazy<TValue>> _dicCache;
+    private readonly ConcurrentDictionary<TKey, Lazy<TValue>> _dicCache;
 
-    public TKey[] Keys => _dicCache.Keys.ToArray();
+    public ICollection<TKey> Keys => _dicCache.Keys;
 
-    public TValue[] Values => _dicCache.Values.Select(value => value.Value).ToArray();
+    public IEnumerable<TValue> Values => _dicCache.Values.Select(value => value.Value);
 
     public TValue? this[TKey key] => _dicCache.TryGetValue(key, out var lazyValue) ? lazyValue.Value : default;
 
@@ -25,16 +25,28 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
     {
     }
 
-    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode) : this(lazyThreadSafetyMode, null)
+    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey>? comparer) : this(
+        collection, LazyThreadSafetyMode.ExecutionAndPublication, comparer)
     {
     }
 
-    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode, IEqualityComparer<TKey>? comparer)
+    public CustomConcurrentDictionary(LazyThreadSafetyMode lazyThreadSafetyMode, IEqualityComparer<TKey>? comparer = null)
     {
         _defaultLazyThreadSafetyMode = lazyThreadSafetyMode;
         _dicCache = comparer != null
             ? new ConcurrentDictionary<TKey, Lazy<TValue>>(comparer)
             : new ConcurrentDictionary<TKey, Lazy<TValue>>();
+    }
+
+    public CustomConcurrentDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection,
+        LazyThreadSafetyMode lazyThreadSafetyMode = LazyThreadSafetyMode.ExecutionAndPublication, IEqualityComparer<TKey>? comparer = null)
+    {
+        _defaultLazyThreadSafetyMode = lazyThreadSafetyMode;
+        var data = collection.Select(kv =>
+            new KeyValuePair<TKey, Lazy<TValue>>(kv.Key, new Lazy<TValue>(() => kv.Value, lazyThreadSafetyMode)));
+        _dicCache = comparer != null
+            ? new ConcurrentDictionary<TKey, Lazy<TValue>>(data, comparer)
+            : new ConcurrentDictionary<TKey, Lazy<TValue>>(data);
     }
 
     public TValue? Get(TKey key)
@@ -136,6 +148,9 @@ public class CustomConcurrentDictionary<TKey, TValue> : IDisposable where TKey :
     {
         _dicCache.Clear();
     }
+
+    public IEnumerable<KeyValuePair<TKey, TValue>> GetEnumerable()
+        => _dicCache.Select(x=> new KeyValuePair<TKey, TValue>(x.Key, x.Value.Value));
 
     public void Dispose()
     {

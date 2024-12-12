@@ -5,13 +5,17 @@ namespace SpeedBoot.Extensions.Serialization.SystemTextJson.Components;
 
 public class SystemTextJsonServiceRegister: ServiceRegisterComponentBase
 {
-    public override void ConfigureServices(IServiceCollection services)
+    public override void ConfigureServices(ConfigureServiceContext context)
     {
-        services.AddSystemTextJson(new JsonSerializerOptions(JsonSerializerDefaults.Web)
+#if NETCOREAPP3_1_OR_GREATER
+        context.Services.AddSystemTextJson(new JsonSerializerOptions(JsonSerializerDefaults.Web)
         {
             WriteIndented = true,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
         });
+#else
+        context.Services.AddSystemTextJson(new JsonSerializerOptions());
+#endif
     }
 }
