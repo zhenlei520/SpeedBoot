@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\SpeedBoot.Data.Abstractions\SpeedBoot.Data.Abstractions.csproj" />
     <ProjectReference Include="..\..\EventBus\SpeedBoot.EventBus.Abstracts\SpeedBoot.EventBus.Abstracts.csproj" />
+    <ProjectReference Include="..\..\SpeedBoot.Core\SpeedBoot.Core.csproj" />
   </ItemGroup>
 
 </Project>

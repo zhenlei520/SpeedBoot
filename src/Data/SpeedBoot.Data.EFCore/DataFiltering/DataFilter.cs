@@ -1,4 +1,4 @@
-﻿// Copyright (c) zhenlei520 All rights reserved.
+// Copyright (c) zhenlei520 All rights reserved.
 // Licensed under the MIT License. See LICENSE.txt in the project root for license information.
 
 namespace SpeedBoot.Data.EFCore.DataFiltering;
@@ -28,7 +28,7 @@ public class DataFilter : IDataFilter
     {
         return (_cache.GetOrAdd(
             typeof(TFilter),
-            _ => _serviceProvider.GetService(typeof(DataFilter<TFilter>)) as DataFilter<TFilter>()
+            _ => _serviceProvider.GetRequiredService(typeof(DataFilter<TFilter>))
         ) as DataFilter<TFilter>)!;//todo: Waiting for testing
     }
 }
