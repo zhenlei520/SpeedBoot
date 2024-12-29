@@ -8,11 +8,11 @@ namespace SpeedBoot.Data.Abstractions;
 public class PaginatedList<TEntity>
     where TEntity : class
 {
-    public long Total { get; set; }
+    public virtual long Total { get; set; }
 
-    public long TotalPages { get; set; }
+    public virtual long TotalPages { get; set; }
 
-    public List<TEntity> Result { get; set; } = default!;
+    public virtual List<TEntity> Result { get; set; } = default!;
 
     public PaginatedList()
     {

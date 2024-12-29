@@ -9,7 +9,7 @@ public class PaginatedBase
 {
     private int _page = 1;
 
-    public int Page
+    public virtual int Page
     {
         get => _page;
         set
@@ -21,7 +21,7 @@ public class PaginatedBase
 
     private int _pageSize = 20;
 
-    public int PageSize
+    public virtual int PageSize
     {
         get => _pageSize;
         set

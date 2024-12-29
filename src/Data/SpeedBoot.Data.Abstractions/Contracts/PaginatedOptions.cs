@@ -7,7 +7,7 @@ namespace SpeedBoot.Data.Abstractions;
 
 public class PaginatedOptions: PaginatedBase
 {
-    public Dictionary<string, bool>? Sorting { get; set; }
+    public virtual Dictionary<string, bool>? Sorting { get; set; }
 
     public PaginatedOptions()
     {
