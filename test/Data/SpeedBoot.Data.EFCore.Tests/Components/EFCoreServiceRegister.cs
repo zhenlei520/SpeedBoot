@@ -22,6 +22,10 @@ public class EFCoreServiceRegister : ServiceRegisterComponentBase
         configurationBuilder.AddJsonFile("appsettings.json");
         var configurationRoot = configurationBuilder.Build();
         DataBase = int.Parse(configurationRoot["ConnectionStrings:DataBase"]);
+        if (DataBase == 4)
+        {
+            File.Delete("test.db");
+        }
         context.Services.AddConfiguration(configurationRoot);
         context.Services.AddSingleton<ISaveChangesInterceptor, SaveChangesInterceptor>();
         context.Services.AddSpeedDbContext<TestDbContext>(speedDbContextOptionsBuilder =>
@@ -41,6 +45,8 @@ public class EFCoreServiceRegister : ServiceRegisterComponentBase
                     speedDbContextOptionsBuilder.UseSqlite();
                     break;
             }
+
+            speedDbContextOptionsBuilder.UseFilter();
         });
     }
 }

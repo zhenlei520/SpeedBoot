@@ -10,3 +10,4 @@ global using Microsoft.Extensions.Configuration;
 global using SpeedBoot;
 global using SpeedBoot.Data.Abstractions;
 global using System.Reflection;
+global using SpeedBoot.Data.Abstractions.DataFiltering;

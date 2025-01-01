@@ -36,4 +36,31 @@ public class DbContextTest : TestBase
         effectRow = dbContext.SaveChanges();
         Assert.AreEqual(1, effectRow);
     }
+
+    [TestMethod]
+    public void SoftDelete()
+    {
+        using var scope = App.Instance.GetRequiredRootServiceProvider().CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<TestDbContext>();
+        dbContext.Database.EnsureCreated();
+        var tag = new Tag()
+        {
+            Name = "speed",
+        };
+        dbContext.Tag.Add(tag);
+        var effectRow = dbContext.SaveChanges();
+        Assert.AreEqual(1, effectRow);
+
+        tag.IsDeleted = true;
+        dbContext.Tag.Update(tag);
+        dbContext.SaveChanges();
+        var tagCount = dbContext.Tag.Count();
+        Assert.AreEqual(0, tagCount);
+        var dataFilter = scope.ServiceProvider.GetRequiredService<IDataFilter>();
+        using (dataFilter.Disable<ISoftDelete>())
+        {
+            tagCount = dbContext.Tag.Count();
+            Assert.AreEqual(1, tagCount);
+        }
+    }
 }

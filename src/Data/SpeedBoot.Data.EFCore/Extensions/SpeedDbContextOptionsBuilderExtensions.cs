@@ -5,11 +5,18 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class SpeedDbContextOptionsBuilderExtensions
 {
-    public static SpeedDbContextOptionsBuilder UseFilter(
-        this SpeedDbContextOptionsBuilder speedDbContextOptionsBuilder,
-        Action<FilterOptions>? options = null)
+    public static SpeedDbContextOptionsBuilder UseFilter<TDbContext>(
+        this SpeedDbContextOptionsBuilder<TDbContext> speedDbContextOptionsBuilder,
+        Action<FilterOptions<TDbContext>>? options = null)
+        where TDbContext : SpeedDbContext
     {
-        speedDbContextOptionsBuilder.Services.Configure<FilterOptions>(opt => options?.Invoke(opt));
+        speedDbContextOptionsBuilder.Services.TryAddSingleton<FilterOptions<TDbContext>>(sp =>
+        {
+            var filterOptions = new FilterOptions<TDbContext>();
+            options?.Invoke(filterOptions);
+            return filterOptions;
+        });
+
         speedDbContextOptionsBuilder.Services.TryAddScoped<IDataFilter, DataFilter>();
         speedDbContextOptionsBuilder.Services.TryAddScoped(typeof(DataFilter<>));
         return speedDbContextOptionsBuilder;

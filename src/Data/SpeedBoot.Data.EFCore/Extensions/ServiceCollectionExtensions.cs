@@ -16,8 +16,8 @@ public static class ServiceCollectionExtensions
     /// <returns></returns>
     public static IServiceCollection AddSpeedDbContext<TDbContext>(
         this IServiceCollection services,
-        Action<SpeedDbContextOptionsBuilder>? optionsAction = null)
-        where TDbContext : DbContext, IDbContext
+        Action<SpeedDbContextOptionsBuilder<TDbContext>>? optionsAction = null)
+        where TDbContext : SpeedDbContext, IDbContext
     {
         GlobalDataConfig.RegisterDbContext<TDbContext>();
         services.TryAddScoped<IUnitOfWork, DefaultUnitOfWork>();
@@ -39,7 +39,7 @@ public static class ServiceCollectionExtensions
             });
         }
 
-        var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder(services, typeof(TDbContext));
+        var speedDbContextOptionsBuilder = new SpeedDbContextOptionsBuilder<TDbContext>(services);
         optionsAction?.Invoke(speedDbContextOptionsBuilder);
         services.AddDbContext<TDbContext>((serviceProvider, builder) =>
         {

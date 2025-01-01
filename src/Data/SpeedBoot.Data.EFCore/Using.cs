@@ -21,5 +21,6 @@ global using SpeedBoot.System.Linq;
 global using SpeedBoot.Data.EFCore.DataFiltering.Internal;
 global using SpeedBoot.Data.Abstractions.DataFiltering;
 global using SpeedBoot.System.Collections.Concurrent;
-global using SpeedBoot.Data.EFCore.Options;
 global using SpeedBoot.Data.EFCore.DataFiltering;
+global using SpeedBoot.Data.EFCore.Options;
+global using Microsoft.EntityFrameworkCore.Metadata;
