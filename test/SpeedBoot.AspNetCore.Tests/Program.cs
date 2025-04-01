@@ -51,7 +51,10 @@ builder.Services
         options.UseAllOfForInheritance();
         options.UseOneOfForPolymorphism();
     });
-var app = builder.AddMinimalAPIs();
+var app = builder.AddMinimalAPIs(options =>
+{
+    options.ExtendAttributesWithClass = [typeof(CustomAttribute)];
+});
 
 app.UseAuthentication();
 app.UseRouting();

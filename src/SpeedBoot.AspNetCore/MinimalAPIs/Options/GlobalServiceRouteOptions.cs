@@ -29,6 +29,11 @@ public class GlobalServiceRouteOptions : ServiceRouteOptions
     public Func<Type, ServiceLifetime?>? EndpointFilterServiceLifetimeFunc { get; set; }
 #endif
 
+    /// <summary>
+    /// The set of features that need to be supported on the class
+    /// </summary>
+    public List<Type>? ExtendAttributesWithClass { get; set; }
+
     public GlobalServiceRouteOptions()
     {
         DisableAutoMapRoute = false;

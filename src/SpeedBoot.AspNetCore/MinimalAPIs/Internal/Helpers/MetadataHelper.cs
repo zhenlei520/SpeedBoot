@@ -9,11 +9,18 @@ public static class MetadataHelper
     public static void CompletionMetadata(
         RouteHandlerBuilder routeHandlerBuilder,
         IEnumerable<IMetadataAttribute> endpointFilterAttributeWithMethod,
-        IEnumerable<IMetadataAttribute> endpointFilterAttributeWithClass)
+        IEnumerable<IMetadataAttribute> endpointFilterAttributeWithClass,
+        IEnumerable<Attribute> extendedAttributes)
     {
         var customAttributes = endpointFilterAttributeWithClass
             .Where(attribute => !endpointFilterAttributeWithMethod.Any(a => a.GetType() == attribute.GetType())).ToList();
         foreach (var attribute in customAttributes)
+        {
+            routeHandlerBuilder.WithMetadata(attribute);
+        }
+
+        var allAttributes = endpointFilterAttributeWithMethod.Concat(endpointFilterAttributeWithClass);
+        foreach (var attribute in extendedAttributes.Where(attr => !allAttributes.Any(metaAttr => Equals(metaAttr, attr))))
         {
             routeHandlerBuilder.WithMetadata(attribute);
         }

@@ -24,7 +24,7 @@ public abstract class ServiceBase
     protected TService? GetService<TService>()
         => Services.GetService<TService>();
 
-    protected TService GetRequiredService<TService>() where TService: notnull
+    protected TService GetRequiredService<TService>() where TService : notnull
         => Services.GetRequiredService<TService>();
 
     private IEnglishPluralizationService? _englishPluralizationService;
@@ -35,6 +35,7 @@ public abstract class ServiceBase
     protected List<RouteAttribute> RouteAttributes;
 #if NET7_0_OR_GREATER
     protected IEnumerable<IMetadataAttribute> MetadataAttributes;
+    protected List<Attribute> ExtendedAttributes;
     protected IEnumerable<EndpointFilterBaseAttribute> EndpointFilterAttributeWithClass;
 #endif
 
@@ -49,6 +50,20 @@ public abstract class ServiceBase
 
     internal void AutoMapRoute(GlobalServiceRouteOptions globalServiceRouteOptions)
     {
+#if NET7_0_OR_GREATER
+        if (globalServiceRouteOptions.ExtendAttributesWithClass != null)
+        {
+            ExtendedAttributes = GetType()
+                .GetCustomAttributes(true)
+                .Where(attr => globalServiceRouteOptions.ExtendAttributesWithClass.Contains(attr.GetType()))
+                .OfType<Attribute>()
+                .ToList();
+        }
+        else
+        {
+            ExtendedAttributes = new List<Attribute>();
+        }
+#endif
         var methodInfos = MethodHelper.GetMethodInfos(GetType());
         var templatesByClass = RouteAttributes.Any()
             ? RouteAttributes.Select(attribute => attribute.Template).ToList()
@@ -187,7 +202,7 @@ public abstract class ServiceBase
         RouteHandlerBuilder routeHandlerBuilder,
         IEnumerable<IMetadataAttribute> metadataAttributeWithMethod)
     {
-        MetadataHelper.CompletionMetadata(routeHandlerBuilder, metadataAttributeWithMethod, MetadataAttributes);
+        MetadataHelper.CompletionMetadata(routeHandlerBuilder, metadataAttributeWithMethod, MetadataAttributes, ExtendedAttributes);
     }
 #endif
 
@@ -196,7 +211,8 @@ public abstract class ServiceBase
         RouteHandlerBuilder routeHandlerBuilder,
         IEnumerable<EndpointFilterBaseAttribute> endpointFilterAttributeWithMethod)
     {
-        EndpointFilterHelper.RegisterEndpointFilter(routeHandlerBuilder, endpointFilterAttributeWithMethod, EndpointFilterAttributeWithClass);
+        EndpointFilterHelper.RegisterEndpointFilter(routeHandlerBuilder, endpointFilterAttributeWithMethod,
+            EndpointFilterAttributeWithClass);
     }
 #endif
 }

@@ -4,6 +4,7 @@
 namespace SpeedBoot.AspNetCore.Tests.Services;
 
 [Internal]
+[CustomAttribute]
 public class TestService : TestServiceBase
 {
     public TestService()

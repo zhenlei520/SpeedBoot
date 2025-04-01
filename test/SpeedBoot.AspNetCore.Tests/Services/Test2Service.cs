@@ -5,6 +5,7 @@ namespace SpeedBoot.AspNetCore.Tests.Services;
 
 [Route("/api/[service]/[action]")]
 [Route("/api2/[service]/[action]")]
+[CustomAttribute]
 public class Test2Service : TestServiceBase
 {
     [Internal(1)]
